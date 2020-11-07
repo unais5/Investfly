@@ -1,0 +1,14 @@
+                                            /* carousel */
+#banner{
+    padding-top: 0px;
+}
+
+.carousel-item img{
+    height: 600px;
+}
+
+.carousel-indicators > li{
+    height: 10px !important;
+    border-radius: 100% !important;
+    width: 10px !important;
+}
