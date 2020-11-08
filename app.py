@@ -18,7 +18,9 @@ class User(db.Model):
 def index():
     return render_template("base1.html")
 
-
+@app.route('/home')
+def home_page():
+    return render_template("home_page.html")
 
 if __name__ == '__main__':
     app.run(debug=True)
