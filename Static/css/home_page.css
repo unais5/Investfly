@@ -12,3 +12,8 @@
     border-radius: 100% !important;
      width: 10px !important;
 }
+
+.carousel-caption{
+    bottom:200px;
+}
+
