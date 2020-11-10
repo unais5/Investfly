@@ -17,7 +17,7 @@ body {
   margin: 5% auto;
   width: 600px;
   height: 400px;
-  background:rgb(76, 66, 66);
+  background:white;
   border-radius: 2px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
@@ -36,6 +36,7 @@ h1 {
   margin: 0 0 20px 0;
   font-weight: 300;
   font-size: 28px;
+  color:black;
 }
 
 input[type="text"],
@@ -57,7 +58,7 @@ input[type="password"] {
 input[type="text"]:focus,
 input[type="password"]:focus {
   border-bottom: 2px solid #16a085;
-  color: #16a085;
+  color: #010201;
   transition: 0.2s ease;
 }
 
@@ -95,7 +96,7 @@ input[type="submit"]:active {
   left: 280px;
   width: 40px;
   height: 40px;
-  background: #DDD;
+  background: rgb(20, 15, 15);
   border-radius: 50%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   line-height: 40px;

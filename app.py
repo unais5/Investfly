@@ -10,20 +10,46 @@ db = SQLAlchemy(app)
 class User(db.Model):
     __tablename__ = 'login'
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.Text)
-    password = db.Column(db.Text) 
+    username = db.Column(db.Text, unique = True)
+    email = db.Column(db.Text , unique = True)
+    password = db.Column(db.Text , unique = True)
+
+    def __init__(self,username,email,password):
+        self.username = username
+        self.email = email
+        self.password = password
+
+ 
 
 
 @app.route('/')
 def home_page():
     return render_template("home_page.html")
 
-@app.route('/login')
+@app.route('/login' , methods= ['GET' , 'POST'])
 def login():
-    return render_template("login.html")
+    error = None
+    if request.method == 'POST':
+        user = request.form['username']
+        passw = request.form['password']
+        Password = User.query.filter(User.username == user).first()
+        if Password :
+            if passw == Password.password:
+               return render_template('dashboard.html' ,error = error)
+            #else part should be here
+    return render_template('login.html' ,error = error) 
 
-@app.route('/register')
+@app.route('/register' , methods = ['GET' ,'POST'])
 def register():
+    if request.method == 'POST':
+        password = request.form['password']
+        password2 = request.form['password2'] 
+        if password == password2:
+            user = User(request.form['username'],request.form['email'],request.form['password'])
+            db.session.add(user)
+            db.session.commit()
+            return redirect(url_for('login'))
+            #else part should be here
     return render_template("register.html")
 
 if __name__ == '__main__':
