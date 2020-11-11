@@ -1,11 +1,21 @@
 from flask import Flask , render_template ,redirect , url_for,request
 from flask_sqlalchemy import SQLAlchemy
-
+from flask_mail import Mail , Message
+from itsdangerous import URLSafeTimedSerializer
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///login.db' 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
+
+# app.config["MAIL_SERVER"] = 'smpt.gmail.com'
+# app.config["MAIL_PORT"] = 587      
+# app.config["MAIL_USERNAME"] = 'unais.virtual@gmail.com'  
+# app.config['MAIL_PASSWORD'] = 'CH@MPIONs17'  
+# app.config['MAIL_USE_TLS'] = False  
+# app.config['MAIL_USE_SSL'] = True 
+# mail  = Mail(app)
+# s = URLSafeTimedSerializer('Thisisasecret')
 
 class User(db.Model):
     __tablename__ = 'login'
@@ -20,11 +30,10 @@ class User(db.Model):
         self.password = password
 
  
-
-
 @app.route('/')
 def home_page():
     return render_template("home_page.html")
+
 
 @app.route('/login' , methods= ['GET' , 'POST'])
 def login():
@@ -35,22 +44,45 @@ def login():
         Password = User.query.filter(User.username == user).first()
         if Password :
             if passw == Password.password:
-               return render_template('dashboard.html' ,error = error)
-            #else part should be here
-    return render_template('login.html' ,error = error) 
+               return render_template('dashboard.html')
+            else:
+                error = 'Username or Password Is Incorrect'
+                return render_template('login.html' ,error = error)
+    return render_template('login.html') 
+
+# @app.route('/verify' , methods = ['GET'  ,'POST'])
+# def verify():
+#     return render_template('verify.html')
+
 
 @app.route('/register' , methods = ['GET' ,'POST'])
 def register():
     if request.method == 'POST':
+        # email = request.form['email']
+        # token = s.dumps(email,salt='email-confirm')
+        # msg = Message('Confirm Email' , sender = 'unais.virtual@gmail.com' , recipients = [email])
+        # link = url_for('confirm_email' , token = token , _external = True)
+        # msg.body = 'Your Verification link is {}'.format(link)
         password = request.form['password']
         password2 = request.form['password2'] 
         if password == password2:
             user = User(request.form['username'],request.form['email'],request.form['password'])
             db.session.add(user)
             db.session.commit()
-            return redirect(url_for('login'))
+            # mail.send(msg)
+            # return redirect(url_for('verify'))
             #else part should be here
+            return redirect(url_for('login'))
     return render_template("register.html")
+
+# @app.route('/confirm_email/<token>')
+# def confirm_email(token):
+#     try:
+#         email = s.loads(token, salt = 'email-confirm' , max_age = 3600)
+#     except SignatureExpired:
+#         return render_template('expiration.html')
+#     return render_template('dashboard.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

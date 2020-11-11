@@ -32,8 +32,11 @@
 			</div>
 			</form>
 			{% if error %}
-        	<p class="error"><strong>Error:</strong> {{ error }}
-      		{% endif %}
+			<div class="alert alert-danger  alerty-dismissal fade show" role="alert">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{ error }}
+			</div> 
+			{% endif %}
 			<div class="for-pwd-htm">
 				<div class="group">
 					<label for="user" class="label">Username or Email</label>
