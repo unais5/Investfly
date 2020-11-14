@@ -10,6 +10,12 @@
 <div id="login-box">
     <div class="left">
       <h1>Sign up</h1>
+      {% if error %}
+      <div class="alert alert-danger  alerty-dismissal fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ error }}
+      </div> 
+      {% endif %}
       <form action="/register" method = "POST">
       <input type="text" name="username" placeholder="Username" />
       <input type="text" name="email" placeholder="E-mail" />
@@ -18,7 +24,7 @@
       <input type="submit" name="signup_submit" value="Sign me up" />
       </form>
     </div>
-    
+
     <div class="right">
       <span class="loginwith">Sign in with<br />social network</span>
       <button class="social-signin facebook">Log in with facebook</button>

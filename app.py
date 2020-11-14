@@ -2,6 +2,7 @@ from flask import Flask , render_template ,redirect , url_for,request
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail , Message
 from itsdangerous import URLSafeTimedSerializer
+from sqlalchemy.exc import IntegrityError
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///login.db' 
@@ -22,7 +23,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.Text, unique = True)
     email = db.Column(db.Text , unique = True)
-    password = db.Column(db.Text , unique = True)
+    password = db.Column(db.Text)
 
     def __init__(self,username,email,password):
         self.username = username
@@ -57,6 +58,7 @@ def login():
 
 @app.route('/register' , methods = ['GET' ,'POST'])
 def register():
+    error = None
     if request.method == 'POST':
         # email = request.form['email']
         # token = s.dumps(email,salt='email-confirm')
@@ -66,13 +68,28 @@ def register():
         password = request.form['password']
         password2 = request.form['password2'] 
         if password == password2:
-            user = User(request.form['username'],request.form['email'],request.form['password'])
-            db.session.add(user)
-            db.session.commit()
-            # mail.send(msg)
-            # return redirect(url_for('verify'))
-            #else part should be here
-            return redirect(url_for('login'))
+            try:
+                user = User(request.form['username'],request.form['email'],request.form['password'])
+                db.session.add(user)
+                db.session.commit()
+                # mail.send(msg)
+                # return redirect(url_for('verify'))
+                #else part should be here
+                return redirect(url_for('login'))
+            except IntegrityError:
+                db.session.rollback()
+                check_username = User.query.filter(User.username == request.form['username']).first()
+                if check_username == None:
+                    pass
+                else:
+                    error = 'Username Already Taken'
+
+                check_email = User.query.filter(User.email == request.form['email']).first()
+                if check_email == None:
+                    pass
+                else:
+                    error = 'Email Already Registered'
+                return render_template("register.html" , error = error)
     return render_template("register.html")
 
 # @app.route('/confirm_email/<token>')
