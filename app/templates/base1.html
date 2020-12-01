@@ -7,6 +7,15 @@
     {% block head %}
     {% endblock %}
 </head>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <a class="navbar-brand" href="{{ url_for('home_page') }}"> <img src="{{url_for('static',filename='img/logo1.png')}}" width="50" height="50" alt="" loading="lazy"> </a>
@@ -19,7 +28,11 @@
                 <a class="nav-link" href="{{ url_for('home_page') }}" font-size="18px">Home<span class="sr-only"></span></a>
             </li>
             <li class="nav-item">
+                {% if current_user.is_anonymous %}
                 <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                {% else %}
+                <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                {% endif %}
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('register') }}">Register</a>
