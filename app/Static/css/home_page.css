@@ -79,6 +79,10 @@ body {
   .button:hover {
     background-color: #555;
   }
+
+  .background{
+    background-color: rgb(0, 0, 0);
+  }
   
   @media screen and (max-width: 650px) {
     .column {

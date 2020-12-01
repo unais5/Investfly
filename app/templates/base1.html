@@ -7,15 +7,7 @@
     {% block head %}
     {% endblock %}
 </head>
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <a class="navbar-brand" href="{{ url_for('home_page') }}"> <img src="{{url_for('static',filename='img/logo1.png')}}" width="50" height="50" alt="" loading="lazy"> </a>
