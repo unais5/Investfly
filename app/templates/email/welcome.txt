@@ -1,0 +1,14 @@
+Dear {{ user.username }},
+
+Thank you for joining InvestFly. Enjoy an amazing trading experience!
+
+Your registered Email address: {{user.email }}
+
+To verify your account click on the following link:
+
+{{ url_for('verify_user', token=token, _external=True) }}
+
+If you have not registered at InvestFly simply ignore this message.
+
+Sincerely,
+The InvestFly Team

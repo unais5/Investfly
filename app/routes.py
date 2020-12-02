@@ -4,12 +4,23 @@ from app.forms import LoginForm, RegistrationForm, ResetPasswordForm, ResetPassw
 from flask_login import current_user, login_user, login_required, logout_user
 from app.models import User
 from werkzeug.urls import url_parse
-from app.email import send_password_reset_email
+from app.email import send_password_reset_email, send_user_verification_email
 
 
 @app.route('/')
 def home_page():
     return render_template("home_page.html")
+
+@app.route('/verify_user/<token>', methods = ['GET', 'POST'])
+def verify_user(token):
+    tid = User.query.get(User.verify_user_token(token).id)
+    user = User.query.filter_by(id=tid.id).first_or_404()
+    if not user:
+        user.confirmed = True
+        db.session.add(user)
+        db.session.commit()
+    # return redirect(url_for('home_page'))
+    return redirect(url_for('user', username=user.username))
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -36,6 +47,10 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
+        if user:
+            send_user_verification_email(user)
+        # db.session.add(user)
+        # db.session.commit()
         #after registeration shift to dashboard
         return redirect(url_for('home_page'))
     return render_template('register.html', form = form)
@@ -44,7 +59,6 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('home_page'))
-
 
 @app.route('/user/<username>')
 @login_required
