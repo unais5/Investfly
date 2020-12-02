@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block content %}
+<section class="background">
 <section id="banner">
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
   <ol class="carousel-indicators">
@@ -30,5 +31,58 @@
     </div>
   </div>
 </div>
+</section>
+<section id="about">
+<div class="about-section">
+  <h1>Automate Your Trades</h1>
+  <p>Investfly is an online trading platform and community where members can manage virtual stock portfolios. Founded in 2020, 
+    Investfly seeks to remove the complexity from trading, allowing anyone to take their idea and turn it into an investment strategy.</p>
+  <p>Open your live trading account. Get quick and easy access to a wide range of markets.
+    We will guide you step by step into the fascinating world of online trading. 
+    Users can trade stocks around the nation, updating with real prices and, streaming throughout the day.
+    Our mission is to make sense of what your money means to you. Every day we work to provide you an opportunity to achieve success in money 
+    and in life removing the middle man. </p>
+  <img src="{{url_for('static',filename = 'img/mob.jpg')}}">
+</div>
+
+<h2 style="text-align:center; color: white;">Our Team</h2>
+<div class="row">
+  <div class="column">
+    <div class="card">
+      <img src="{{url_for('static', filename = 'img/unais.jpeg')}}" alt="Unais" style="width:100%">
+      <div class="container">
+        <h2>Unais Siddiqui</h2>
+        <p class="title">Leader</p>
+        <p>Some text that describes me lorem ipsum ipsum lorem.</p>
+        <p>k180241@nu.edu.pk</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="column">
+    <div class="card">
+      <img src="{{url_for('static', filename = 'img/alish.jpg')}}" alt="Alishbah" style="width:100%">
+      <div class="container">
+        <h2>Alishbah Iqbal</h2>
+        <p class="title">Backend developer</p>
+        <p>Some text that describes me lorem ipsum ipsum lorem.</p>
+        <p>k180313@nu.edu.pk</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="column">
+    <div class="card">
+      <img src="{{url_for('static', filename = 'img/anash.jpg')}}" alt="Anasharah" style="width:100%">
+      <div class="container">
+        <h2>Anasharah Aman</h2>
+        <p class="title">Database Engineer</p>
+        <p>Some text that describes me lorem ipsum ipsum lorem.</p>
+        <p>k180298@nu.edu.pk</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
 </section>
 {% endblock %}
