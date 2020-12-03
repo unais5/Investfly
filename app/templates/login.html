@@ -16,6 +16,7 @@
 		<input id="tab-2" type="radio" href="{{ url_for('reset_password_request') }}" name="tab" class="for-pwd"><label for="tab-2" class="tab">Forgot Password</label>
 		<div class="login-form">
 			<form action="" method="post" novalidate>
+				{{ form.hidden_tag() }}
 			<div class="sign-in-htm">
 				<div class="group">
 					<label for="user" class="label">Username</label>
