@@ -1,6 +1,6 @@
  
   .bg-img {
-    background-image: url(stock.jpg);
+    background-image: url(../img/stock.jpg);
     min-height: 630px;
     background-position: center;
     background-repeat: no-repeat;
