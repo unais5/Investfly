@@ -9,7 +9,7 @@ from datetime import datetime
 
 # class User(UserMixin, db.Model):
 class user_login(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
     username = db.Column(db.String(64), index=True, unique=True, nullable=False)
     email = db.Column(db.String(120), index=True, unique=True, nullable=False)
     password_hash = db.Column(db.String(128))
@@ -61,8 +61,8 @@ def load_user(id):
     return user_login.query.get(int(id))
 
 class user_info(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user_login.id'), nullable=False)
     fname= db.Column(db.String(20))
     # lname= db.Column(db.String(20))
     phone= db.Column(db.Integer, nullable=False)
