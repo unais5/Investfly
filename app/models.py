@@ -6,7 +6,8 @@ from time import time
 import jwt
 from flask import render_template
 
-class User(UserMixin, db.Model):
+# class User(UserMixin, db.Model):
+class user_login(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
@@ -38,7 +39,7 @@ class User(UserMixin, db.Model):
                             algorithms=['HS256'])['reset_password']
         except:
             return
-        return User.query.get(id)
+        return user_login.query.get(id)
     
     def get_verify_user_token(self, expires_in=600):
         return jwt.encode(
@@ -52,8 +53,8 @@ class User(UserMixin, db.Model):
                             algorithms=['HS256'])['verify_user']
         except:
             return
-        return User.query.get(id)
+        return user_login.query.get(id)
 
 @login.user_loader
 def load_user(id):
-    return User.query.get(int(id))
+    return user_login.query.get(int(id))
