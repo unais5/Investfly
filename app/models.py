@@ -39,6 +39,20 @@ class User(UserMixin, db.Model):
         except:
             return
         return User.query.get(id)
+    
+    def get_verify_user_token(self, expires_in=600):
+        return jwt.encode(
+            {'verify_user': self.id, 'exp': time() + expires_in},
+            app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+
+    @staticmethod
+    def verify_user_token(token):
+        try:
+            id = jwt.decode(token, app.config['SECRET_KEY'],
+                            algorithms=['HS256'])['verify_user']
+        except:
+            return
+        return User.query.get(id)
 
 @login.user_loader
 def load_user(id):
