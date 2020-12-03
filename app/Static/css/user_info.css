@@ -1,4 +1,8 @@
  
+  body{
+    background-color: black;
+  }
+
   .bg-img {
     background-image: url(../img/stock.jpg);
     min-height: 630px;
