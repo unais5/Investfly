@@ -1,8 +1,8 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, ResetPasswordForm, ResetPasswordRequestForm
+from app.forms import LoginForm, RegistrationForm, ResetPasswordForm, ResetPasswordRequestForm, UserInfoForm
 from flask_login import current_user, login_user, login_required, logout_user
-from app.models import user_login
+from app.models import user_login, user_info
 from werkzeug.urls import url_parse
 from app.email import send_password_reset_email, send_user_verification_email
 
@@ -33,7 +33,7 @@ def login():
         if user is None or not user.check_password(form.password.data):
             return redirect(url_for('login'))
         login_user(user)
-        return redirect(url_for('home_page'))
+        return redirect(url_for('user_information'))
     return render_template('login.html', title='Sign In', form=form)
 
 
@@ -94,6 +94,15 @@ def reset_password(token):
         return redirect(url_for('login'))
     return render_template('reset_password.html', form=form)
 
-@app.route('/user_information')
+@app.route('/user_information', methods=['GET', 'POST'])
+@login_required
 def user_information():
-    return render_template("user_info.html")
+    form = UserInfoForm()
+    if form.validate_on_submit():
+        curr_user_info = user_info(fname=form.fname.data, 
+                                    phone=form.phone.data, 
+                                    acc_num=form.acc_num.data, 
+                                    cnic=form.cnic.data, 
+                                    addr=form.addr.data )
+        return redirect(url_for('login'))
+    return render_template("user_info.html", form=form)

@@ -5,23 +5,25 @@
     </head>
     <body>
         <div class="bg-img">
-            <form action="" class="container">
-              <h1>Unais's Information</h1>
+            <form action="" method="post" class="container" novalidate>
+              {{ form.hidden_tag() }}
+              <h1> Your Information</h1>
           
               <label for="Name"><b>Name</b></label>
-              <input type="text" placeholder="Enter Name" name="name" required>
+              <input id="Name" type="text" class="input" placeholder="Enter Name" name="fname">
+              <!-- <input type="text" placeholder="Enter Name" name="name" required> -->
           
               <label for="Phone"><b>Phone</b></label>
-              <input type="tel" placeholder="Enter Phone Number" name="phone" maxlength="11" pattern="\d*" required>
+              <input id="Phone" type="tel" class="input" placeholder="Enter Phone Number" name="phone" maxlength="11" pattern="\d*" required>
           
               <label for="ACC Number"><b>Account</b></label>
-              <input type="tel" placeholder="Enter Account Number" name="acc number" maxlength="14" pattern="\d*" required>
+              <input id="acc_num" type="tel" class="input" placeholder="Enter Account Number" name="acc_num" maxlength="14" pattern="\d*" required>
 
-              <label for="CNIC"><b>Cnic</b></label>
-              <input type="tel" placeholder="Enter CNIC Number" name="cnic" maxlength="13" pattern="\d*" required>
+              <label for="CNIC"><b>CNIC</b></label>
+              <input id="cnic" type="tel" class="input" placeholder="Enter CNIC Number" name="cnic" maxlength="13" pattern="\d*" required>
 
               <label for="ADDR"><b>Address</b></label>
-              <input type="text" placeholder="Enter Address" name="addr" required>
+              <input id="addr1" type="text" class="input" placeholder="Enter Address" name="addr" required>
 
               <button type="submit" class="btn">Submit</button>
             </form>

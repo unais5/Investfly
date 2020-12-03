@@ -5,12 +5,13 @@ from hashlib import md5
 from time import time
 import jwt
 from flask import render_template
+from datetime import datetime
 
 # class User(UserMixin, db.Model):
 class user_login(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), index=True, unique=True)
-    email = db.Column(db.String(120), index=True, unique=True)
+    username = db.Column(db.String(64), index=True, unique=True, nullable=False)
+    email = db.Column(db.String(120), index=True, unique=True, nullable=False)
     password_hash = db.Column(db.String(128))
 
     def __repr__(self):
@@ -58,3 +59,17 @@ class user_login(UserMixin, db.Model):
 @login.user_loader
 def load_user(id):
     return user_login.query.get(int(id))
+
+class user_info(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    fname= db.Column(db.String(20))
+    # lname= db.Column(db.String(20))
+    phone= db.Column(db.Integer, nullable=False)
+    acc_num= db.Column(db.Integer, nullable=False)
+    cnic= db.Column(db.Integer, nullable=False)
+    addr= db.Column(db.String(50))
+    
+
+    def __repr__(self):
+        return '<Post {}>'.format(self.fname)
