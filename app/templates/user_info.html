@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type= "text/css" href="{{url_for('static',filename='css/user_info.css')}}">
+    </head>
+    <body>
+        <div class="bg-img">
+            <form action="" class="container">
+              <h1>Unais's Information</h1>
+          
+              <label for="Name"><b>Name</b></label>
+              <input type="text" placeholder="Enter Name" name="name" required>
+          
+              <label for="Phone"><b>Phone</b></label>
+              <input type="tel" placeholder="Enter Phone Number" name="phone" maxlength="11" pattern="\d*" required>
+          
+              <label for="ACC Number"><b>Account</b></label>
+              <input type="tel" placeholder="Enter Account Number" name="acc number" maxlength="14" pattern="\d*" required>
+
+              <label for="CNIC"><b>Cnic</b></label>
+              <input type="tel" placeholder="Enter CNIC Number" name="cnic" maxlength="13" pattern="\d*" required>
+
+              <label for="ADDR"><b>Address</b></label>
+              <input type="text" placeholder="Enter Address" name="addr" required>
+
+              <button type="submit" class="btn">Submit</button>
+            </form>
+          </div>
+    </body>
+</html>

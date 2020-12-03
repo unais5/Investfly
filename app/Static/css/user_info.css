@@ -1,0 +1,45 @@
+ 
+  .bg-img {
+    background-image: url(stock.jpg);
+    min-height: 630px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+  }
+  
+  .container {
+    position: absolute;
+    right: 0px;
+    margin: 10px;
+    max-width: 50%;
+    padding: 16px;
+    background-color: white;
+  }
+  
+    input[type=text], input[type=tel] {
+    width: 95%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border: none;
+    background: #f1f1f1;
+  }
+  
+  input[type=text]:focus, input[type=tel]:focus {
+    background-color: #ddd;
+    outline: none;
+  }
+  
+  .btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.9;
+  }
+  
+  .btn:hover {
+    opacity: 1;
+  }
