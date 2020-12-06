@@ -7,6 +7,7 @@ import jwt
 from flask import render_template
 from datetime import datetime
 
+
 # class User(UserMixin, db.Model):
 class user_login(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)

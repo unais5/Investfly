@@ -70,7 +70,8 @@ def logout():
 @login_required
 def user(username):
     user = user_login.query.filter_by(username=username).first_or_404()
-    return render_template('user.html', user=user)
+    userinfo = user_info.query.filter_by(user_id=user.id).first_or_404()
+    return render_template('user.html', user=user, userinfo=userinfo)
 
 @app.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request(email):
@@ -105,6 +106,8 @@ def reset_password(token):
 @app.route('/user_information', methods=['GET', 'POST'])
 @login_required
 def user_information():
+    if current_user.is_authenticated:
+        return redirect(url_for('home_page'))
     form = UserInfoForm()
     if form.validate_on_submit():
         curr_user_info = user_info(fname=form.fname.data, 
