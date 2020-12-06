@@ -13,7 +13,7 @@
 <div class="login-wrap">
 	<div class="login-html">
 		<input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
-		<input id="tab-2" type="radio" href="{{ url_for('reset_password_request') }}" name="tab" class="for-pwd"><label for="tab-2" class="tab">Forgot Password</label>
+		<input id="tab-2" type="radio" name="tab" class="for-pwd"><label for="tab-2" class="tab">Forgot Password</label>
 		<div class="login-form">
 			<form action="" method="post" novalidate>
 				{{ form.hidden_tag() }}
@@ -56,7 +56,7 @@
 						{% endfor %}
 					</div>
 					<div class="group">
-						<a href="{{ url_for('reset_password_request') }}" class="button" >	Reset Password </a>
+						<input type="submit" class="button" value="Reset Password">
 					</div>
 					<div class="hr"></div>
 					</form>

@@ -14,6 +14,8 @@ class Config(object):
     MAIL_PORT = 465
     MAIL_USE_TLS = False
     MAIL_USE_SSL = True
-    MAIL_USERNAME = os.environ.get('investlycorporation@gmail.com')
-    MAIL_PASSWORD = os.environ.get('ProjectworK')
+    # MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    # MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    MAIL_USERNAME = 'investflycorporation@gmail.com'
+    MAIL_PASSWORD = 'ProjectworK'
     ADMINS = ['investflycorporation@gmail.com']

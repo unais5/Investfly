@@ -35,8 +35,11 @@ def login():
             return redirect(url_for('login'))
         login_user(user)
         return redirect(url_for('user_information'))
-    # if formpwd.validate_on_submit():
-    #     user = 
+    if formpwd.validate_on_submit():
+        user = user_login.query.filter_by(email = formpwd.email.data).first()
+        if user:
+            send_password_reset_email(user)
+            render_template('plswait.html')
     return render_template('login.html', title='Sign In', form=form,formpwd=formpwd)
 
 
@@ -70,20 +73,20 @@ def user(username):
     userinfo = user_info.query.filter_by(user_id=user.id).first_or_404()
     return render_template('user.html', user=user, userinfo=userinfo)
 
-@app.route('/reset_password_request', methods=['GET', 'POST'])
-def reset_password_request(email):
-    if current_user.is_authenticated:
-        return redirect(url_for('home_page'))
-    # form = ResetPasswordRequestForm()
-    # if form.validate_on_submit():
-        # user = user_login.query.filter_by(email=form.email.data).first()
-    user = user_login.query.filter_by(email).first()
-    if user:
-        send_password_reset_email(user)
-    flash('Check your email for the instructions to reset your password')
-    return redirect(url_for('login'))
-    # return render_template('plswait.html',title='Reset Password', form=form)
-    return render_template('plswait.html',title='Reset Password')
+# @app.route('/reset_password_request', methods=['GET', 'POST'])
+# def reset_password_request(email):
+#     if current_user.is_authenticated:
+#         return redirect(url_for('home_page'))
+#     # form = ResetPasswordRequestForm()
+#     # if form.validate_on_submit():
+#         # user = user_login.query.filter_by(email=form.email.data).first()
+#     user = user_login.query.filter_by(email).first()
+#     if user:
+#         send_password_reset_email(user)
+#     flash('Check your email for the instructions to reset your password')
+#     return redirect(url_for('login'))
+#     # return render_template('plswait.html',title='Reset Password', form=form)
+#     return render_template('plswait.html',title='Reset Password')
 
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
