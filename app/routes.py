@@ -28,13 +28,16 @@ def login():
     if current_user.is_authenticated:
         return redirect(url_for('home_page'))
     form = LoginForm()
+    formpwd = ResetPasswordRequestForm()
     if form.validate_on_submit():
         user = user_login.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
             return redirect(url_for('login'))
         login_user(user)
         return redirect(url_for('user_information'))
-    return render_template('login.html', title='Sign In', form=form)
+    # if formpwd.validate_on_submit():
+    #     user = 
+    return render_template('login.html', title='Sign In', form=form,formpwd=formpwd)
 
 
 @app.route('/register', methods=['GET', 'POST'])
