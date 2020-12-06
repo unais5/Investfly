@@ -47,8 +47,8 @@
 			<div class="for-pwd-htm">
 				<div class="group">
 					<label for="user" class="label">You will be sent an email with a password reset link</label>
-				</div>
-				<div class="group">
+					<label for="user" class="label">Username or Email</label>
+					<input id="user" type="text" class="input">
 					<a href="{{ url_for('reset_password_request') }}" class="button" >	Reset Password </a>
 				</div>
 				<div class="hr"></div>
