@@ -39,7 +39,7 @@ class ResetPasswordForm(FlaskForm):
 
 class UserInfoForm(FlaskForm):
     fname = StringField('First Name')
-    # fname = StringField('Last Name')
+    # lname = StringField('Last Name')
     phone = StringField('Phone Number', validators=[DataRequired()])
     acc_num = StringField('Account Number', validators=[DataRequired()]) 
     cnic = StringField('CNIC', validators=[DataRequired()])
