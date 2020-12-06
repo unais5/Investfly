@@ -49,7 +49,6 @@
 					<form action="" method="post">
 						{{ formpwd.hidden_tag() }}
 						<label for="user" class="label">You will be sent an email with a password reset link</label>
-						<label for="user" class="label">Email</label>
 						<input id="user" type="text" class="input" placeholder="Email" name="email">
 						{% for error in formpwd.email.errors %}
 						<span style="color: rgb(182, 39, 39);">{{ error }}</span>
