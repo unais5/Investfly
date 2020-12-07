@@ -38,12 +38,22 @@
 				<div class="hr"></div>
 			</div>
 			</form>
-			{% if error %}
+			{% with messages = get_flashed_messages() %}
+				{% if messages %}
+					{% for message in messages %}
+					<div class="alert alert-danger  alerty-dismissal fade show" role="alert">
+						<button type="button" class="close" data-dismiss="alert">&times;</button>
+						{{ message }}
+					</div> 
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
+			<!-- {% if error %}
 			<div class="alert alert-danger  alerty-dismissal fade show" role="alert">
 				<button type="button" class="close" data-dismiss="alert">&times;</button>
 				{{ error }}
 			</div> 
-			{% endif %}
+			{% endif %} -->
 			<div class="for-pwd-htm">
 				<div class="group">
 					<form action="" method="post">
