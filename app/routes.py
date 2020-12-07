@@ -41,6 +41,8 @@ def login():
         if user:
             send_password_reset_email(user)
             render_template('plswait.html')
+            # flash("A link has been sent to your email")
+            # return redirect(url_for('login'))
     return render_template('login.html', title='Sign In', form=form,formpwd=formpwd)
 
 
@@ -56,9 +58,6 @@ def register():
         db.session.commit()
         if user:
             send_user_verification_email(user)
-        # db.session.add(user)
-        # db.session.commit()
-        #after registeration shift to dashboard
         return render_template("user_info.html")
     return render_template('register.html', form = form)
 
