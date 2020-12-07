@@ -34,7 +34,7 @@ def login():
         if user is None or not user.check_password(form.password.data):
             flash("Username or Password incorrect")
             return redirect(url_for('login'))
-        login_user(user)
+        login_user(user, remember=False)
         return render_template("dashboard.html")
     if formpwd.validate_on_submit():
         user = user_login.query.filter_by(email = formpwd.email.data).first()
@@ -65,7 +65,7 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('home_page'))
-
+    
 @app.route('/user/<username>')
 @login_required
 def user(username):

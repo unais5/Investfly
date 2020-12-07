@@ -4,8 +4,15 @@ from flask_login import UserMixin
 from hashlib import md5
 from time import time
 import jwt
-from flask import render_template
-from datetime import datetime
+from flask import render_template, session
+from datetime import datetime, timedelta
+
+@app.before_request
+def before_request():
+    session.permanent = True
+    app.permanent_session_lifetime = timedelta(seconds=10)
+    # flask.session.modified = True
+    # flask.g.user = flask_login.current_user
 
 
 # class User(UserMixin, db.Model):
