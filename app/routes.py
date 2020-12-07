@@ -34,7 +34,7 @@ def login():
         if user is None or not user.check_password(form.password.data):
             return redirect(url_for('login'))
         login_user(user)
-        return redirect(url_for('user_information'))
+        return render_template("dashboard.html")
     if formpwd.validate_on_submit():
         user = user_login.query.filter_by(email = formpwd.email.data).first()
         if user:
@@ -58,7 +58,7 @@ def register():
         # db.session.add(user)
         # db.session.commit()
         #after registeration shift to dashboard
-        return redirect(url_for('home_page'))
+        return render_template("user_info.html")
     return render_template('register.html', form = form)
 
 @app.route('/logout')
