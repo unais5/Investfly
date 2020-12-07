@@ -13,6 +13,10 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
+# login.refresh_view = 'relogin'
+# login.needs_refresh_message = (u"Session timedout, please re-login")
+# login.needs_refresh_message_category = "info"
+
 mail = Mail(app)
 
 from app import routes, models

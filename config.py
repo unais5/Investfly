@@ -1,4 +1,5 @@
 import os
+import datetime
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
@@ -19,3 +20,5 @@ class Config(object):
     MAIL_USERNAME = 'investflycorporation@gmail.com'
     MAIL_PASSWORD = 'ProjectworK'
     ADMINS = ['investflycorporation@gmail.com']
+    #####################
+    # PERMANENT_SESSION_LIFETIME = datetime.timedelta(minutes=60)
