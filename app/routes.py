@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, url_for, request
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, ResetPasswordForm, ResetPasswordRequestForm, UserInfoForm
 from flask_login import current_user, login_user, login_required, logout_user
-from app.models import user_login, user_info
+from app.models import user_login, user_info, wallet
 from werkzeug.urls import url_parse
 from app.email import send_password_reset_email, send_user_verification_email
 
@@ -112,12 +112,14 @@ def user_information():
         return redirect(url_for('home_page'))
     form = UserInfoForm()
     if form.validate_on_submit():
+        user_wallet = wallet(balance=5000)
         curr_user_info = user_info(fname=form.fname.data, 
                                     phone=form.phone.data, 
                                     acc_num=form.acc_num.data, 
                                     cnic=form.cnic.data, 
                                     addr=form.addr.data,
-                                    user_id=current_user.id)
+                                    user_id=current_user.id
+                                    wallet_id=user_wallet.id)
         db.session.add(curr_user_info)
         db.session.commit()
         return redirect(url_for('login'))
