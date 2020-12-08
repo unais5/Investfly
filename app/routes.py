@@ -9,8 +9,8 @@ from app.email import send_password_reset_email, send_user_verification_email
 
 @app.route('/')
 def home_page():
-    return render_template("home_page.html")
-    # return render_template("base2.html")
+    # return render_template("home_page.html")
+    return render_template("base2.html")
 
 @app.route('/verify_user/<token>', methods = ['GET', 'POST'])
 def verify_user(token):
@@ -60,11 +60,7 @@ def register():
         db.session.commit()
         if user:
             send_user_verification_email(user)
-<<<<<<< HEAD
             return render_template("plswait.html")
-=======
-        return render_template("user_info.html")
->>>>>>> unais
     return render_template('register.html', form = form)
 
 @app.route('/logout')
