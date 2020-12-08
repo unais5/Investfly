@@ -56,19 +56,12 @@
 			{% endif %} -->
 			<div class="for-pwd-htm">
 				<div class="group">
-					<form action="" method="post">
-						{{ formpwd.hidden_tag() }}
-						<label for="user" class="label">You will be sent an email with a password reset link</label>
-						<input id="user" type="text" class="input" placeholder="Email" name="email">
-						{% for error in formpwd.email.errors %}
-						<span style="color: rgb(182, 39, 39);">{{ error }}</span>
-						{% endfor %}
-					</div>
-					<div class="group">
-						<input type="submit" class="button" value="Reset Password">
-					</div>
-					<div class="hr"></div>
-					</form>
+					<label for="user" class="label">You will be sent an email with a password reset link</label>
+					<label for="user" class="label">Username or Email</label>
+					<input id="user" type="text" class="input">
+					<a href="{{ url_for('reset_password_request') }}" class="button" >	Reset Password </a>
+				</div>
+				<div class="hr"></div>
 			</div>
 		</div>
 	</div>

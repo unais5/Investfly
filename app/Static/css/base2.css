@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap');
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+body{
+   background-color: rgb(2, 11, 37);
+}
+
+.wrapper{
+  border-top: 2px solid #ba54f5;
+  width: 100%;
+  display: flex;
+  position: fixed; /*relative*/
+}
+
+.wrapper .sidebar{
+  margin-left: 20px;
+  margin-top: 55px;
+  width: 230px;
+  height: 85%;
+  background: #ba54f5;
+  background: -webkit-linear-gradient(0deg, #ba54f5 0%, #e14eca 100%);
+  background: -o-linear-gradient(0deg, #ba54f5 0%, #e14eca 100%);
+  background: -moz-linear-gradient(0deg, #ba54f5 0%, #e14eca 100%);
+  background: linear-gradient(0deg, #ba54f5 0%, #e14eca 100%);
+  padding: 30px 0px;
+  position: fixed;
+  border-radius: 5px;
+  box-shadow: 0px 0px 45px 0px rgba(0, 0, 0, 0.6);
+  display: block;
+  overflow: auto;
+}
+
+.wrapper .sidebar h2{
+  color: #fff;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.wrapper .sidebar ul li{
+  padding: 15px;
+  border-bottom: 1px solid #bdb8d7;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  border-top: 1px solid rgba(255,255,255,0.05);
+}    
+
+.wrapper .sidebar ul li a{
+  margin-left: 25px;
+  color: #cecdd5;
+  display: block;
+}
+
+.wrapper .sidebar ul li a .fas{
+  width: 25px;
+}
+
+.wrapper .sidebar ul li:hover{
+    color: #c221a9;
+    text-decoration: none;
+}
+    
+.wrapper .sidebar ul li:hover a{
+  color: #fff;
+}
+
+.wrapper .header{
+    padding-top: 20px;
+    background: rgb(2, 11, 37);
+    color: white;
+    text-transform: uppercase;
+    text-align: center;
+    margin-left: 20px;
+}
+  
+.wrapper .img{
+    margin-top: 6px;
+    margin-left: 40px;
+}
+  
+.wrapper .user{
+    border-radius: 50%;
+    margin-left: 80% ;
+    margin-top: 6px;
+}
+
+/* .main_content{
+  width: 80%;
+  margin-left: 250px;
+  padding-top: 60px;
+}
+
+.main_content .info{
+  margin-left: 20px;
+  color: #717171;
+  line-height: 25px;
+}
+
+.main_content .info div{
+  margin-bottom: 20px;
+} */
