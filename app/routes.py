@@ -19,7 +19,7 @@ def verify_user(token):
         user.confirmed = True
         db.session.add(user)
         db.session.commit()
-    # return redirect(url_for('home_page'))
+        return redirect(url_for('user_info'))
     return redirect(url_for('user', username=user.username))
 
 
@@ -57,10 +57,7 @@ def register():
         db.session.commit()
         if user:
             send_user_verification_email(user)
-        # db.session.add(user)
-        # db.session.commit()
-        #after registeration shift to dashboard
-        return render_template("user_info.html")
+            return render_template("plswait.html")
     return render_template('register.html', form = form)
 
 @app.route('/logout')
@@ -72,8 +69,9 @@ def logout():
 @login_required
 def user(username):
     user = user_login.query.filter_by(username=username).first_or_404()
-    userinfo = user_info.query.filter_by(user_id=user.id).first_or_404()
-    return render_template('user.html', user=user, userinfo=userinfo)
+    userinfo = user_info.query.filter_by(user_id=user.id).first()
+    if userinfo and user:
+        return render_template('user.html', user=user, userinfo=userinfo)
 
 # @app.route('/reset_password_request', methods=['GET', 'POST'])
 # def reset_password_request(email):
@@ -108,17 +106,17 @@ def reset_password(token):
 @app.route('/user_information', methods=['GET', 'POST'])
 @login_required
 def user_information():
-    if current_user.is_authenticated:
-        return redirect(url_for('home_page'))
     form = UserInfoForm()
     if form.validate_on_submit():
         user_wallet = wallet(balance=5000)
+        db.session.add(user_wallet)
+        db.session.commit()
         curr_user_info = user_info(fname=form.fname.data, 
                                     phone=form.phone.data, 
                                     acc_num=form.acc_num.data, 
                                     cnic=form.cnic.data, 
                                     addr=form.addr.data,
-                                    user_id=current_user.id
+                                    user_id=current_user.id,
                                     wallet_id=user_wallet.id)
         db.session.add(curr_user_info)
         db.session.commit()
