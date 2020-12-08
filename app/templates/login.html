@@ -13,22 +13,12 @@
 <div class="login-wrap">
 	<div class="login-html">
 		<input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
-		<input id="tab-2" type="radio" name="tab" class="for-pwd"><label for="tab-2" class="tab">Forgot Password</label>
+		<input id="tab-2" type="radio"  name="tab" class="for-pwd"><label for="tab-2" class="tab">Forgot Password</label>
 		<div class="login-form">
 			<form action="" method="post" novalidate>
 				{{ form.hidden_tag() }}
 			<div class="sign-in-htm">
 				<div class="group">
-					{% with messages = get_flashed_messages() %}
-					{% if messages %}
-						{% for message in messages %}
-						<div class="alert alert-danger  alerty-dismissal fade show" role="alert">
-							<button type="button" class="close" data-dismiss="alert">&times;</button>
-							{{ message }}
-						</div> 
-						{% endfor %}
-					{% endif %}
-				{% endwith %}
 					<label for="user" class="label">Username</label>
 					<input id="user" type="text" class="input" placeholder="username" name="username">
 					{% for error in form.username.errors %}
@@ -48,18 +38,31 @@
 				<div class="hr"></div>
 			</div>
 			</form>
-			<!-- {% if error %}
+			{% if error %}
 			<div class="alert alert-danger  alerty-dismissal fade show" role="alert">
 				<button type="button" class="close" data-dismiss="alert">&times;</button>
 				{{ error }}
 			</div> 
-			{% endif %} -->
+			{% endif %}
 			<div class="for-pwd-htm">
 				<div class="group">
-					<label for="user" class="label">You will be sent an email with a password reset link</label>
-					<label for="user" class="label">Username or Email</label>
-					<input id="user" type="text" class="input">
-					<a href="{{ url_for('reset_password_request') }}" class="button" >	Reset Password </a>
+					<form action="" method="post">
+						{{ formpwd.hidden_tag() }}
+						<label for="user" class="label">Enter email</label>
+						<input id="user" type="text" class="input" placeholder="email" name="email">
+						{% for error in formpwd.email.errors %}
+						<span style="color: rgb(182, 39, 39);">{{ error }}</span>
+						{% endfor %}
+						<div class="group">
+							<input type="submit" class="button" value="Request New Password" >
+						</div>
+					</form>
+					{% if error %}
+					<div class="alert alert-danger  alerty-dismissal fade show" role="alert">
+						<button type="button" class="close" data-dismiss="alert">&times;</button>
+						{{ error }}
+					</div> 
+					{% endif %}
 				</div>
 				<div class="hr"></div>
 			</div>

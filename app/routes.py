@@ -16,11 +16,11 @@ def home_page():
 def verify_user(token):
     tid = user_login.query.get(user_login.verify_user_token(token).id)
     user = user_login.query.filter_by(id=tid.id).first_or_404()
-    if not user:
+    if user:
         user.confirmed = True
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for('user_info'))
+        return redirect(url_for('user_information'))
     return redirect(url_for('user', username=user.username))
 
 
@@ -44,7 +44,6 @@ def login():
             send_password_reset_email(user)
             render_template('plswait.html')
             # flash("A link has been sent to your email")
-            # return redirect(url_for('login'))
     return render_template('login.html', title='Sign In', form=form,formpwd=formpwd)
 
 
