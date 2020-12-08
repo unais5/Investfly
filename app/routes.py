@@ -117,7 +117,7 @@ def user_information():
                                     acc_num=form.acc_num.data, 
                                     cnic=form.cnic.data, 
                                     addr=form.addr.data,
-                                    user_id=current_user.id )
+                                    user_id=current_user.id)
         db.session.add(curr_user_info)
         db.session.commit()
         return redirect(url_for('login'))

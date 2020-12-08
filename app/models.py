@@ -11,11 +11,13 @@ from datetime import datetime, timedelta
 def before_request():
     session.permanent = True
     app.permanent_session_lifetime = timedelta(seconds=10)
-    # flask.session.modified = True
-    # flask.g.user = flask_login.current_user
+
+@login.user_loader
+def load_user(id):
+    return user_login.query.get(int(id))
 
 
-# class User(UserMixin, db.Model):
+################## main schema tables 
 class user_login(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     username = db.Column(db.String(64), index=True, unique=True, nullable=False)
@@ -64,20 +66,64 @@ class user_login(UserMixin, db.Model):
             return
         return user_login.query.get(id)
 
-@login.user_loader
-def load_user(id):
-    return user_login.query.get(int(id))
 
 class user_info(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user_login.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user_login.id'),unique=True, nullable=False)
     fname= db.Column(db.String(20))
     # lname= db.Column(db.String(20))
-    phone= db.Column(db.Integer, nullable=False)
-    acc_num= db.Column(db.Integer, nullable=False)
-    cnic= db.Column(db.Integer, nullable=False)
+    phone= db.Column(db.Integer, unique=True, nullable=False)
+    acc_num= db.Column(db.Integer, unique=True, nullable=False)
+    cnic= db.Column(db.Integer, unique=True, nullable=False)
     addr= db.Column(db.String(50))
+    wallet_id = db.Column(db.Integer, db.ForeignKey('wallet.id'),unique=True, nullable=False)
     
 
     def __repr__(self):
-        return '<Post {}>'.format(self.fname)
+        return '<User {}>'.format(self.fname)
+
+class wallet(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    balance = db.Column(db.Float)
+
+    def __repr__(self):
+        return '<Wallet # {}>'.format(self.id)
+
+class stock(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    stock_name = db.Column(db.String, nullable=Flase)
+    quantity = db.Column(db.Integer, nullable=False)
+    curr_price = db.Column(db.Float, nullable=False)
+    transaction_date = db.Column(db.DateTime, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user_login.id'), unique=True, nullable=False)
+
+    def __repr__(self):
+        return '<Stock # {}>'.format(self.id)
+
+class transaction(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    transaction_date = db.Column(db.DateTime, nullable=False)
+    buyer_id = db.Column(db.Integer, nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+    seller_id = db.Column(db.Integer, nullable=False)
+    selling_price = db.Column(db.Float, nullable=False)
+    stock_id = db.Column(db.Integer, db.ForeignKey('stock.id'), unique=True, nullable=False)
+    
+    def __repr__(self):
+        return '<Transaction # {}>'.format(self.id)
+
+class available_stock(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    stock_id = db.Column(db.Integer, db.ForeignKey('stock.id'), unique=True, nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+    curr_price = db.Column(db.Float, nullable=False)
+
+    def __repr__(self):
+        return '<Available Stock # {}>'.format(self.id)
+
+#######################
+
+
+
+
+

@@ -21,4 +21,3 @@ class Config(object):
     MAIL_PASSWORD = 'ProjectworK'
     ADMINS = ['investflycorporation@gmail.com']
     #####################
-    # PERMANENT_SESSION_LIFETIME = datetime.timedelta(minutes=60)
