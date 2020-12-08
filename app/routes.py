@@ -60,11 +60,7 @@ def register():
         db.session.commit()
         if user:
             send_user_verification_email(user)
-<<<<<<< HEAD
             return render_template("plswait.html")
-=======
-        return render_template("user_info.html")
->>>>>>> unais
     return render_template('register.html', form = form)
 
 @app.route('/logout')
@@ -80,20 +76,20 @@ def user(username):
     if userinfo and user:
         return render_template('user.html', user=user, userinfo=userinfo)
 
-# @app.route('/reset_password_request', methods=['GET', 'POST'])
-# def reset_password_request(email):
-#     if current_user.is_authenticated:
-#         return redirect(url_for('home_page'))
-#     # form = ResetPasswordRequestForm()
-#     # if form.validate_on_submit():
-#         # user = user_login.query.filter_by(email=form.email.data).first()
-#     user = user_login.query.filter_by(email).first()
-#     if user:
-#         send_password_reset_email(user)
-#     flash('Check your email for the instructions to reset your password')
-#     return redirect(url_for('login'))
-#     # return render_template('plswait.html',title='Reset Password', form=form)
-#     return render_template('plswait.html',title='Reset Password')
+@app.route('/reset_password_request', methods=['GET', 'POST'])
+def reset_password_request(email):
+    if current_user.is_authenticated:
+        return redirect(url_for('home_page'))
+    # form = ResetPasswordRequestForm()
+    # if form.validate_on_submit():
+        # user = user_login.query.filter_by(email=form.email.data).first()
+    user = user_login.query.filter_by(email).first()
+    if user:
+        send_password_reset_email(user)
+    flash('Check your email for the instructions to reset your password')
+    return redirect(url_for('login'))
+    # return render_template('plswait.html',title='Reset Password', form=form)
+    return render_template('plswait.html',title='Reset Password')
 
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
