@@ -91,7 +91,7 @@ class wallet(db.Model):
 
 class stock(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    stock_name = db.Column(db.String, nullable=Flase)
+    stock_name = db.Column(db.String, nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     curr_price = db.Column(db.Float, nullable=False)
     transaction_date = db.Column(db.DateTime, nullable=False)
@@ -112,17 +112,23 @@ class transaction(db.Model):
     def __repr__(self):
         return '<Transaction # {}>'.format(self.id)
 
-class available_stock(db.Model):
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
-    stock_id = db.Column(db.Integer, db.ForeignKey('stock.id'), unique=True, nullable=False)
-    quantity = db.Column(db.Integer, nullable=False)
-    curr_price = db.Column(db.Float, nullable=False)
+# class available_stock(db.Model):
+#     id = db.Column(db.Integer, primary_key=True, nullable=False)
+#     stock_id = db.Column(db.Integer, db.ForeignKey('stock.id'), unique=True, nullable=False)
+#     quantity = db.Column(db.Integer, nullable=False)
+#     curr_price = db.Column(db.Float, nullable=False)
 
-    def __repr__(self):
-        return '<Available Stock # {}>'.format(self.id)
+#     def __repr__(self):
+#         return '<Available Stock # {}>'.format(self.id)
 
 #######################
 
+####################### relationship  intermediate models
+available_stocks = db.Table('available_stocks',
+    db.Column('stock_id', db.Integer, db.ForeignKey('stock.id'), primary_key=True),
+    db.Column('seller_id', db.Integer, db.ForeignKey('user_info.id'), primary_key=True),
+    db.Column('quantity', db.Integer, nullable=False),
+    db.Column('curr_price', db.Float, nullable=False) )
 
 
 
