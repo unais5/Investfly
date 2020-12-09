@@ -44,7 +44,6 @@ def login():
             send_password_reset_email(user)
             render_template('plswait.html')
             # flash("A link has been sent to your email")
-            # return redirect(url_for('login'))
     return render_template('login.html', title='Sign In', form=form,formpwd=formpwd)
 
 
