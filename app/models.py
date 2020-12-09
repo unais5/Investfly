@@ -10,11 +10,7 @@ from datetime import datetime, timedelta
 @app.before_request
 def before_request():
     session.permanent = True
-<<<<<<< HEAD
     app.permanent_session_lifetime = timedelta(seconds=50)
-=======
-    app.permanent_session_lifetime = timedelta(minutes=15)
->>>>>>> 4a94d9a5e601210efe3159f4575b05b2063bd693
 
 @login.user_loader
 def load_user(id):

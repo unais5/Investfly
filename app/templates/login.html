@@ -19,6 +19,16 @@
 				{{ form.hidden_tag() }}
 			<div class="sign-in-htm">
 				<div class="group">
+					{% with messages = get_flashed_messages() %}
+					{% if messages %}
+						{% for message in messages %}
+						<div class="alert alert-danger  alerty-dismissal fade show" role="alert">
+							<button type="button" class="close" data-dismiss="alert">&times;</button>
+							{{ message }}
+						</div> 
+						{% endfor %}
+					{% endif %}
+				{% endwith %}
 					<label for="user" class="label">Username</label>
 					<input id="user" type="text" class="input" placeholder="username" name="username">
 					{% for error in form.username.errors %}
