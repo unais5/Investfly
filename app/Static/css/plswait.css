@@ -1,0 +1,111 @@
+html {
+    font-family: sans-serif;
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(34, 42, 66, 0);
+  }
+  
+  body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      font-size: 0.875rem;
+      font-weight: 400;
+      line-height: 1.5;
+      color: #525f7f;
+      text-align: left;
+      background-color: #1e1e2f;
+      text-align: center;
+  }
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.col-md-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.card {
+    background: #27293d;
+    border: 0;
+    position: relative;
+    width: 100%;
+    margin-bottom: 30px;
+    border-radius: 0.2857rem;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    box-shadow: 0 1px 20px 0px rgba(0, 0, 0, 0.1);
+}
+
+.card .card-body {
+    padding: 15px;
+}
+
+.card-body {
+    flex: 1 1 auto;
+}
+
+.card-category{
+    color: rgba(255, 255, 255, 0.8);
+    font-size: large;
+    text-align: center;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.card-title{
+    color: rgba(255, 255, 255, 0.8);
+    font-size: medium;
+    text-align: center;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.btn {
+    display: inline-block;
+    font-weight: 600;
+    color: #525f7f;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: 11px 40px;
+    font-size: 0.875rem;
+    line-height: 1.35em;
+    border-radius: 0.25rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.btn-primary {
+    color: #ffffff;
+    background-color: #e14eca;
+    border-color: #e14eca;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.btn-primary {
+    background: #e14eca;
+    background-image: -webkit-linear-gradient(to bottom left, #e14eca, #ba54f5, #e14eca);
+    background-image: -o-linear-gradient(to bottom left, #e14eca, #ba54f5, #e14eca);
+    background-image: -moz-linear-gradient(to bottom left, #e14eca, #ba54f5, #e14eca);
+    background-image: linear-gradient(to bottom left, #e14eca, #ba54f5, #e14eca);
+    background-size: 110% 110%;
+    background-position: top right;
+    background-color: #e14eca;
+    transition: all 0.15s ease;
+    box-shadow: none;
+    color: #ffffff;
+}
+
+.btn-round {
+    border-width: 1px;
+    border-radius: 30px;
+}
