@@ -1,10 +1,36 @@
-<!Doctype HTML>
-<html>
-    <head>
-        
-    </head>
-</html>
+{% extends "base2.html" %}
 
-<body>
-    <p>Hello world</p>
-</body>
+{% block title %}Dashboard{% endblock %}
+
+{% block head %}
+	<link rel= "stylesheet" type= "text/css" href= "{{url_for('static',filename='css/dashboard.css')}}">
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="column">
+      <div class="card">
+        <div class="container">
+        <h1><b>$500</b></h1>
+        <h3><b>WALLET</b></h3>
+      </div>
+     </div>
+    </div>
+     <div class="column">
+      <div class="card">
+        <div class="container">
+        <h1><b>$5000</b></h1>
+        <h3><b>TOTAL MONEY</b></h3>
+      </div>
+     </div>
+    </div>
+     <div class="column">
+      <div class="card">
+        <div class="container">
+        <h1><b>500</b></h1>
+        <h3><b>TOTAL SHARES</b></h3>
+      </div>
+     </div>
+    </div>
+  </div>
+{% endblock %}
