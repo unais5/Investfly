@@ -45,3 +45,8 @@ class UserInfoForm(FlaskForm):
     cnic = StringField('CNIC', validators=[DataRequired()])
     addr = TextField('Phone Number', validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+class EditProfileForm(FlaskForm):
+    phone = StringField('Phone Number')
+    addr = TextField('Phone Number')
+    submit = SubmitField('Submit')

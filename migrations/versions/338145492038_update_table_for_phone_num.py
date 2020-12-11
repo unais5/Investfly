@@ -1,8 +1,8 @@
-"""full schema
+"""update table for phone num
 
-Revision ID: f94fdf92b522
+Revision ID: 338145492038
 Revises: 
-Create Date: 2020-12-08 14:14:45.417173
+Create Date: 2020-12-11 17:10:04.992944
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'f94fdf92b522'
+revision = '338145492038'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -49,7 +49,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('fname', sa.String(length=20), nullable=True),
-    sa.Column('phone', sa.Integer(), nullable=False),
+    sa.Column('phone', sa.String(), nullable=False),
     sa.Column('acc_num', sa.Integer(), nullable=False),
     sa.Column('cnic', sa.Integer(), nullable=False),
     sa.Column('addr', sa.String(length=50), nullable=True),

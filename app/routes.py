@@ -1,18 +1,40 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, ResetPasswordForm, ResetPasswordRequestForm, UserInfoForm
+from app.forms import LoginForm, RegistrationForm, ResetPasswordForm, ResetPasswordRequestForm, UserInfoForm, EditProfileForm 
 from flask_login import current_user, login_user, login_required, logout_user
 from app.models import user_login, user_info, wallet
 from werkzeug.urls import url_parse
 from app.email import send_password_reset_email, send_user_verification_email
 
 
+
 @app.route('/')
 def home_page():
-    # return render_template("home_page.html")
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard'))
+    return render_template("home_page.html")
     # return render_template("base2.html")
     # return render_template("profile.html")
     return render_template("dashboard.html")
+
+@app.route('/profile', methods = ['GET', 'POST'])
+@login_required
+def profile():
+    user = user_info.query.filter_by(user_id=current_user.id).first_or_404()
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        if user_info.valid_phone_num(form.phone.data):
+            user.phone = form.phone.data
+            user.addr = form.addr.data
+            db.session.commit()
+    return render_template('profile.html',user=user,form=form)
+
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    user = user_login.query.filter_by(id=current_user.id).first_or_404()
+    return render_template('dashboard.html')
+
 
 @app.route('/verify_user/<token>', methods = ['GET', 'POST'])
 def verify_user(token):
@@ -29,7 +51,8 @@ def verify_user(token):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('home_page'))
+        # return redirect(url_for('home_page'))
+        return redirect(url_for('dashboard'))
     form = LoginForm()
     formpwd = ResetPasswordRequestForm()
     if form.validate_on_submit():

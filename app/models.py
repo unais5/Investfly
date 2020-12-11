@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 @app.before_request
 def before_request():
     session.permanent = True
-    app.permanent_session_lifetime = timedelta(seconds=50)
+    app.permanent_session_lifetime = timedelta(seconds=600)
 
 @login.user_loader
 def load_user(id):
@@ -72,7 +72,8 @@ class user_info(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user_login.id'),unique=True, nullable=False)
     fname= db.Column(db.String(20))
     # lname= db.Column(db.String(20))
-    phone= db.Column(db.Integer, unique=True, nullable=False)
+    # phone= db.Column(db.Integer, unique=True, nullable=False)
+    phone= db.Column(db.String, unique=True, nullable=False)
     acc_num= db.Column(db.Integer, unique=True, nullable=False)
     cnic= db.Column(db.Integer, unique=True, nullable=False)
     addr= db.Column(db.String(50))
@@ -81,6 +82,10 @@ class user_info(db.Model):
 
     def __repr__(self):
         return '<User {}>'.format(self.fname)
+    
+    @staticmethod
+    def valid_phone_num(phone):
+        return phone.isdigit()
 
 class wallet(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
