@@ -7,12 +7,26 @@ from werkzeug.urls import url_parse
 from app.email import send_password_reset_email, send_user_verification_email
 
 
+
+@app.route('/profile')
+@login_required
+def profile():
+    return render_template('profile.html')
+
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    return render_template('dashboard.html')
+
 @app.route('/')
 def home_page():
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard'))
     return render_template("home_page.html")
     # return render_template("base2.html")
     # return render_template("profile.html")
     # return render_template("dashboard.html")
+
 
 @app.route('/verify_user/<token>', methods = ['GET', 'POST'])
 def verify_user(token):
@@ -29,7 +43,8 @@ def verify_user(token):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('home_page'))
+        # return redirect(url_for('home_page'))
+        return redirect(url_for('dashboard'))
     form = LoginForm()
     formpwd = ResetPasswordRequestForm()
     if form.validate_on_submit():

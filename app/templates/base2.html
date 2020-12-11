@@ -17,12 +17,12 @@
     <div class="sidebar">
         <h2>Sidebar</h2>
         <ul>
-            <li><a href="#"><i class="fas fa-home"></i>Home</a></li>
-            <li><a href="#"><i class="fas fa-user"></i>Profile</a></li>
+            <li><a href="{{ url_for('home_page' )}}"><i class="fas fa-home"></i>Home</a></li>
+            <li><a href="{{ url_for('profile') }}"><i class="fas fa-user"></i>Profile</a></li>
             <li><a href="#"><i class="fas fa-chart-line"></i>Stocks</a></li>
             <li><a href="#"><i class="fas fa-project-diagram"></i>portfolio</a></li>
             <li><a href="#"><i class="fas fa-comments"></i>Contact</a></li>
-            <li><a href="#"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
+            <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
         </ul> 
     </div>
 </div>
