@@ -14,9 +14,10 @@ def profile():
     user = user_info.query.filter_by(user_id=current_user.id).first_or_404()
     form = EditProfileForm()
     if form.validate_on_submit():
-        user.phone = form.phone.data
-        user.addr = form.addr.data
-        db.session.commit()
+        if user_info.valid_phone_num(form.phone.data):
+            user.phone = form.phone.data
+            user.addr = form.addr.data
+            db.session.commit()
     return render_template('profile.html',user=user,form=form)
 
 @app.route('/dashboard')
