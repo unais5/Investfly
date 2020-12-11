@@ -32,8 +32,9 @@ def profile():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    user = user_login.query.filter_by(id=current_user.id).first_or_404()
-    return render_template('dashboard.html')
+    user = user_info.query.filter_by(id=current_user.id).first_or_404()
+    u_wallet = wallet.query.filter_by(id=user.wallet_id).first_or_404()
+    return render_template('dashboard.html', wallet=u_wallet)
 
 
 @app.route('/verify_user/<token>', methods = ['GET', 'POST'])
