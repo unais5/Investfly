@@ -95,7 +95,7 @@ border: 2px solid white;
   box-sizing: border-box;
   font-size: 16px;
   background-color: #27293d;
-  background-image: url('searchicon.png');
+  background-image:url(img/searchicon.png); 
   background-position: 10px 10px; 
   background-repeat: no-repeat;
   padding: 12px 20px 12px 40px;
@@ -108,7 +108,8 @@ border: 2px solid white;
   input,select,textarea{
     text-align: center;
     background-color: #27293d;
-    color: white;
+    font-size: medium;
+    color: grey;
   }
 
   .search-box{
