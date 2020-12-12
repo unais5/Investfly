@@ -50,3 +50,68 @@ body{
      margin-left: 280px;
      margin-top: 10px;
  }
+
+ .shares {
+  overflow: hidden;
+  background-color: #27293d;
+  width: 400px;
+  padding-bottom: 30px;
+  padding-top: 15px;
+  border-radius: 10px;
+}  
+
+label{
+  margin-left: 20px;
+  color:rgba(255, 255, 255, 0.8);
+}
+
+.label1{
+  margin-right: 15px;
+}
+.label2{
+  margin-right: 25px;
+}
+.label3{
+  margin-right: 42px;
+}
+
+.shares .data{
+padding-top: 10px;
+margin-bottom: 10px;
+}
+
+.items{
+border-radius: 10px;
+padding: 20px;
+width: 200px;
+border: 2px solid white;
+}
+
+.example input[type=text] {
+  width: 200px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  margin-left: 32%;
+  box-sizing: border-box;
+  font-size: 16px;
+  background-color: #27293d;
+  background-image: url('searchicon.png');
+  background-position: 10px 10px; 
+  background-repeat: no-repeat;
+  padding: 12px 20px 12px 40px;
+  border-top: transparent;
+  border-left: transparent;
+  border-right: transparent;
+  border-bottom: 2px solid #e14eca;
+  }
+
+  input,select,textarea{
+    text-align: center;
+    background-color: #27293d;
+    color: white;
+  }
+
+  .search-box{
+    margin-left:850px;
+    margin-top: 30px;
+  }
