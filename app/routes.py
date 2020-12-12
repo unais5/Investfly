@@ -33,7 +33,7 @@ def profile():
 @login_required
 def dashboard():
     user = user_info.query.filter_by(id=current_user.id).first_or_404()
-    u_wallet = wallet.query.filter_by(id=user.wallet_id).first_or_404()
+    u_wallet = wallet.query.filter_by(user_id=current_user.id).first_or_404()
     return render_template('dashboard.html', wallet=u_wallet)
 
 
@@ -136,7 +136,7 @@ def reset_password(token):
 def user_information():
     form = UserInfoForm()
     if form.validate_on_submit():
-        user_wallet = wallet(balance=5000)
+        user_wallet = wallet(balance=5000, user_id=current_user.id)
         db.session.add(user_wallet)
         db.session.commit()
         curr_user_info = user_info(fname=form.fname.data, 
@@ -144,8 +144,7 @@ def user_information():
                                     acc_num=form.acc_num.data, 
                                     cnic=form.cnic.data, 
                                     addr=form.addr.data,
-                                    user_id=current_user.id,
-                                    wallet_id=user_wallet.id)
+                                    user_id=current_user.id)
         db.session.add(curr_user_info)
         db.session.commit()
         return redirect(url_for('login'))

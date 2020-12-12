@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 @app.before_request
 def before_request():
     session.permanent = True
-    app.permanent_session_lifetime = timedelta(seconds=10)
+    app.permanent_session_lifetime = timedelta(seconds=600)
 
 @login.user_loader
 def load_user(id):
@@ -69,7 +69,7 @@ class user_login(UserMixin, db.Model):
 
 class user_info(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user_login.id'),unique=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user_login.id',onupdate='CASCADE',ondelete='CASCADE'),unique=True, nullable=False)
     fname= db.Column(db.String(20))
     # lname= db.Column(db.String(20))
     # phone= db.Column(db.Integer, unique=True, nullable=False)
@@ -77,7 +77,7 @@ class user_info(db.Model):
     acc_num= db.Column(db.Integer, unique=True, nullable=False)
     cnic= db.Column(db.Integer, unique=True, nullable=False)
     addr= db.Column(db.String(50))
-    wallet_id = db.Column(db.Integer, db.ForeignKey('wallet.id'),unique=True, nullable=False)
+    # wallet_id = db.Column(db.Integer, db.ForeignKey('wallet.id',onupdate='CASCADE',ondelete='CASCADE'),unique=True, nullable=False)
     
 
     def __repr__(self):
@@ -89,6 +89,7 @@ class user_info(db.Model):
 
 class wallet(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user_login.id',onupdate='CASCADE',ondelete='CASCADE'),unique=True, nullable=False)
     balance = db.Column(db.Float)
 
     def __repr__(self):
@@ -100,7 +101,7 @@ class stock(db.Model):
     quantity = db.Column(db.Integer, nullable=False)
     curr_price = db.Column(db.Float, nullable=False)
     transaction_date = db.Column(db.DateTime, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user_login.id'), unique=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user_login.id',onupdate='CASCADE',ondelete='CASCADE'), unique=True, nullable=False)
 
     def __repr__(self):
         return '<Stock # {}>'.format(self.id)
@@ -112,7 +113,7 @@ class transaction(db.Model):
     quantity = db.Column(db.Integer, nullable=False)
     seller_id = db.Column(db.Integer, nullable=False)
     selling_price = db.Column(db.Float, nullable=False)
-    stock_id = db.Column(db.Integer, db.ForeignKey('stock.id'), unique=True, nullable=False)
+    stock_id = db.Column(db.Integer, db.ForeignKey('stock.id',onupdate='CASCADE',ondelete='CASCADE'), unique=True, nullable=False)
     
     def __repr__(self):
         return '<Transaction # {}>'.format(self.id)
@@ -130,8 +131,8 @@ class transaction(db.Model):
 
 ####################### relationship  intermediate models
 available_stocks = db.Table('available_stocks',
-    db.Column('stock_id', db.Integer, db.ForeignKey('stock.id'), primary_key=True),
-    db.Column('seller_id', db.Integer, db.ForeignKey('user_info.id'), primary_key=True),
+    db.Column('stock_id', db.Integer, db.ForeignKey('stock.id',onupdate='CASCADE',ondelete='CASCADE'), primary_key=True),
+    db.Column('seller_id', db.Integer, db.ForeignKey('user_info.id',onupdate='CASCADE',ondelete='CASCADE'), primary_key=True),
     db.Column('quantity', db.Integer, nullable=False),
     db.Column('curr_price', db.Float, nullable=False) )
 
