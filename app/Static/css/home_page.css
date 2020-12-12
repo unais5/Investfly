@@ -48,7 +48,6 @@ body {
     padding: 50px;
     text-align: center;
     background-color:black;
-    color: white;
   }
   .about-section p{
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -66,7 +65,7 @@ body {
   }
 
   .container h2 , p{
-    color: grey;
+    color: white;
   }
 
   .container::after, .row::after {
@@ -76,7 +75,7 @@ body {
   }
   
   .title {
-    color: #525f7f;
+    color: grey;
   }
 
   .background{
@@ -86,10 +85,4 @@ body {
 
   .about-section img{
     height: 300px;
-  }
-  @media screen and (max-width: 650px) {
-    .column {
-      width: 100%;
-      display: block;
-    }
   }
