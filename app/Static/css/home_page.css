@@ -15,6 +15,7 @@
 }
 
 .carousel-caption{
+    color: rgba(255, 255, 255, 0.8);
     bottom:250px;
 }
 
@@ -52,12 +53,22 @@ body {
   .about-section p{
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       font-size: large;
+      color: rgba(255, 255, 255, 0.8);
+  }
+
+  .about-section h1{
+    color: rgba(255, 255, 255, 0.8);
   }
 
   .container {
     padding: 0 16px;
+    background-color: #1e1e2f;
   }
-  
+
+  .container h2 , p{
+    color: grey;
+  }
+
   .container::after, .row::after {
     content: "";
     clear: both;
@@ -65,7 +76,7 @@ body {
   }
   
   .title {
-    color: grey;
+    color: #525f7f;
   }
 
   .background{
