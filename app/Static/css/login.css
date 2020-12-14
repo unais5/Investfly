@@ -99,6 +99,7 @@ a{color:inherit;text-decoration:none}
 	font-size:12px;
 }
 .login-form .group .button{
+	margin-top: 20px;
 	background: #e14eca;
     background-image: -webkit-linear-gradient(to bottom left, #e14eca, #ba54f5, #e14eca);
     background-image: -o-linear-gradient(to bottom left, #e14eca, #ba54f5, #e14eca);
