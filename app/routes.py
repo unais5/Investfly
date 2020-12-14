@@ -68,8 +68,7 @@ def login():
         user = user_login.query.filter_by(email = formpwd.email.data).first()
         if user:
             send_password_reset_email(user)
-            render_template('plswait.html')
-            # flash("A link has been sent to your email")
+            return render_template('plswait.html')
     return render_template('login.html', title='Sign In', form=form,formpwd=formpwd)
 
 
