@@ -52,5 +52,5 @@ class EditProfileForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class SearchForm(FlaskForm):
-    search = StringField('Search')
+    search = StringField('Search..')
     submit = SubmitField('Search')
