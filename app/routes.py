@@ -13,9 +13,6 @@ def home_page():
     if current_user.is_authenticated:
         return redirect(url_for('dashboard'))
     return render_template("home_page.html")
-    # return render_template("base2.html")
-    # return render_template("profile.html")
-    # return render_template("dashboard.html")
 
 @app.route('/profile', methods = ['GET', 'POST'])
 @login_required
