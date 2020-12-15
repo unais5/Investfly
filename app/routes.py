@@ -10,9 +10,9 @@ from app.email import send_password_reset_email, send_user_verification_email
 
 @app.route('/')
 def home_page():
-    if current_user.is_authenticated:
-        return redirect(url_for('dashboard'))
-    return render_template("home_page.html")
+    # if current_user.is_authenticated:
+    #     return redirect(url_for('dashboard'))
+    # return render_template("home_page.html")
     # return render_template("base2.html")
     # return render_template("profile.html")
     return render_template("dashboard.html")
@@ -34,7 +34,15 @@ def profile():
 def dashboard():
     user = user_info.query.filter_by(id=current_user.id).first_or_404()
     u_wallet = wallet.query.filter_by(user_id=current_user.id).first_or_404()
-    return render_template('dashboard.html', wallet=u_wallet)
+    headings = ['ID', 'Name', 'Phone #', 'CNIC']
+
+    everyone = user_info.query.all()
+    data = []
+    for i in range(len(everyone)):
+        data.append( everyone[i].get_list() )
+    # return render_template('dashboard.html', wallet=u_wallet)
+    return render_template("table.html", data=data, headings=headings)
+    # return render_template('dashboard.html', wallet=u_wallet)
 
 
 @app.route('/verify_user/<token>', methods = ['GET', 'POST'])

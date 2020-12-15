@@ -78,7 +78,10 @@ class user_info(db.Model):
     cnic= db.Column(db.Integer, unique=True, nullable=False)
     addr= db.Column(db.String(50))
     # wallet_id = db.Column(db.Integer, db.ForeignKey('wallet.id',onupdate='CASCADE',ondelete='CASCADE'),unique=True, nullable=False)
-    
+
+    def get_list(self):
+        return [self.id, self.fname, self.phone, self.cnic]
+
 
     def __repr__(self):
         return '<User {}>'.format(self.fname)
