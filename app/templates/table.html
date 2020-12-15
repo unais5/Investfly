@@ -1,14 +1,7 @@
-<table class="table">
-    <tr class="tab_head">
-        {% for header in headings %}
-        <th>{{ header }}</th>
-        {% endfor %}
-    </tr>
-    {% for row in data %}
-    <tr>
-        {% for cell in row %}
-        <td class="tab_body">{{ cell }}</td>
-        {% endfor %}
-    </tr>
-    {% endfor %}
- </table>
+<!DOCTYPE html>
+<html>
+    <head><link rel="stylesheet" href="{{url_for('static',filename='css/table.css')}}"></head>
+    <body>
+
+    </body>
+ </html>

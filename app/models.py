@@ -82,7 +82,6 @@ class user_info(db.Model):
     def get_list(self):
         return [self.id, self.fname, self.phone, self.cnic]
 
-
     def __repr__(self):
         return '<User {}>'.format(self.fname)
     

@@ -52,4 +52,20 @@
       </div>
     </div>
   </div>
+  <div class=row1>
+  <table class="table">
+    <tr class="tab_head">
+        {% for header in headings %}
+        <th class="tab_b">{{ header }}</th>
+        {% endfor %}
+    </tr>
+    {% for row in data %}
+    <tr>
+        {% for cell in row %}
+        <td class="tab_body">{{ cell }}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+ </table>
+  </div>
 {% endblock %}

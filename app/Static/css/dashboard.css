@@ -116,3 +116,31 @@ border: 2px solid white;
     margin-left:850px;
     margin-top: 30px;
   }
+
+  .table{
+  overflow: hidden;
+  background-color: #27293d;
+  width: 540px;
+  padding-bottom: 30px;
+  padding-top: 15px;
+  border-radius: 10px;
+  height: 370px;
+  }
+
+  .row1{
+      margin-left: 280px;
+      margin-top: -370px;
+  }
+
+  .tab_body{
+    color: white;
+    padding: 20px;
+  }
+
+  .tab_head{
+    color: white;
+  }
+
+  .tab_b{
+    padding: 5px;
+  }

@@ -63,7 +63,7 @@ a{color:inherit;text-decoration:none}
 .login-html .sign-in:checked + .tab,
 .login-html .for-pwd:checked + .tab{
 	color:#fff;
-	border-color:#1161ee;
+	border-color: #e14eca;
 }
 .login-form{
 	min-height:345px;
