@@ -1,12 +1,12 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, ResetPasswordForm, ResetPasswordRequestForm, UserInfoForm, EditProfileForm 
+from app.forms import LoginForm, RegistrationForm, ResetPasswordForm, ResetPasswordRequestForm, UserInfoForm, EditProfileForm , SearchForm
 from flask_login import current_user, login_user, login_required, logout_user
-from app.models import user_login, user_info, wallet
+from app.models import user_login, user_info, wallet, stock
 from werkzeug.urls import url_parse
 from app.email import send_password_reset_email, send_user_verification_email
 
-
+import yfinance as yf
 
 @app.route('/')
 def home_page():
@@ -26,20 +26,28 @@ def profile():
             db.session.commit()
     return render_template('profile.html',user=user,form=form)
 
-@app.route('/dashboard')
+@app.route('/dashboard', methods = ['GET', 'POST'])
 @login_required
 def dashboard():
+    search_s = SearchForm()
+    search_results = ['', '']
     user = user_info.query.filter_by(id=current_user.id).first_or_404()
     u_wallet = wallet.query.filter_by(user_id=current_user.id).first_or_404()
-    headings = ['ID', 'Name', 'Phone #', 'CNIC']
-
-    everyone = user_info.query.all()
+    
+    headings = ['ID', 'Name', 'Previous Closing', 'Transaction Date']
+    user_stocks = stock.query.filter_by(user_id=current_user.id).all()
     data = []
-    for i in range(len(everyone)):
-        data.append( everyone[i].get_list() )
+    for i in range(len(user_stocks)):
+        user_stocks[i].update_price()
+        db.session.commit()
+        data.append(user_stocks[i].get_list())
     # return render_template('dashboard.html', wallet=u_wallet)
     # return render_template("table.html", data=data, headings=headings)
-    return render_template('dashboard.html', wallet=u_wallet ,data=data , headings=headings)
+    if search_s.validate_on_submit():
+        ticker = yf.Ticker(search_s.search.data)
+        ticker_info = ticker.info
+        search_results = [search_s.search.data, ticker_info['previousClose'], ticker_info['volume']]
+    return render_template('dashboard.html', wallet=u_wallet ,data=data , headings=headings, results=search_results, searches=search_s)
 
 
 @app.route('/verify_user/<token>', methods = ['GET', 'POST'])

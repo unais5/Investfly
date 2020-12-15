@@ -7,6 +7,8 @@ import jwt
 from flask import render_template, session
 from datetime import datetime, timedelta
 
+import yfinance as yf
+
 @app.before_request
 def before_request():
     session.permanent = True
@@ -102,11 +104,20 @@ class stock(db.Model):
     stock_name = db.Column(db.String, nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     curr_price = db.Column(db.Float, nullable=False)
-    transaction_date = db.Column(db.DateTime, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user_login.id',onupdate='CASCADE',ondelete='CASCADE'), unique=True, nullable=False)
+    transaction_date = db.Column(db.String, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user_login.id',onupdate='CASCADE',ondelete='CASCADE'), nullable=False)
 
     def __repr__(self):
         return '<Stock # {}>'.format(self.id)
+    
+    def update_price(self):
+        ticker = yf.Ticker(self.stock_name)
+        ticker_info = ticker.info
+        self.curr_price = ticker_info['previousClose']
+        return
+    
+    def get_list(self):
+        return [self.id, self.stock_name, self.curr_price, self.transaction_date]
 
 class transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)

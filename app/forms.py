@@ -50,3 +50,7 @@ class EditProfileForm(FlaskForm):
     phone = StringField('Phone Number')
     addr = TextField('Phone Number')
     submit = SubmitField('Submit')
+
+class SearchForm(FlaskForm):
+    search = StringField('Search')
+    submit = SubmitField('Search')
