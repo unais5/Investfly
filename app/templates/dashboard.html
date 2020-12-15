@@ -34,23 +34,28 @@
     </div>
   </div>
   <div class="search-box">
+    <form action="" method="post" >
+      {{ searches.hidden_tag() }}
     <div class="shares">
       <div class="example">
         <input type="text" name="search" placeholder="Search..">
+        {{searches.submit()}}
+  </form>
     </div>
       <div class="data">
         <label class=label1 for="fname">Share Name</label>
-        <input class="items" type="text" name="Share Name" placeholder="hello" disabled>
+        <input class="items" type="text" name="Share Name" placeholder="{{ results[0]}}" disabled>
       </div>
       <div class="data">
         <label class=label2 for="fname">Share Price</label>
-        <input class="items" type="text" name="Share Name" placeholder="25" disabled>
+        <input class="items" type="text" name="Share Name" placeholder="{{ results[1]}}" disabled>
       </div>
       <div class="data">
         <label class=label3 for="fname">Quantity</label>
-        <input class="items" type="text" name="Share Name" placeholder="hello" disabled>
+        <input class="items" type="text" name="Share Name" placeholder="{{ results[2]}}" disabled>
       </div>
     </div>
+    
   </div>
   <div class=row1>
   <table class="table">
