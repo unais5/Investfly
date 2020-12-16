@@ -8,11 +8,16 @@ from app.email import send_password_reset_email, send_user_verification_email
 
 import yfinance as yf
 
+@app.route('/admin')
+def admin():
+    return render_template("admin.index")
+
 @app.route('/')
 def home_page():
     if current_user.is_authenticated:
         return redirect(url_for('dashboard'))
     return render_template("home_page.html")
+
 
 @app.route('/portfolio', methods = ['GET' , 'POST'])
 @login_required
@@ -79,13 +84,18 @@ def login():
     form = LoginForm()
     formpwd = ResetPasswordRequestForm()
     if form.validate_on_submit():
-        user = user_login.query.filter_by(username=form.username.data).first()
-        if user is None or not user.check_password(form.password.data):
-            flash("Username or Password incorrect")
-            return redirect(url_for('login'))
-        login_user(user, remember=False)
-        # return render_template("dashboard.html")
-        return redirect(request.args.get("next") or url_for('home_page'))
+        username = form.username.data
+        password = form.password.data
+        if username == 'admin' and password == 'test123':
+            return redirect(url_for('admin'))
+        else:
+            user = user_login.query.filter_by(username=form.username.data).first()
+            if user is None or not user.check_password(form.password.data):
+                flash("Username or Password incorrect")
+                return redirect(url_for('login'))
+            login_user(user, remember=False)
+            # return render_template("dashboard.html")
+            return redirect(request.args.get("next") or url_for('home_page'))
     if formpwd.validate_on_submit():
         user = user_login.query.filter_by(email = formpwd.email.data).first()
         if user:
