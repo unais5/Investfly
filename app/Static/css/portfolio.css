@@ -20,9 +20,10 @@
     }
   
     .tab_head{
-      color: white;
+      color: white;  
     }
   
     .tab_b{
       padding: 5px;
+      border-bottom: 2px solid #e14eca;
     }
