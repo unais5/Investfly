@@ -135,12 +135,9 @@ border: 2px solid white;
   .tab_body{
     color: white;
     padding: 20px;
+    text-align: center;
   }
 
   .tab_head{
     color: white;
-  }
-
-  .tab_b{
-    padding: 5px;
   }

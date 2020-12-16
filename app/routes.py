@@ -14,6 +14,19 @@ def home_page():
         return redirect(url_for('dashboard'))
     return render_template("home_page.html")
 
+@app.route('/portfolio', methods = ['GET' , 'POST'])
+@login_required
+def portfolio():
+    headings = ['ID', 'Name', 'Previous Closing', 'Transaction Date']
+    user_stocks = stock.query.filter_by(user_id=current_user.id).all()
+    data = []
+    for i in range(len(user_stocks)):
+        # user_stocks[i].update_price()
+        # db.session.commit()
+        data.append(user_stocks[i].get_list())
+    return render_template('portfolio.html' , data=data , headings=headings)
+
+
 @app.route('/profile', methods = ['GET', 'POST'])
 @login_required
 def profile():
@@ -38,11 +51,7 @@ def dashboard():
     user_stocks = stock.query.filter_by(user_id=current_user.id).all()
     data = []
     for i in range(len(user_stocks)):
-        user_stocks[i].update_price()
-        db.session.commit()
         data.append(user_stocks[i].get_list())
-    # return render_template('dashboard.html', wallet=u_wallet)
-    # return render_template("table.html", data=data, headings=headings)
     if search_s.validate_on_submit():
         ticker = yf.Ticker(search_s.search.data)
         ticker_info = ticker.info

@@ -1,0 +1,28 @@
+.table{
+    overflow: hidden;
+    background-color: #27293d;
+    width: 950px;
+    padding-bottom: 30px;
+    padding-top: 15px;
+    border-radius: 10px;
+    height: 550px;
+    }
+  
+    .row1{
+        margin-left: 280px;
+        margin-top: 10px;
+    }
+  
+    .tab_body{
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+  
+    .tab_head{
+      color: white;
+    }
+  
+    .tab_b{
+      padding: 5px;
+    }
