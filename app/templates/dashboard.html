@@ -4,6 +4,7 @@
 
 {% block head %}
   <link rel= "stylesheet" type= "text/css" href= "{{url_for('static',filename='css/dashboard.css')}}">
+  <!-- <link rel= "stylesheet" type= "text/css" href= "{{url_for('static',filename='css/sell.css')}}"> -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% endblock %}
 
@@ -35,6 +36,8 @@
   </div>
 </div>
 
+
+
 <div class="search-box">
   <form action="" method="post" >
     {{ searches.hidden_tag() }}
@@ -56,9 +59,29 @@
       <label class=label3 for="fname">Share Volume</label>
       <input class="items" type="text" name="Share Name" placeholder="{{ results[2]}}" disabled>
     </div>
-    <button type="submit" class="btn btn-fill btn-primary">BUY</button>
+    <button id="myBtn" class="btn btn-fill btn-primary">BUY</button>
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+              <div id="form-box">
+                  <span class="close">&times;</span>
+                  <i id="prev-btn" class="fas fa-arrow-left"></i>
+                  <i id="next-btn" class="fas fa-arrow-right"></i>
+                  <div id="input-group">
+                      <input id="input-field" required>
+                      <label id="input-label"></label>
+                      <div id="input-progress"></div>
+                  </div>
+                  <div id="progress-bar"></div>
+              </div>
+      </div>
+      </div>
   </div>
 </div>
+
+
+
+
+
 
 
   <div class=row1>
@@ -77,4 +100,7 @@
     {% endfor %}
  </table>
   </div>
+
+  <script src="{{url_for('static', filename='js/sell.js')}}"></script>
+
 {% endblock %}
