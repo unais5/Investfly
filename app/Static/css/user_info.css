@@ -2,9 +2,11 @@
   body{
     background-color: black;
   }
-
+::placeholder{
+  color: #f3f3f3;
+}
   .bg-img {
-    background-image: url(../img/stock.jpg);
+    background-image: url(../img/userinfo.jpg);
     min-height: 630px;
     background-position: center;
     background-repeat: no-repeat;
@@ -16,9 +18,12 @@
     position: absolute;
     right: 0px;
     margin: 10px;
-    max-width: 50%;
+    max-width: 465px;
+    max-height: 575px;
     padding: 16px;
-    background-color: white;
+    border-radius: 40px;
+    background-color: #ffffff4f;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
   
     input[type=text], input[type=tel] {
@@ -26,11 +31,15 @@
     padding: 15px;
     margin: 5px 0 22px 0;
     border: none;
-    background: #f1f1f1;
+    background: rgba(221, 221, 221, 0.308);
+    font-family: sans-serif;
+    font-size: small;
+    border-radius: inherit;
+    color: white;
   }
   
   input[type=text]:focus, input[type=tel]:focus {
-    background-color: #ddd;
+    background-color: rgba(221, 221, 221, 0.308);
     outline: none;
   }
   
@@ -46,8 +55,27 @@
     cursor: pointer;
     width: 100%;
     opacity: 0.9;
+    font-family: sans-serif;
+    font-size: medium;
+    border-radius: 23px;
+    text-align: center;
+    object-position: center;
+
   }
-  
+  .btr{
+    align-content: center;
+  }
   .btn:hover {
     opacity: 1;
+  }
+
+  h1{
+    color: #e4e4e4;
+    font-weight: 100; 
+  }
+
+  label{
+    color: #e4e4e4;
+    font-size: small;
+    font-family: sans-serif;
   }
