@@ -16,8 +16,8 @@
   
   .container {
     position: absolute;
-    right: 0px;
-    margin: 10px;
+    margin-left: 59%;
+    margin-top: 20px;
     max-width: 465px;
     max-height: 575px;
     padding: 16px;
@@ -60,11 +60,9 @@
     border-radius: 23px;
     text-align: center;
     object-position: center;
+    margin-left: 25%;
+  }
 
-  }
-  .btr{
-    align-content: center;
-  }
   .btn:hover {
     opacity: 1;
   }
