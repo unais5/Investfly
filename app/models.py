@@ -1,10 +1,10 @@
 from app import db, login, app
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 from hashlib import md5
 from time import time
 import jwt
-from flask import render_template, session
+from flask import render_template, session, request
 from datetime import datetime, timedelta
 import yfinance as yf
 from flask_admin import Admin
@@ -16,6 +16,7 @@ admin = Admin(app)
 def before_request():
     session.permanent = True
     app.permanent_session_lifetime = timedelta(seconds=600)
+
 
 @login.user_loader
 def load_user(id):
