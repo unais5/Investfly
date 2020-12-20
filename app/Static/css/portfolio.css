@@ -27,3 +27,39 @@
       padding: 5px;
       border-bottom: 2px solid #e14eca;
     }
+
+    .btn {
+      display: inline-block;
+      margin-left: 170px;
+      font-weight: 600;
+      color: #525f7f;
+      text-align: center;
+      vertical-align: middle;
+      user-select: none;
+      background-color: transparent;
+      border: 1px solid transparent;
+      padding: 10px 30px;
+      font-size: 0.875rem;
+      line-height: 1.35em;
+      border-radius: 0.25rem;
+      transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+  
+  .btn-primary {
+    background: #e14eca;
+    background-image: -webkit-linear-gradient(to bottom left, #e14eca, #ba54f5, #e14eca);
+    background-image: -o-linear-gradient(to bottom left, #e14eca, #ba54f5, #e14eca);
+    background-image: -moz-linear-gradient(to bottom left, #e14eca, #ba54f5, #e14eca);
+    background-image: linear-gradient(to bottom left, #e14eca, #ba54f5, #e14eca);
+    background-size: 210% 210%;
+    background-position: top right;
+    background-color: #e14eca;
+    transition: all 0.15s ease;
+    box-shadow: none;
+    color: #ffffff;
+  }
+
+  #myBtn{
+    margin-left: 56%;
+    margin-top: -80px;
+  }
