@@ -8,6 +8,10 @@
   text-decoration: none;
   font-family: 'Josefin Sans', sans-serif;
 }
+::placeholder
+ {
+   color:ghostwhite;
+ }
 
 body{
    background-color: rgb(2, 11, 37);
