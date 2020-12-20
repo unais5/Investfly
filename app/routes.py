@@ -41,8 +41,8 @@ def dashboard():
     user_stocks = stock.query.filter_by(user_id=current_user.id).all()
     data = []
     for i in range(len(user_stocks)):
-        user_stocks[i].update_price()
-        db.session.commit()
+        # user_stocks[i].update_price()
+        # db.session.commit()
         data.append(user_stocks[i].get_list())
     # return render_template('dashboard.html', wallet=u_wallet)
     # return render_template("table.html", data=data, headings=headings)
