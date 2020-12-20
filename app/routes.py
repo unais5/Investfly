@@ -5,7 +5,6 @@ from flask_login import current_user, login_user, login_required, logout_user
 from app.models import user_login, user_info, wallet, stock
 from werkzeug.urls import url_parse
 from app.email import send_password_reset_email, send_user_verification_email
-
 import yfinance as yf
 
 @app.route('/admin')
