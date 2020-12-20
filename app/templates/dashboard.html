@@ -3,7 +3,8 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block head %}
-	<link rel= "stylesheet" type= "text/css" href= "{{url_for('static',filename='css/dashboard.css')}}">
+  <link rel= "stylesheet" type= "text/css" href= "{{url_for('static',filename='css/dashboard.css')}}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% endblock %}
 
 {% block content %}
@@ -14,7 +15,7 @@
         <h1><b>${{ wallet.balance }} </b></h1>
         <h3><b>WALLET</b></h3>
       </div>
-     </div>
+    </div>
     </div>
      <div class="column">
       <div class="card">
@@ -30,33 +31,36 @@
         <h1><b>500</b></h1>
         <h3><b>TOTAL SHARES</b></h3>
       </div>
-     </div>
     </div>
   </div>
-  <div class="search-box">
-    <form action="" method="post" >
-      {{ searches.hidden_tag() }}
-    <div class="shares">
-      <div class="example">
-        <input type="text" name="search" placeholder="Search..">
-        {{searches.submit()}}
+</div>
+
+<div class="search-box">
+  <form action="" method="post" >
+    {{ searches.hidden_tag() }}
+  <div class="shares">
+    <div class="example">
+      <input type="text" name="search" placeholder="Search..">
+      <button type="submit"><i class="fa fa-search"></i></button>
   </form>
     </div>
-      <div class="data">
-        <label class=label1 for="fname">Share Name</label>
-        <input class="items" type="text" name="Share Name" placeholder="{{ results[0]}}" disabled>
-      </div>
-      <div class="data">
-        <label class=label2 for="fname">Share Price</label>
-        <input class="items" type="text" name="Share Name" placeholder="{{ results[1]}}" disabled>
-      </div>
-      <div class="data">
-        <label class=label3 for="fname">Quantity</label>
-        <input class="items" type="text" name="Share Name" placeholder="{{ results[2]}}" disabled>
-      </div>
+    <div class="data">
+      <label class=label1 for="fname">Share Name</label>
+      <input class="items" type="text" name="Share Name" placeholder="{{ results[0]}}" disabled>
     </div>
-    
+    <div class="data">
+      <label class=label2 for="fname">Share Price</label>
+      <input class="items" type="text" name="Share Name" placeholder="{{ results[1]}}" disabled>
+    </div>
+    <div class="data">
+      <label class=label3 for="fname">Share Volume</label>
+      <input class="items" type="text" name="Share Name" placeholder="{{ results[2]}}" disabled>
+    </div>
+    <button type="submit" class="btn btn-fill btn-primary">BUY</button>
   </div>
+</div>
+
+
   <div class=row1>
   <table class="table">
     <tr class="tab_head">

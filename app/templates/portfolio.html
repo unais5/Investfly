@@ -1,0 +1,27 @@
+{% extends "base2.html" %}
+
+{% block title %}Portfolio{% endblock %}
+
+{% block head %}
+	<link rel= "stylesheet" type= "text/css" href= "{{url_for('static',filename='css/portfolio.css')}}">
+{% endblock %}
+
+{% block content %}
+<div class=row1>
+    <table class="table">
+      <tr class="tab_head">
+          {% for header in headings %}
+          <th class="tab_b">{{ header }}</th>
+          {% endfor %}
+      </tr>
+      {% for row in data %}
+      <tr>
+          {% for cell in row %}
+          <td class="tab_body">{{ cell }}</td>
+          {% endfor %}
+          <!-- <button type="button" class="btn btn-success">Success</button> -->
+      </tr>
+      {% endfor %}
+   </table>
+</div>
+{% endblock %}

@@ -6,8 +6,11 @@ from time import time
 import jwt
 from flask import render_template, session
 from datetime import datetime, timedelta
-
 import yfinance as yf
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
+
+admin = Admin(app)
 
 @app.before_request
 def before_request():
@@ -149,6 +152,8 @@ available_stocks = db.Table('available_stocks',
     db.Column('quantity', db.Integer, nullable=False),
     db.Column('curr_price', db.Float, nullable=False) )
 
-
-
-
+admin.add_view(ModelView(user_login, db.session))
+admin.add_view(ModelView(user_info, db.session))
+admin.add_view(ModelView(wallet, db.session))
+admin.add_view(ModelView(stock, db.session))
+admin.add_view(ModelView(transaction, db.session))
