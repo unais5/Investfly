@@ -21,19 +21,19 @@
             <div class="col-md-5 pr-md-1">
               <div class="form-group">
                 <label>UserID</label>
-                <input type="text" class="form-control" disabled="" value="{{ current_user.id }}">
+                <input type="text" class="form-control" disabled="" placeholder="{{ current_user.id }}">
               </div>
             </div>
             <div class="col-md-3 px-md-1">
               <div class="form-group">
                 <label>CNIC</label>
-                <input type="text" class="form-control" disabled="" value="{{ user.cnic }}">
+                <input type="text" class="form-control" disabled="" placeholder="{{ user.cnic }}">
               </div>
             </div>
             <div class="col-md-4 pl-md-1">
               <div class="form-group">
                 <label >Account #</label>
-                <input class="form-control" disabled="" value="{{ user.acc_num }}">
+                <input class="form-control" disabled="" placeholder="{{ user.acc_num }}">
               </div>
             </div>
           </div>
@@ -41,13 +41,13 @@
             <div class="col-md-6 pr-md-1">
               <div class="form-group">
                 <label>Name</label>
-                <input type="text" class="form-control" disabled="" value="{{user.fname}}">
+                <input type="text" class="form-control" disabled="" placeholder="{{user.fname}}">
               </div>
             </div>
             <div class="col-md-6 pl-md-1">
               <div class="form-group">
                 <label>Phone #</label>
-                <input type="text" class="form-control" placeholder="{{ user.phone }}" value="{{user.phone}}" name="phone" maxlength="11" pattern="\d*" >
+                <input type="text" class="form-control" placeholder="{{ user.phone }}" value="{{ user.phone }}" name="phone" maxlength="11" pattern="\d*" >
               </div>
             </div>
           </div>
@@ -55,7 +55,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Address</label>
-                <input type="text" class="form-control" placeholder="{{ user.addr}}" value="{{ user.addr}}" name="addr">
+                <input type="text" class="form-control" placeholder="{{ user.addr}}" value="{{ user.addr }}" name="addr">
               </div>
             </div>
           </div>

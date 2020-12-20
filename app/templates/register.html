@@ -1,43 +1,73 @@
 {% extends "base1.html" %}
 
-{% block title %} Register {% endblock %}
+{% block title %} Login {% endblock %}
 
 {% block head %}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <link rel= "stylesheet" type= "text/css" href= "{{url_for('static',filename='css/register.css')}}">
 {% endblock %}
 
 {% block content %}
-<div id="login-box">
-    <div class="left">
-      <h1>Register</h1>
-      {% if error %}
-      <div class="alert alert-danger  alerty-dismissal fade show" role="alert">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        {{ error }}
-      </div> 
-      {% endif %}
-      <form action="" method="post" >
-      {{ form.hidden_tag() }}
-      <input type="text" name="username" placeholder="Username" />
-      {% for error in form.username.errors %}
-      <span style="color: rgb(182, 39, 39);">{{ error }}</span>
-      {% endfor %}
-      <input type="text" name="email" placeholder="E-mail" />
-      {% for error in form.email.errors %}
-      <span style="color: rgb(182, 39, 39);">{{ error }}</span>
-      {% endfor %}
-      <input type="password" name="password" placeholder="Password" />
-      {% for error in form.password.errors %}
-      <span style="color: rgb(182, 39, 39);">{{ error }}</span>
-      {% endfor %}
-      <input type="password" name="password2" placeholder="Retype password" />
-      {% for error in form.password2.errors %}
-      <span style="color: rgb(182, 39, 39);">{{ error }}</span>
-      {% endfor %}
-      {{ form.submit() }}
-      </form>
-    </div>
-
-    <div class="right">
-    </div>
+<div class="reg-wrap">
+	<div class="reg-html">
+		<label for="tab-1" class="tabr">Register</label>
+		<div class="login-form">
+			<form action="" method="post" novalidate>
+				{{ form.hidden_tag() }}
+			<!-- <div class="sign-in-htm"> -->
+				<div class="group">
+					{% with messages = get_flashed_messages() %}
+					{% if messages %}
+						{% for message in messages %}
+						<div class="alert alert-danger  alerty-dismissal fade show" role="alert">
+							<button type="button" class="close" data-dismiss="alert">&times;</button>
+							{{ message }}
+						</div> 
+						{% endfor %}
+					{% endif %}
+				{% endwith %}
+					<label for="user" class="label">Username</label>
+					<input id="user" type="text" class="input" placeholder="username" name="username">
+					{% for error in form.username.errors %}
+					<span style="color: rgb(182, 39, 39);">{{ error }}</span>
+					{% endfor %}
+                </div>
+                <div class="group">
+					<label for="email" class="label">E-mail</label>
+					<input id="email" type="email" class="input" data-type="email" placeholder="email" name="email">
+					{% for error in form.email.errors %}
+					<span style="color: rgb(182, 39, 39);">{{ error }}</span>
+					{% endfor %}
+				</div>
+				<div class="group">
+					<label for="pass" class="label">Password</label>
+					<input id="pass" type="password" class="input" data-type="password" placeholder="password" name="password">
+					{% for error in form.password.errors %}
+					<span style="color: rgb(182, 39, 39);">{{ error }}</span>
+					{% endfor %}
+                </div>
+                <div class="group">
+					<label for="pass" class="label">Re-Enter Password</label>
+					<input id="pass" type="password" class="input" data-type="password2" placeholder="confirm password" name="password2">
+					{% for error in form.password2.errors %}
+					<span style="color: rgb(182, 39, 39);">{{ error }}</span>
+					{% endfor %}
+				</div>
+				<div class="group">
+					<input type="submit" class="button" value="Register" >
+				</div>
+				<div class="hr"></div>
+			<!-- </div> -->
+			</form>
+			{% if error %}
+			<div class="alert alert-danger  alerty-dismissal fade show" role="alert">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{ error }}
+			</div> 
+			{% endif %}
+		</div>
+	</div>
+</div>
 {% endblock %}

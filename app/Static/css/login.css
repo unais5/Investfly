@@ -2,7 +2,7 @@ body {
 	margin:0;
 	color:#edf3ff;
 	background:#c8c8c8;
-	background:url(https://upload.wikimedia.org/wikipedia/commons/d/d7/Philippine-stock-market-board.jpg) fixed;
+	background:url("../img/login.jpg") ;
 	background-size: cover;
 	font:600 16px/18px 'Open Sans',sans-serif;
 }
@@ -13,8 +13,8 @@ a{color:inherit;text-decoration:none}
 
 .login-wrap{
 	width: 100%;
-    margin-top: 100px;
-    margin-left: 30%;
+    margin-top: 150px;
+    margin-left: 60%;
 	max-width:510px;
 	min-height:510px;
 	position:relative;
@@ -22,6 +22,23 @@ a{color:inherit;text-decoration:none}
 	box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
 }
 .login-html{
+	width:100%;
+	height:100%;
+	position:absolute;
+	padding:90px 70px 50px 70px;
+	background:rgba(0,0,0,0.5);
+}
+.reg-wrap{
+	width: 100%;
+    margin-top: 120px;
+    margin-left: 3%;
+	max-width:510px;
+	min-height:613px;
+	position:relative;
+    background-size: cover;
+	box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+}
+.reg-html{
 	width:100%;
 	height:100%;
 	position:absolute;
@@ -52,6 +69,11 @@ a{color:inherit;text-decoration:none}
 .login-form .group .button{
 	text-transform:uppercase;
 }
+.reg-html .tabr,
+.login-form .group .label,
+.login-form .group .button{
+	text-transform:uppercase;
+}
 .login-html .tab{
 	font-size:22px;
 	margin-right:15px;
@@ -60,8 +82,21 @@ a{color:inherit;text-decoration:none}
 	display:inline-block;
 	border-bottom:2px solid transparent;
 }
+.reg-html .tabr{
+	font-size:22px;
+	margin-right:15px;
+	padding-bottom:5px;
+	margin:0 15px 10px 0;
+	display:inline-block;
+	border-bottom:2px solid #e14eca;
+}
 .login-html .sign-in:checked + .tab,
 .login-html .for-pwd:checked + .tab{
+	color:#fff;
+	border-color: #e14eca;
+}
+.reg-html .sign-in:checked + .tabr,
+.reg-html .for-pwd:checked + .tabr{
 	color:#fff;
 	border-color: #e14eca;
 }
