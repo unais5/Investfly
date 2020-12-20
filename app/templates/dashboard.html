@@ -4,7 +4,7 @@
 
 {% block head %}
   <link rel= "stylesheet" type= "text/css" href= "{{url_for('static',filename='css/dashboard.css')}}">
-  <!-- <link rel= "stylesheet" type= "text/css" href= "{{url_for('static',filename='css/sell.css')}}"> -->
+  <link rel= "stylesheet" type= "text/css" href= "{{url_for('static',filename='css/sell.css')}}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% endblock %}
 
@@ -46,37 +46,37 @@
       <input type="text" name="search" placeholder="Search..">
       <button type="submit"><i class="fa fa-search"></i></button>
   </form>
-    </div>
-    <div class="data">
-      <label class=label1 for="fname">Share Name</label>
-      <input class="items" type="text" name="Share Name" placeholder="{{ results[0]}}" disabled>
-    </div>
-    <div class="data">
-      <label class=label2 for="fname">Share Price</label>
-      <input class="items" type="text" name="Share Name" placeholder="{{ results[1]}}" disabled>
-    </div>
-    <div class="data">
-      <label class=label3 for="fname">Share Volume</label>
-      <input class="items" type="text" name="Share Name" placeholder="{{ results[2]}}" disabled>
-    </div>
-    <button id="myBtn" class="btn btn-fill btn-primary">BUY</button>
-    <div id="myModal" class="modal">
-      <div class="modal-content">
-              <div id="form-box">
-                  <span class="close">&times;</span>
-                  <i id="prev-btn" class="fas fa-arrow-left"></i>
-                  <i id="next-btn" class="fas fa-arrow-right"></i>
-                  <div id="input-group">
-                      <input id="input-field" required>
-                      <label id="input-label"></label>
-                      <div id="input-progress"></div>
-                  </div>
-                  <div id="progress-bar"></div>
-              </div>
-      </div>
-      </div>
-  </div>
 </div>
+<div class="data">
+  <label class=label1 for="fname">Share Name</label>
+  <input class="items" type="text" name="Share Name" placeholder="{{ results[0]}}" disabled>
+</div>
+<div class="data">
+  <label class=label2 for="fname">Share Price</label>
+  <input class="items" type="text" name="Share Name" placeholder="{{ results[1]}}" disabled>
+</div>
+<div class="data">
+  <label class=label3 for="fname">Share Volume</label>
+  <input class="items" type="text" name="Share Name" placeholder="{{ results[2]}}" disabled>
+</div>
+</div>
+</div>
+<button id="myBtn" class="btn btn-fill btn-primary">BUY</button>
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <div id="form-box">
+        <span class="close">&times;</span>
+          <i id="prev-btn" class="fas fa-arrow-left"></i>
+          <i id="next-btn" class="fas fa-arrow-right"></i>
+            <div id="input-group">
+              <input id="input-field" required>
+              <label id="input-label"></label>
+              <div id="input-progress"></div>
+            </div>
+          <div id="progress-bar"></div>
+      </div>
+    </div>
+  </div>
 
 
 
