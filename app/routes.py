@@ -17,7 +17,6 @@ def home_page():
         return redirect(url_for('dashboard'))
     return render_template("home_page.html")
 
-
 @app.route('/portfolio', methods = ['GET' , 'POST'])
 @login_required
 def portfolio():
@@ -73,7 +72,6 @@ def verify_user(token):
         db.session.commit()
         return redirect(url_for('user_information'))
     return redirect(url_for('user', username=user.username))
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

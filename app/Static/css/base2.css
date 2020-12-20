@@ -9,6 +9,7 @@
   font-family: 'Josefin Sans', sans-serif;
 }
 
+
 body{
    background-color: rgb(2, 11, 37);
 }
@@ -90,19 +91,4 @@ body{
     margin-left: 80% ;
     margin-top: 6px;
 }
-
-/* .main_content{
-  width: 80%;
-  margin-left: 250px;
-  padding-top: 60px;
-}
-
-.main_content .info{
-  margin-left: 20px;
-  color: #717171;
-  line-height: 25px;
-}
-
-.main_content .info div{
-  margin-bottom: 20px;
-} */
+ 
