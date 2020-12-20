@@ -94,6 +94,13 @@ def login():
                 return redirect(url_for('login'))
             login_user(user, remember=False)
             # return render_template("dashboard.html")
+            # headings = ['ID', 'Name', 'Previous Closing', 'Transaction Date']
+            user_stocks = stock.query.filter_by(user_id=current_user.id).all()
+            # data = []
+            for i in range(len(user_stocks)):
+                user_stocks[i].update_price()
+                db.session.commit()
+                # data.append(user_stocks[i].get_list())
             return redirect(request.args.get("next") or url_for('home_page'))
     if formpwd.validate_on_submit():
         user = user_login.query.filter_by(email = formpwd.email.data).first()
