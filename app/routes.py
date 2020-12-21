@@ -1,5 +1,4 @@
 from flask import render_template, flash, redirect, url_for, request , jsonify
-import json
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, ResetPasswordForm, ResetPasswordRequestForm, UserInfoForm, EditProfileForm , SearchForm , BuyForm, SellForm
 from flask_login import current_user, login_user, login_required, logout_user
@@ -9,6 +8,7 @@ from app.email import send_password_reset_email, send_user_verification_email, s
 import yfinance as yf
 from app.finance import search_ticker
 from datetime import *
+from sqlalchemy.sql import func
 
 @app.route('/admin')
 def admin():
@@ -85,7 +85,13 @@ def dashboard():
     user = user_info.query.filter_by(id=current_user.id).first_or_404()
     u_wallet = wallet.query.filter_by(user_id=current_user.id).first_or_404()
     
-    headings = ['ID', 'Name', 'Previous Closing', 'Transaction Date']
+    u_wallet.balance = "{:.2F}".format(u_wallet.balance)
+    # assets = db.func(sum(stock.curr_price).filter_by(user_id=current_user.id))
+    assets = db.session.query(func.sum(stock.curr_price)).filter(stock.user_id==current_user.id).scalar()
+    shares = db.session.query(func.sum(stock.quantity)).filter(stock.user_id==current_user.id).scalar()
+    # return assets
+    
+    headings = ['ID', 'Name', 'Previous Closing']
     user_stocks = stock.query.filter_by(user_id=current_user.id).all()
     data = []
     # form = BuyForm()
@@ -94,7 +100,11 @@ def dashboard():
     if search_s.validate_on_submit():
         ticker_info = search_ticker(search_s.search.data)
         search_results = [ticker_info.name, ticker_info.price, ticker_info.volume]
-    return render_template('dashboard.html', wallet=u_wallet ,data=data , headings=headings, results=search_results, searches=search_s)
+    return render_template('dashboard.html', wallet=u_wallet,
+                            data=data , headings=headings, 
+                            results=search_results,
+                            searches=search_s, assets=assets,
+                            shares=shares)
 
 
 @app.route('/verify_user/<token>', methods = ['GET', 'POST'])
