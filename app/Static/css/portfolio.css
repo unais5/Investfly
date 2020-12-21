@@ -30,7 +30,8 @@
 
     .btn {
       display: inline-block;
-      margin-left: 170px;
+      margin-right: -10px;
+      margin-left: -30px;
       font-weight: 600;
       color: #525f7f;
       text-align: center;
@@ -57,9 +58,4 @@
     transition: all 0.15s ease;
     box-shadow: none;
     color: #ffffff;
-  }
-
-  #myBtn{
-    margin-left: 56%;
-    margin-top: -80px;
   }

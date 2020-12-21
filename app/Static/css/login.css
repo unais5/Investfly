@@ -69,7 +69,7 @@ a{color:inherit;text-decoration:none}
 .login-form .group .button{
 	text-transform:uppercase;
 }
-.reg-html .tabr,
+
 .login-form .group .label,
 .login-form .group .button{
 	text-transform:uppercase;
@@ -82,24 +82,13 @@ a{color:inherit;text-decoration:none}
 	display:inline-block;
 	border-bottom:2px solid transparent;
 }
-.reg-html .tabr{
-	font-size:22px;
-	margin-right:15px;
-	padding-bottom:5px;
-	margin:0 15px 10px 0;
-	display:inline-block;
-	border-bottom:2px solid #e14eca;
-}
+
 .login-html .sign-in:checked + .tab,
 .login-html .for-pwd:checked + .tab{
 	color:#fff;
 	border-color: #e14eca;
 }
-.reg-html .sign-in:checked + .tabr,
-.reg-html .for-pwd:checked + .tabr{
-	color:#fff;
-	border-color: #e14eca;
-}
+
 .login-form{
 	min-height:345px;
 	position:relative;
