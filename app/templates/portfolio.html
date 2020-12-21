@@ -4,7 +4,6 @@
 
 {% block head %}
     <link rel= "stylesheet" type= "text/css" href= "{{url_for('static',filename='css/portfolio.css')}}">
-    <link rel= "stylesheet" type= "text/css" href= "{{url_for('static',filename='css/sell.css')}}">
 {% endblock %}
 
 {% block content %}
@@ -20,28 +19,10 @@
           {% for cell in row %}
           <td class="tab_body">{{ cell }}</td>
           {% endfor %}
-          <!-- <button type="button" class="btn btn-success">Success</button> -->
       </tr>
       {% endfor %}
    </table>
 </div>
 
-<button id="myBtn" class="btn btn-fill btn-primary">SELL</button>
-  <div id="myModal" class="modal">
-    <div class="modal-content">
-      <div id="form-box">
-        <span class="close">&times;</span>
-          <i id="prev-btn" class="fas fa-arrow-left"></i>
-          <i id="next-btn" class="fas fa-arrow-right"></i>
-            <div id="input-group">
-              <input id="input-field" required>
-              <label id="input-label"></label>
-                <div id="input-progress"></div>
-              </div>
-              <div id="progress-bar"></div>
-      </div>
-    </div>
-  </div>
-  
-<script src="{{url_for('static', filename='js/sell.js')}}"></script>
+<a href="{{url_for('transactions')}}" id="myBtn" class="btn btn-fill btn-primary">SELL</a>
 {% endblock %}

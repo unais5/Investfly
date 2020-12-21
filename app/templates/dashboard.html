@@ -5,6 +5,13 @@
 {% block head %}
   <link rel= "stylesheet" type= "text/css" href= "{{url_for('static',filename='css/dashboard.css')}}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script type="text/javascript">// <![CDATA[
+    function loading(){
+      $("#loading").show();
+      $("#content").hide();       
+    }
+  // ]]></script>
 {% endblock %}
 
 {% block content %}
@@ -36,65 +43,34 @@
 </div>
 
 
-
 <div class="search-box">
-  <form action="" method="post" >
-    {{ searches.hidden_tag() }}
+ <form action="" method="post" >
+  {{ searches.hidden_tag() }}
   <div class="shares">
     <div class="example">
       <input type="text" name="search" placeholder="Search..">
-      <button type="submit"><i class="fa fa-search"></i></button>
-      <!-- {{ searches.submit( _class="fa fa-search")}} -->
-  </form>
-</div>
-<div class="data">
-  <label class=label1 for="fname">Share Name</label>
-  <input class="items" type="text" name="Share Name" placeholder="{{ results[0]}}" disabled>
-</div>
-<div class="data">
-  <label class=label2 for="fname">Share Price</label>
-  <input class="items" type="text" name="Share Name" placeholder="{{ results[1]}}" disabled>
-</div>
-<div class="data">
-  <label class=label3 for="fname">Share Volume</label>
-  <input class="items" type="text" name="Share Name" placeholder="{{ results[2]}}" disabled>
-</div>
+      <button type="submit" onclick="loading()"><i class="fa fa-search"></i></button> 
+    </div>
+    <div class="data">
+      <label class=label1 for="fname">Share Name</label>
+      <input class="items" type="text" name="Share Name" placeholder="{{ results[0]}}" disabled>
+    </div>
+    <div class="data">
+      <label class=label2 for="fname">Share Price</label>
+      <input class="items" type="text" name="Share Name" placeholder="{{ results[1]}}" disabled>
+    </div>
+    <div class="data">
+      <label class=label3 for="fname">Share Volume</label>
+      <input class="items" type="text" name="Share Name" placeholder="{{ results[2]}}" disabled>
     </div>
   </div>
-  <div>
-<button id="myBtn" class="btn btn-fill btn-primary">BUY</button> </div>
+  </form>
+</div>
 
 
-  <div id="myModal" class="modal" aria-labelledby="FormModal" aria-hidden="true">
-    <div class="modal-content">
-      <div class="example">
-        <span class="close">&times;</span>
-        <form action="" method="post" novalidate>
-          {{ form.hidden_tag() }} 
-        <div class="data">
-          <label class=labels1 for="fname">Share Name</label>
-          {{form.name(class_='items', placeholder="Stock Name")}}
-          <!-- <input class="items" type="text" name="Share Name" placeholder="Share Name"> -->
-        </div>
-        <div class="data">
-          <label class=labels3 for="fname">Share Volume</label>
-          {{ form.volume(class_='items', placeholder="Puchase Volume") }}
-          <!-- <input class="items" type="number" name="Share Volume" placeholder="Share Volume"> -->
-        </div>
-        <div class="data">
-          <label class=labels2 for="fname">Password</label>
-          {{ form.pwd(class_='items',placeholder="Enter Password",type='password')}}
-          <!-- <input class="items" type="password" name="Password" placeholder="Password"> -->
-        </div>
-        <div class="bts">
-        <button type="submit" class="btn btn-fill btn-primary">Confirm</button>
-        <!-- {{ form.submit(class="btn btn-fill btn-primary")}} -->
-        </div>
-        </form>
-      </div>
-    </div>      
-  </div>
-
+<div>
+<a href="{{url_for('transactions')}}"id="myBtn" class="btn btn-fill btn-primary">BUY</a>
+</div>
 
 
   <div class=row1>
@@ -114,6 +90,19 @@
  </table>
   </div>
 
-  <script src="{{url_for('static', filename='js/sell.js')}}"></script>
+
+  <div id="loading">
+    <div id="circle">
+      <div class="loader">
+       <div class="loader">
+        <div class="loader">
+        <div class="loader">
+      
+        </div>
+        </div>
+      </div>
+       </div>
+      </div>        
+    </div>
 
 {% endblock %}
