@@ -59,4 +59,4 @@ class BuyForm(FlaskForm):
     name = StringField('Stock Name')
     volume = IntegerField('Volume')
     pwd = StringField('Enter Password')
-    submit = SubmitField('Confirm Purchase')
+    submits = SubmitField('Confirm Purchase')

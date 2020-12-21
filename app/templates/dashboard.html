@@ -45,7 +45,7 @@
       <input type="text" name="search" placeholder="Search..">
       <button type="submit"><i class="fa fa-search"></i></button>
       <!-- {{ searches.submit( _class="fa fa-search")}} -->
-  </form>
+  
 </div>
 <div class="data">
   <label class=label1 for="fname">Share Name</label>
@@ -60,8 +60,10 @@
   <input class="items" type="text" name="Share Name" placeholder="{{ results[2]}}" disabled>
 </div>
     </div>
+  </form>
   </div>
   <div>
+    
 <button id="myBtn" class="btn btn-fill btn-primary">BUY</button> </div>
 
 
@@ -87,8 +89,8 @@
           <!-- <input class="items" type="password" name="Password" placeholder="Password"> -->
         </div>
         <div class="bts">
-        <button type="submit" class="btn btn-fill btn-primary">Confirm</button>
-        <!-- {{ form.submit(class="btn btn-fill btn-primary")}} -->
+        <!-- <button type="submit" class="btn btn-fill btn-primary">Confirm</button> -->
+        {{ form.submits(class="btn btn-fill btn-primary")}}
         </div>
         </form>
       </div>

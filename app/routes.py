@@ -5,8 +5,9 @@ from app.forms import LoginForm, RegistrationForm, ResetPasswordForm, ResetPassw
 from flask_login import current_user, login_user, login_required, logout_user
 from app.models import user_login, user_info, wallet, stock
 from werkzeug.urls import url_parse
-from app.email import send_password_reset_email, send_user_verification_email
+from app.email import send_password_reset_email, send_user_verification_email, send_purchase_email
 import yfinance as yf
+from app.finance import search_ticker
 
 @app.route('/admin')
 def admin():
@@ -47,6 +48,7 @@ def profile():
 @login_required
 def dashboard():
     search_s = SearchForm()
+    buys = BuyForm()
     search_results = ['', '']
     user = user_info.query.filter_by(id=current_user.id).first_or_404()
     u_wallet = wallet.query.filter_by(user_id=current_user.id).first_or_404()
@@ -54,19 +56,21 @@ def dashboard():
     headings = ['ID', 'Name', 'Previous Closing', 'Transaction Date']
     user_stocks = stock.query.filter_by(user_id=current_user.id).all()
     data = []
-    form = BuyForm()
+    
     for i in range(len(user_stocks)):
         data.append(user_stocks[i].get_list())
-    if form.validate_on_submit():
-        if current_user.check_password(form.pwd.data):
+    if search_s.validate_on_submit():
+        ticker = search_s.search.data
+        search_results = search_ticker(ticker)
+    if buys.validate_on_submit():
+        if current_user.check_password(buys.pwd.data):
+            # stock
+            # send_purchase_email(user,)
             return "Valid"
         else:
             return "mar jao"
-    if search_s.validate_on_submit():
-        ticker = yf.Ticker(search_s.search.data)
-        ticker_info = ticker.info
-        search_results = [search_s.search.data, ticker_info['previousClose'], ticker_info['volume']]
-    return render_template('dashboard.html', wallet=u_wallet ,data=data , headings=headings, results=search_results, searches=search_s, form=form)
+    
+    return render_template('dashboard.html', wallet=u_wallet ,data=data , headings=headings, results=search_results, searches=search_s, form=buys)
 
 
 @app.route('/verify_user/<token>', methods = ['GET', 'POST'])
