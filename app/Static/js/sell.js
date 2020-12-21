@@ -24,6 +24,7 @@ window.onclick = function(event) {
   }
 }
 
+
 // Questions Array
 const questions = [
     { question: 'Enter Share Name' },
@@ -160,7 +161,7 @@ const questions = [
     h1.classList.add('end');
     h1.appendChild(
       document.createTextNode(
-        `A receipt has been sent on Email for the purchase of ${
+        `A receipt has been sent on email for the purchase of ${
           questions[0].answer
         } `
       )
@@ -169,5 +170,18 @@ const questions = [
       formBox.parentElement.appendChild(h1);
       setTimeout(() => (h1.style.opacity = 1), 50);
     }, 1000);
+    $.ajax({
+      url: '/profile',
+      data: {
+          id: $(elm).attr('data-id')
+      },
+      type: 'POST',
+      success: function(res) {
+          console.log(res);
+      },
+      error: function(error) {
+          console.log(error);
+      }
+  });
   }
   

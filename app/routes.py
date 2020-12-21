@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request , jsonify
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, ResetPasswordForm, ResetPasswordRequestForm, UserInfoForm, EditProfileForm , SearchForm
 from flask_login import current_user, login_user, login_required, logout_user
@@ -16,7 +16,6 @@ def home_page():
     if current_user.is_authenticated:
         return redirect(url_for('dashboard'))
     return render_template("home_page.html")
-
 
 @app.route('/portfolio', methods = ['GET' , 'POST'])
 @login_required
@@ -60,6 +59,9 @@ def dashboard():
         ticker = yf.Ticker(search_s.search.data)
         ticker_info = ticker.info
         search_results = [search_s.search.data, ticker_info['previousClose'], ticker_info['volume']]
+    if request.method == 'POST':
+        jsdata = request.form['buying_data']
+        return json.loads(jsdata)[0]
     return render_template('dashboard.html', wallet=u_wallet ,data=data , headings=headings, results=search_results, searches=search_s)
 
 
@@ -73,7 +75,6 @@ def verify_user(token):
         db.session.commit()
         return redirect(url_for('user_information'))
     return redirect(url_for('user', username=user.username))
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
