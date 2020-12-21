@@ -8,7 +8,6 @@ body{
    height: 150px;
    border-radius: 10px; 
    background: #27293d;
-   /* border:1px solid #e14eca; */
  }
  
  .card:hover {
@@ -121,14 +120,13 @@ border: 2px solid white;
   }
 
   .example button {
-    /* margin-left: 10px; */
     width: 40px;
     padding: 10px;
     background: #e14eca;
     color: white;
     font-size: 17px;
     border: 1px solid grey;
-    border-left: none; /* Prevent double borders */
+    border-left: none; 
     cursor: pointer;
   }
 
@@ -140,7 +138,7 @@ border: 2px solid white;
      color: white;
      font-size: 17px;
      border: 1px solid grey;
-     border-left: none; /* Prevent double borders */
+     border-left: none; 
      cursor: pointer;
   }
 
