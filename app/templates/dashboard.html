@@ -4,7 +4,6 @@
 
 {% block head %}
   <link rel= "stylesheet" type= "text/css" href= "{{url_for('static',filename='css/dashboard.css')}}">
-  <link rel= "stylesheet" type= "text/css" href= "{{url_for('static',filename='css/sell.css')}}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% endblock %}
 
@@ -65,15 +64,24 @@
 <button id="myBtn" class="btn btn-fill btn-primary">BUY</button>
   <div id="myModal" class="modal">
     <div class="modal-content">
-      <span class="close">&times;</span>
       <div class="example">
-      <label for="user" class="label">Share Name</label>
-      <input id="user" type="text" class="input" placeholder="Share Name" name="sharename">
-      <label for="user" class="label">Volume</label>
-      <input id="user" type="number" class="input" placeholder="Volume" name="Volume">
-      <label for="user" class="label">Password</label>
-      <input id="user" type="password" class="input" placeholder="Password" name="Password">
-    </div>
+        <span class="close">&times;</span>
+        <div class="data">
+          <label class=labels1 for="fname">Share Name</label>
+          <input class="items" type="text" name="Share Name" placeholder="Share Name">
+        </div>
+        <div class="data">
+          <label class=labels3 for="fname">Share Volume</label>
+          <input class="items" type="number" name="Share Volume" placeholder="Share Volume">
+        </div>
+        <div class="data">
+          <label class=labels2 for="fname">Password</label>
+          <input class="items" type="password" name="Password" placeholder="Password">
+        </div>
+        <div class="bts">
+        <button type="submit" class="btn btn-fill btn-primary">Confirm</button>
+        </div>
+      </div>
     </div>
   </div>
 
