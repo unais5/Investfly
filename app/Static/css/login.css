@@ -13,8 +13,8 @@ a{color:inherit;text-decoration:none}
 
 .login-wrap{
 	width: 100%;
-    margin-top: 150px;
-    margin-left: 60%;
+    margin-top: 90px;
+    margin-left: 55%;
 	max-width:510px;
 	min-height:510px;
 	position:relative;
@@ -130,7 +130,7 @@ a{color:inherit;text-decoration:none}
 	-webkit-text-security:circle;
 }
 .login-form .group .label{
-	color:#aaa;
+	color:white;
 	font-size:12px;
 }
 .login-form .group .button{

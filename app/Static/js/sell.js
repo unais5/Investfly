@@ -28,7 +28,7 @@ window.onclick = function(event) {
 // Questions Array
 const questions = [
     { question: 'Enter Share Name' },
-    { question: 'Enter Volume' },
+    { question: 'Enter Volume' ,type: 'number'},
     { question: 'Enter Your Password', type: 'password' }
   ];
   
