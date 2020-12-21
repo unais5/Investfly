@@ -86,7 +86,7 @@ width: 200px;
 border: 2px solid white;
 }
 
-.example input[type=text] {
+.example input{
   width: 200px;
   margin-top: 10px;
   margin-bottom: 30px;
