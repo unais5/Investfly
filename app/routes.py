@@ -55,7 +55,7 @@ def home_page():
 @app.route('/portfolio', methods = ['GET' , 'POST'])
 @login_required
 def portfolio():
-    headings = ['ID', 'Name', 'Previous Closing', 'Transaction Date']
+    headings = ['ID', 'Name', 'Previous Closing' ,'Volume']
     user_stocks = stock.query.filter_by(user_id=current_user.id).all()
     data = []
     for i in range(len(user_stocks)):

@@ -134,7 +134,7 @@ class stock(db.Model):
         return
     
     def get_list(self):
-        return [self.id, self.stock_name, self.curr_price, self.transaction_date]
+        return [self.id, self.stock_name, self.curr_price , self.quantity]
 
 class transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
