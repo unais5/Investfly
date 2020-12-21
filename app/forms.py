@@ -55,8 +55,14 @@ class SearchForm(FlaskForm):
     search = StringField('Search..')
     submit = SubmitField('Search')
 
-# class BuyForm(FlaskForm):
-#     name = StringField('Stock Name')
-#     volume = IntegerField('Volume')
-#     pwd = StringField('Enter Password')
-#     submit = SubmitField('Confirm Purchase')
+class BuyForm(FlaskForm):
+    name = StringField('Stock Name')
+    volume = IntegerField('Volume')
+    password = StringField('Enter Password')
+    submit = SubmitField('Confirm Purchase')
+
+class SellForm(FlaskForm):
+    name = StringField('Stock Name')
+    volume = IntegerField('Volume')
+    password = StringField('Enter Password')
+    submit = SubmitField('Confirm Purchase')

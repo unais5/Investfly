@@ -1,9 +1,10 @@
 Dear {{ user.username }},
 
-You have purchased {{stock.volume}} units of {{ stock.name}} @ {{ stock.purchase_price}}.
+You have purchased {{stock.volume}} units of {{ stock.name}} @ {{ stock.price}}.
 
-Please click on the link below to confirm your purchase.
-{{ url_for('profile', token=token, _external=True) }}
+
+Your wallet has been charged for $ {{bill}}
+Updated balance = $ {{wallet}}
 
 If you have not requested a stock purchase simply ignore this message.
 
