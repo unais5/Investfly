@@ -1,11 +1,8 @@
 <p>Dear {{ user.username }},</p>
 <p>
-You have purchased {{stock.volume}} units of {{ stock.name}} @ {{ stock.purchase_price}}.
-
-Please click on the link below to confirm your purchase.
-<a href="{{ url_for('profile', token=token, _external=True) }}">
-    click here
-</a>.
+You have purchased {{stock.volume}} units of {{ stock.name}} @ {{ stock.price}}.
+<p>Your wallet has been charged for $ {{bill}}</p>
+<p>Updated balance = $ {{wallet}}</p>
 
 If you have not requested a stock purchase simply ignore this message.
 </p>

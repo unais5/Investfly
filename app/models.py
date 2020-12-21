@@ -118,7 +118,7 @@ class stock(db.Model):
     stock_name = db.Column(db.String, nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     curr_price = db.Column(db.Float, nullable=False)
-    transaction_date = db.Column(db.String, nullable=False)
+    # transaction_date = db.Column(db.String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user_login.id',onupdate='CASCADE',ondelete='CASCADE'), nullable=False)
 
     def __repr__(self):
@@ -174,3 +174,9 @@ admin.add_view(ModelView(user_info, db.session))
 admin.add_view(ModelView(wallet, db.session))
 admin.add_view(ModelView(stock, db.session))
 admin.add_view(ModelView(transaction, db.session))
+
+class ticker_info():
+    def __init__(self, name, volume, price):
+        self.name = name
+        self.price = price
+        self.volume = volume
