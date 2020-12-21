@@ -4,7 +4,7 @@ body{
  .card {
    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
    transition: 0.3s;
-   width:300px;
+   width: 95%;;
    height: 150px;
    border-radius: 10px; 
    background: #27293d;
@@ -172,14 +172,14 @@ border: 2px solid white;
   }
 
   .search-box{
-    margin-left:850px;
-    margin-top: 30px;
+    margin-left:67%;
+    margin-top: 2.5%;
   }
 
   .table{
   overflow: hidden;
   background-color: #27293d;
-  width: 540px;
+  width: 56%;
   padding-bottom: 30px;
   padding-top: 15px;
   border-radius: 10px;
@@ -187,7 +187,7 @@ border: 2px solid white;
   }
 
   .row1{
-      margin-left: 280px;
+      margin-left: 22.5%;
       margin-top: -385px;
   }
 

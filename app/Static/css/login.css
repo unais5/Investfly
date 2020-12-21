@@ -13,9 +13,9 @@ a{color:inherit;text-decoration:none}
 
 .login-wrap{
 	width: 100%;
-    margin-top: 90px;
+    margin-top: 7%;
     margin-left: 55%;
-	max-width:510px;
+	max-width: 42%;;
 	min-height:510px;
 	position:relative;
     background-size: cover;
@@ -28,23 +28,7 @@ a{color:inherit;text-decoration:none}
 	padding:90px 70px 50px 70px;
 	background:rgba(0,0,0,0.5);
 }
-.reg-wrap{
-	width: 100%;
-    margin-top: 120px;
-    margin-left: 3%;
-	max-width:510px;
-	min-height:613px;
-	position:relative;
-    background-size: cover;
-	box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
-}
-.reg-html{
-	width:100%;
-	height:100%;
-	position:absolute;
-	padding:90px 70px 50px 70px;
-	background:rgba(0,0,0,0.5);
-}
+
 .login-html .sign-in-htm,
 .login-html .for-pwd-htm{
 	top:0;
