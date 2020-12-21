@@ -16,7 +16,6 @@
 		<div class="login-form">
 			<form action="" method="post" novalidate>
 				{{ form.hidden_tag() }}
-			<!-- <div class="sign-in-htm"> -->
 				<div class="group">
 					{% with messages = get_flashed_messages() %}
 					{% if messages %}
@@ -59,7 +58,6 @@
 					<input type="submit" class="button" value="Register" >
 				</div>
 				<div class="hr"></div>
-			<!-- </div> -->
 			</form>
 			{% if error %}
 			<div class="alert alert-danger  alerty-dismissal fade show" role="alert">

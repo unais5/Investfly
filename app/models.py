@@ -31,7 +31,10 @@ class user_login(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
 
     def __repr__(self):
-        return '<User {}>'.format(self.username)   
+        return '<User {}>'.format(self.username)
+
+    def __repr__(self):
+        return '<User %r>' % (self.id)   
     
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -91,6 +94,9 @@ class user_info(db.Model):
     def __repr__(self):
         return '<User {}>'.format(self.fname)
     
+    def __repr__(self):
+        return '<user_info %r>' % (self.user_id)   
+
     @staticmethod
     def valid_phone_num(phone):
         return phone.isdigit()
@@ -103,6 +109,10 @@ class wallet(db.Model):
     def __repr__(self):
         return '<Wallet # {}>'.format(self.id)
 
+    def __repr__(self):
+        return '<wallet %r>' % (self.user_id)
+        
+
 class stock(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     stock_name = db.Column(db.String, nullable=False)
@@ -113,6 +123,9 @@ class stock(db.Model):
 
     def __repr__(self):
         return '<Stock # {}>'.format(self.id)
+
+    def __repr__(self):
+        return '<stock %r>' % (self.user_id)
     
     def update_price(self):
         ticker = yf.Ticker(self.stock_name)
@@ -134,6 +147,9 @@ class transaction(db.Model):
     
     def __repr__(self):
         return '<Transaction # {}>'.format(self.id)
+
+    def __repr__(self):
+        return '<transaction %r>' % (self.user_id)
 
 # class available_stock(db.Model):
 #     id = db.Column(db.Integer, primary_key=True, nullable=False)

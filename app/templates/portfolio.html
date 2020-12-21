@@ -19,10 +19,9 @@
           {% for cell in row %}
           <td class="tab_body">{{ cell }}</td>
           {% endfor %}
+          <td><a href="{{url_for('transactions')}}" id="myBtn" class="btn btn-fill btn-primary">SELL</a></td>
       </tr>
       {% endfor %}
    </table>
 </div>
-
-<a href="{{url_for('transactions')}}" id="myBtn" class="btn btn-fill btn-primary">SELL</a>
 {% endblock %}
