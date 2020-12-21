@@ -61,28 +61,38 @@
 </div>
     </div>
   </div>
-<button id="myBtn" class="btn btn-fill btn-primary">BUY</button>
-  <div id="myModal" class="modal">
+  <div>
+<button id="myBtn" class="btn btn-fill btn-primary">BUY</button> </div>
+
+
+  <div id="myModal" class="modal" aria-labelledby="FormModal" aria-hidden="true">
     <div class="modal-content">
       <div class="example">
         <span class="close">&times;</span>
+        <form action="" method="post" novalidate>
+          {{ form.hidden_tag() }} 
         <div class="data">
           <label class=labels1 for="fname">Share Name</label>
-          <input class="items" type="text" name="Share Name" placeholder="Share Name">
+          {{form.name(class_='items', placeholder="Stock Name")}}
+          <!-- <input class="items" type="text" name="Share Name" placeholder="Share Name"> -->
         </div>
         <div class="data">
           <label class=labels3 for="fname">Share Volume</label>
-          <input class="items" type="number" name="Share Volume" placeholder="Share Volume">
+          {{ form.volume(class_='items', placeholder="Puchase Volume") }}
+          <!-- <input class="items" type="number" name="Share Volume" placeholder="Share Volume"> -->
         </div>
         <div class="data">
           <label class=labels2 for="fname">Password</label>
-          <input class="items" type="password" name="Password" placeholder="Password">
+          {{ form.pwd(class_='items',placeholder="Enter Password",type='password')}}
+          <!-- <input class="items" type="password" name="Password" placeholder="Password"> -->
         </div>
         <div class="bts">
         <button type="submit" class="btn btn-fill btn-primary">Confirm</button>
+        <!-- {{ form.submit(class="btn btn-fill btn-primary")}} -->
         </div>
+        </form>
       </div>
-    </div>
+    </div>      
   </div>
 
 

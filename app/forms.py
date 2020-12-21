@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextField, IntegerField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, DataRequired
 from app.models import user_login
 from flask import render_template
@@ -54,3 +54,9 @@ class EditProfileForm(FlaskForm):
 class SearchForm(FlaskForm):
     search = StringField('Search..')
     submit = SubmitField('Search')
+
+class BuyForm(FlaskForm):
+    name = StringField('Stock Name')
+    volume = IntegerField('Volume')
+    pwd = StringField('Enter Password')
+    submit = SubmitField('Confirm Purchase')

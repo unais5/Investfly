@@ -1,0 +1,12 @@
+Dear {{ user.username }},
+
+You have purchased {{stock.volume}} units of {{ stock.name}} @ {{ stock.purchase_price}}.
+
+Please click on the link below to confirm your purchase.
+{{ url_for('profile', token=token, _external=True) }}
+
+If you have not requested a stock purchase simply ignore this message.
+
+Sincerely,
+
+The InvestFly Team
