@@ -64,19 +64,26 @@
   </div>
   <div>
 <button id="myBtn" class="btn btn-fill btn-primary">BUY</button> </div>
-  <div id="myModal" class="modal">
+
+
+  <div id="myModal" class="modal" aria-labelledby="FormModal" aria-hidden="true">
     <div class="modal-content">
-      <div id="form-box">
+      <form id="form-box">
+        {{ form.hidden_tag()}}
         <span class="close">&times;</span>
           <i id="prev-btn" class="fas fa-arrow-left"></i>
           <i id="next-btn" class="fas fa-arrow-right"></i>
             <div id="input-group">
-              <input id="input-field" required>
+              <!-- <input id="input-field" type="text" required > -->
               <label id="input-label"></label>
+              
+                {{form.volume}}
+                {{form.pwd}}
+                {{form.submit}}
                 <div id="input-progress"></div>
               </div>
               <div id="progress-bar"></div>
-      </div>
+          </form>
     </div>
   </div>
 

@@ -1,6 +1,7 @@
 from flask import render_template, flash, redirect, url_for, request , jsonify
+import json
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, ResetPasswordForm, ResetPasswordRequestForm, UserInfoForm, EditProfileForm , SearchForm
+from app.forms import LoginForm, RegistrationForm, ResetPasswordForm, ResetPasswordRequestForm, UserInfoForm, EditProfileForm , SearchForm , BuyForm
 from flask_login import current_user, login_user, login_required, logout_user
 from app.models import user_login, user_info, wallet, stock
 from werkzeug.urls import url_parse
@@ -53,16 +54,19 @@ def dashboard():
     headings = ['ID', 'Name', 'Previous Closing', 'Transaction Date']
     user_stocks = stock.query.filter_by(user_id=current_user.id).all()
     data = []
+    form = BuyForm()
     for i in range(len(user_stocks)):
         data.append(user_stocks[i].get_list())
     if search_s.validate_on_submit():
         ticker = yf.Ticker(search_s.search.data)
         ticker_info = ticker.info
         search_results = [search_s.search.data, ticker_info['previousClose'], ticker_info['volume']]
-    if request.method == 'POST':
-        jsdata = request.form['buying_data']
-        return json.loads(jsdata)[0]
-    return render_template('dashboard.html', wallet=u_wallet ,data=data , headings=headings, results=search_results, searches=search_s)
+    # if request.method == 'POST':
+    #     jsdata = request.form['buying_data']
+    #     return json.loads(jsdata)[0]
+    if form.validate_on_submit():
+        return form.volume
+    return render_template('dashboard.html', wallet=u_wallet ,data=data , headings=headings, results=search_results, searches=search_s, form=form)
 
 
 @app.route('/verify_user/<token>', methods = ['GET', 'POST'])
