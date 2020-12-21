@@ -69,13 +69,19 @@
   <div id="myModal" class="modal" aria-labelledby="FormModal" aria-hidden="true">
     <div class="modal-content">
       <span class="close">&times;</span>
+      <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }} 
+
+        
       <div class="example">
-      <label for="user" class="label">Share Name</label>
-      <input id="user" type="text" class="input" placeholder="Share Name" name="sharename">
-      <label for="user" class="label">Volume</label>
-      <input id="user" type="number" class="input" placeholder="Volume" name="Volume">
-      <label for="user" class="label">Password</label>
-      <input id="user" type="password" class="input" placeholder="Password" name="Password">
+      <label class="label">Share Name</label>
+      {{form.name(class_='items', placeholder="Stock Name")}}
+      <label class="label">Volume</label>
+      {{ form.volume(class_='items', placeholder="Puchase Volume") }}
+      <label class="label">Password</label>
+      {{ form.pwd(class_='items',placeholder="Enter Password",type='password')}}
+      {{ form.submit }}
+    </form>
     </div>
     </div>
   </div>

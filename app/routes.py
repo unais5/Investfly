@@ -57,6 +57,9 @@ def dashboard():
     form = BuyForm()
     for i in range(len(user_stocks)):
         data.append(user_stocks[i].get_list())
+    if form.validate_on_submit():
+        abc = form.name.data
+        return abc
     if search_s.validate_on_submit():
         ticker = yf.Ticker(search_s.search.data)
         ticker_info = ticker.info
@@ -64,8 +67,7 @@ def dashboard():
     # if request.method == 'POST':
     #     jsdata = request.form['buying_data']
     #     return json.loads(jsdata)[0]
-    if form.validate_on_submit():
-        return form.volume
+    
     return render_template('dashboard.html', wallet=u_wallet ,data=data , headings=headings, results=search_results, searches=search_s, form=form)
 
 
