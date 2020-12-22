@@ -8,6 +8,6 @@ from app.models import user_login, user_info, wallet, stock, ticker_info
 
 def search_ticker(names):
     ticker = yf.Ticker(names)
-    return ticker_info( name=names,
+    return ticker_info( name=names.upper(),
                         price=ticker.info['previousClose'],
                         volume=ticker.info['volume'])
