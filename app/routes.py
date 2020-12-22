@@ -265,7 +265,6 @@ def verify_user(token):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        # return redirect(url_for('home_page'))
         return redirect(url_for('dashboard'))
     form = LoginForm()
     formpwd = ResetPasswordRequestForm()
@@ -281,10 +280,10 @@ def login():
                 return redirect(url_for('login'))
             login_user(user, remember=False)
             #### UNCOMMENT LATER THIS IS USEFUL CODE
-            # user_stocks = stock.query.filter_by(user_id=current_user.id).all()
-            # for i in range(len(user_stocks)):
-            #     user_stocks[i].update_price()
-            #     db.session.commit()
+            user_stocks = stock.query.filter_by(user_id=current_user.id).all()
+            for i in range(len(user_stocks)):
+                user_stocks[i].update_price()
+                db.session.commit()
             return redirect(request.args.get("next") or url_for('home_page'))
     if formpwd.validate_on_submit():
         user = user_login.query.filter_by(email = formpwd.email.data).first()
