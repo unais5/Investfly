@@ -1,0 +1,10 @@
+Dear {{ user.username }},
+
+You have listed {{stock.volume}} units of {{ stock.name}} @ {{ stock.price}}.
+
+
+If you have not listed this stock simply ignore this message.
+
+Sincerely,
+
+The InvestFly Team

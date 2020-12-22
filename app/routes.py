@@ -53,7 +53,8 @@ def sell(s_name):
                     #                                         curr_price=to_sell.sale_price.data)
                     # db.session.add(stock_for_sale)
                     # db.session.commit()
-                    return str( user_stock_exists.quantity)
+                    send_listing_email(user_data, sell_ticker)
+                    return redirect(url_for('dashboard'))
                 else:
                     return str( "not sold" )
         # has_stock = stock.query.filter_by(user_id=current_user.id).first()
