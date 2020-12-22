@@ -30,43 +30,45 @@ def stocks():
 @app.route('/sell<s_name>' ,methods = ['GET' , 'POST'])
 @login_required
 def sell(s_name):
-    to_sell = SellForm()
-    to_sell.name = s_name
-    if to_sell.validate_on_submit():
-        user_data = user_login.query.filter_by(id=current_user.id).first()
-        sell_ticker = ticker_info(name=to_sell.name,
-                                    volume=to_sell.volume,
-                                    price=to_sell.sale_price)
-        if user_data and user_data.check_password(to_sell.password.data):
+    to_sell = s_name
+    user_data = user_login.query.filter_by(id=current_user.id).first()
+    if request.method == 'POST':
+        s_price = request.form['sale_price']
+        vol =int( request.form['volume'] )
+        pwd = request.form['password']
+        
+        sell_ticker = ticker_info(name=to_sell,
+                                    volume=vol,
+                                    price=s_price)
+        if user_data and user_data.check_password(pwd):
             #if THIS user has THIS stock 
-            user_stock_exists = stock.query.filter_by(stock_name=s_name, user_id=current_user.id).first()
+            user_stock_exists = stock.query.filter_by(stock_name=to_sell, user_id=current_user.id).first()
             if user_stock_exists:
-                # does he have sufficient quantity of this stock?
-                if str(user_stock_exists.quantity ) < str(sell_ticker.volume):
-                    user_stock_exists.quantity = int(str(user_stock_exists.quantity) - str(sell_ticker.volume))
-                    # sell_stock_exists = available_stocks.query.filter_by(stock_name=s_name, user_id=current_user.id).first()
-                    # if sell_stock_exists:
-                    #     sell_stock_exists.quantity = sell_stock_exists.quantity + to_sell
-                    # stock_for_sale = available_stocks(stock_name=user_stock_exists.stock_name,
-                    #                                         seller_id=current_user.id,
-                    #                                         quantity=user_stock_exists.get_vol(),
-                    #                                         curr_price=to_sell.sale_price.data)
-                    # db.session.add(stock_for_sale)
-                    # db.session.commit()
-                    return str( user_stock_exists.quantity)
+                if user_stock_exists.quantity >= vol:
+                    user_stock_exists.quantity = user_stock_exists.quantity - vol
+                    # check ifTHIS user has put THIS share up for sale before as well
+                    stk_exists = available_stocks.query.filter_by(stock_name=to_sell, seller_id=current_user.id).first()
+                    db.session.commit()
+                    if stk_exists:
+                        stk_exists.quantity = stk_exists.quantity + vol
+                        stk_exists.curr_price = s_price
+                        db.session.commit()
+                        # send_purchase_email(user_data, stk_exists)
+                        return "bought"
+                    else:
+                        new_stk_sale = available_stocks(stock_name=to_sell,
+                                                        seller_id=current_user.id,
+                                                        quantity=vol,
+                                                        curr_price=s_price)
+                        db.session.add(new_stk_sale)
+                        db.session.commit()
+                        # send_purchase_email(user_data, new_stk_sale)
+                        return "bought"
                 else:
-                    return str( "not sold" )
-        # has_stock = stock.query.filter_by(user_id=current_user.id).first()
-        return str(has_stock)
-    return render_template("sell.html", sell=to_sell)
-
-# @app.route('/user/<username>')
-# @login_required
-# def user(username):
-#     user = user_login.query.filter_by(username=username).first_or_404()
-#     userinfo = user_info.query.filter_by(user_id=user.id).first()
-#     if userinfo and user:
-#         return render_template('user.html', user=user, userinfo=userinfo)
+                    return "cannot buy. you dont have that much"
+            else:
+                return "pwd incorrect"
+    return render_template("sell.html", s_name=s_name)
 
 @app.route('/buy', methods = ['GET' , 'POST'])
 @login_required
