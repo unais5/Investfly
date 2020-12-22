@@ -32,6 +32,16 @@ def send_purchase_email(user, stock_data, bill, wallet):
                text_body=render_template('email/conf_purchase.txt',user=user, token=token, stock=stock_data, bill=bill, wallet=wallet),
             #    remove text body - NEVERMIND DONT REMOVE PHAT JAEGA
                html_body=render_template('email/conf_purchase.html',user=user, token=token, stock=stock_data,bill=bill, wallet=wallet))
+                                        
+
+def send_listing_email(user, stock_data):
+    token = user.get_verify_user_token()
+    send_email('[InvestFly]Confirm your listing',
+                sender= 'investflycorporation@gmail.com',
+               recipients=[user.email],
+               text_body=render_template('email/conf_listing.txt',user=user, token=token, stock=stock_data),
+            #    remove text body - NEVERMIND DONT REMOVE PHAT JAEGA
+               html_body=render_template('email/conf_listing.html',user=user, token=token, stock=stock_data))
                                          
 def send_async_email(app, msg):
     with app.app_context():

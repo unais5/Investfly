@@ -4,7 +4,7 @@ from app.forms import LoginForm, RegistrationForm, ResetPasswordForm, ResetPassw
 from flask_login import current_user, login_user, login_required, logout_user
 from app.models import user_login, user_info, wallet, stock , ticker_info , available_stocks
 from werkzeug.urls import url_parse
-from app.email import send_password_reset_email, send_user_verification_email, send_purchase_email
+from app.email import send_password_reset_email, send_user_verification_email, send_purchase_email ,send_listing_email
 import yfinance as yf
 from app.finance import search_ticker
 from datetime import *
@@ -54,8 +54,8 @@ def sell(s_name):
                         stk_exists.quantity = stk_exists.quantity + vol
                         stk_exists.curr_price = s_price
                         db.session.commit()
-                        # send_purchase_email(user_data, stk_exists)
-                        return "bought"
+                        send_listing_email(user_data, sell_ticker)
+                        return redirect(url_for('dashboard'))
                     else:
                         new_stk_sale = available_stocks(stock_name=to_sell,
                                                         seller_id=current_user.id,
@@ -63,13 +63,16 @@ def sell(s_name):
                                                         curr_price=s_price)
                         db.session.add(new_stk_sale)
                         db.session.commit()
-                        # send_purchase_email(user_data, new_stk_sale)
-                        return "bought"
+                        send_listing_email(user_data, sell_ticker)
+                        return redirect(url_for('dashboard'))
                 else:
-                    return "cannot buy. you dont have that much"
+                    flash("You don't have sufficient stock")
+                    return redirect(url_for('sell'))
             else:
                 return "pwd incorrect"
     return render_template("sell.html", s_name=s_name)
+
+
 
 @app.route('/buy', methods = ['GET' , 'POST'])
 @login_required
