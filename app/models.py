@@ -155,7 +155,7 @@ class transaction(db.Model):
 
 class available_stocks(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    stock_name = db.Column(db.String, db.ForeignKey('stock.stock_name',onupdate='CASCADE', ondelete='CASCADE'), nullable=False)
+    stock_name = db.Column(db.String, db.ForeignKey('stock.stock_name'), nullable=False)
     seller_id = db.Column(db.Integer, db.ForeignKey('user_login.id',onupdate='CASCADE', ondelete='CASCADE'), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     curr_price = db.Column(db.Float, nullable=False)

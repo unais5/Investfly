@@ -1,8 +1,8 @@
-"""updates
+"""fk err
 
-Revision ID: 05366fc90603
+Revision ID: f5879e322a27
 Revises: 
-Create Date: 2020-12-22 22:06:20.089122
+Create Date: 2020-12-23 01:14:30.162330
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '05366fc90603'
+revision = 'f5879e322a27'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -68,7 +68,7 @@ def upgrade():
     sa.Column('quantity', sa.Integer(), nullable=False),
     sa.Column('curr_price', sa.Float(), nullable=False),
     sa.ForeignKeyConstraint(['seller_id'], ['user_login.id'], onupdate='CASCADE', ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['stock_name'], ['stock.stock_name'], onupdate='CASCADE', ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['stock_name'], ['stock.stock_name'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('transaction',

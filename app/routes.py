@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, url_for, request , jsonify
 from app import app, db 
 from app.forms import LoginForm, RegistrationForm, ResetPasswordForm, ResetPasswordRequestForm, UserInfoForm, EditProfileForm , SearchForm , BuyForm, SellForm
 from flask_login import current_user, login_user, login_required, logout_user
-from app.models import user_login, user_info, wallet, stock , ticker_info , available_stocks
+from app.models import user_login, user_info, wallet, stock , ticker_info , available_stocks , transaction
 from werkzeug.urls import url_parse
 from app.email import send_password_reset_email, send_user_verification_email, send_purchase_email ,send_listing_email
 import yfinance as yf
@@ -15,25 +15,97 @@ from sqlalchemy import *
 def admin():
     return render_template("admin.index")
 
-# @app.route('/buyListing/<s_name>' ,methods = ['GET' , 'POST'])
-# @login_required
-# def buyListing(s_name):
-#     # ['TSLA', 'alis', 444.0, 2]
-#     return s_name
-#     buy = BuyForm()
-#     return render_template("peerbuy.html", buy=buy)
+@app.route('/buyListing/<stk>/<nm>/<pr>/<qt>' ,methods = ['GET' , 'POST'])
+@login_required
+def buyListing(stk,nm,pr,qt):
+    if request.method == 'POST':
+        qty = request.form['volume']
+        pwd = request.form['password']
+        user_data = user_login.query.filter_by(id=current_user.id).first()
+        
+        if user_data and user_data.check_password(pwd): # if the user is valid & entered correct pwd
+            bill = float(pr) * float(qty)
+
+            seller_id = user_login.query.filter_by(username=nm).first().id
+            if seller_id != current_user.id:
+
+                seller_wallet = wallet.query.filter_by(user_id=seller_id).first()
+                buyer_wallet = wallet.query.filter_by(user_id=current_user.id).first()
+                
+                seller_portfolio = stock.query.filter_by(stock_name=stk, user_id=seller_id).first()
+                seller_listing = available_stocks.query.filter_by(seller_id=seller_id, stock_name=stk).first()
+
+                if bill <= buyer_wallet.balance and qty <= qt and seller_listing and seller_portfolio:
+                    buyer_wallet.balance = buyer_wallet.balance - bill
+                    seller_wallet.balance = seller_wallet.balance + bill
+
+                    seller_portfolio.quantity = seller_portfolio.quantity - int(qty)
+                    seller_listing.quantity = seller_listing.quantity - int(qty)
+                    db.session.commit()
+
+                    if seller_portfolio.quantity <= 0:
+                        db.session.delete(seller_portfolio)
+                        db.session.commit()
+                    if seller_listing.quantity <= 0:
+                        db.session.delete(seller_listing)
+                        db.session.commit()
+                    
+                    buyer_portfolio = stock.query.filter_by(stock_name=stk, user_id=current_user.id).first()
+                    if buyer_portfolio:
+                        buyer_portfolio.quantity = buyer_portfolio.quantity + int(qty)
+                        buyer_portfolio.curr_price = pr
+                        st_id = buyer_portfolio.id
+                        db.session.commit()
+                    else:
+                        add_to_portfolio = stock(stock_name=stk,
+                                                    quantity=int(qty),
+                                                    curr_price=float(pr),
+                                                    user_id=current_user.id)
+                        st_id= add_to_portfolio.id
+                        db.session.add(add_to_portfolio)
+                        db.session.commit()
+                    # send_purchase_email(user_data, buy_stock, bill, user_wallet.balance)
+                    # send_listing_email()
+                    curr_trns = transaction(transaction_date=date.today(),
+                                            buyer_id=current_user.id,
+                                            seller_id=seller_id,
+                                            quantity=qty,
+                                            selling_price=float(pr),
+                                            stock_id=st_id)
+                    db.session.add(curr_trns)
+                    db.session.commit()
+                    return redirect(url_for('dashboard'))
+                else:
+                    flash("Insufficient Balance or quantity out of bounds ")
+                    return redirect(url_for('buy',s_name=stk))
+            else:
+                flash("Cannot purchase from self!")
+                return redirect(url_for('dashboard'))
+    return render_template("peerbuy.html", stock=stk, stk_price=pr)
 
 @app.route('/stocks', methods = ['GET' , 'POST'])
 @login_required
 def stocks():
     headings = ['ID', 'Name', 'Sale Price' ,'Volume']
-    sell_s = available_stocks.query.filter_by().all()
+    sell_s = available_stocks.query.filter((available_stocks.seller_id>current_user.id) | (available_stocks.seller_id<current_user.id)).all()
 
     sell_stocks = []
     for i in range(len(sell_s)):
         sell_stocks.append(sell_s[i].get_list())
         sell_stocks[i][1] = user_login.query.filter_by(id=sell_s[i].seller_id).first().username
     return render_template('stock.html' , data=sell_stocks , headings=headings)
+
+@app.route('/myListings', methods = ['GET' , 'POST'])
+@login_required
+def myListings():
+    headings = ['ID', 'Name', 'Sale Price' ,'Volume']
+    sell_s = available_stocks.query.filter_by(seller_id=current_user.id).all()
+
+    sell_stocks = []
+    for i in range(len(sell_s)):
+        sell_stocks.append(sell_s[i].get_list())
+        sell_stocks[i][1] = user_login.query.filter_by(id=sell_s[i].seller_id).first().username
+    return render_template('myListings.html' , data=sell_stocks , headings=headings)
 
 @app.route('/sell/<s_name>' ,methods = ['GET' , 'POST'])
 @login_required
@@ -48,30 +120,32 @@ def sell(s_name):
         sell_ticker = ticker_info(name=to_sell,
                                     volume=vol,
                                     price=s_price)
+
         if user_data and user_data.check_password(pwd):
             #if THIS user has THIS stock 
             user_stock_exists = stock.query.filter_by(stock_name=to_sell, user_id=current_user.id).first()
             if user_stock_exists:
                 if user_stock_exists.quantity >= vol:
-                    user_stock_exists.quantity = user_stock_exists.quantity - vol
+                    ### user_stock_exists.quantity = user_stock_exists.quantity - vol
                     # check ifTHIS user has put THIS share up for sale before as well
                     stk_exists = available_stocks.query.filter_by(stock_name=to_sell, seller_id=current_user.id).first()
-                    db.session.commit()
                     if stk_exists:
-                        stk_exists.quantity = stk_exists.quantity + vol
-                        stk_exists.curr_price = s_price
-                        db.session.commit()
-                        send_listing_email(user_data, sell_ticker)
-                        return redirect(url_for('dashboard'))
+                        if (stk_exists.quantity + vol) <= user_stock_exists.quantity:
+                            stk_exists.quantity = stk_exists.quantity + vol
+                            stk_exists.curr_price = s_price
+                            db.session.commit()
+                            send_listing_email(user_data, sell_ticker)
+                            return redirect(url_for('dashboard'))
                     else:
-                        new_stk_sale = available_stocks(stock_name=to_sell,
-                                                        seller_id=current_user.id,
-                                                        quantity=vol,
-                                                        curr_price=s_price)
-                        db.session.add(new_stk_sale)
-                        db.session.commit()
-                        send_listing_email(user_data, sell_ticker)
-                        return redirect(url_for('dashboard'))
+                        if vol <= user_stock_exists.quantity:
+                            new_stk_sale = available_stocks(stock_name=to_sell,
+                                                            seller_id=current_user.id,
+                                                            quantity=vol,
+                                                            curr_price=s_price)
+                            db.session.add(new_stk_sale)
+                            db.session.commit()
+                            send_listing_email(user_data, sell_ticker)
+                            return redirect(url_for('dashboard'))
                 else:
                     flash("You don't have sufficient stock")
                     return redirect(url_for('sell'))
@@ -94,19 +168,20 @@ def buy(s_name):
             buy_stock.volume = buy.volume.data
             bill = buy_stock.price * buy_stock.volume
             user_wallet = wallet.query.filter_by(user_id=current_user.id).first()
-            if bill < user_wallet.balance:
+            if bill <= user_wallet.balance:
                 user_wallet.balance = user_wallet.balance - bill
                 stock_exists = stock.query.filter_by(stock_name=s_name, user_id=current_user.id).first()
                 if stock_exists:
                     stock_exists.quantity = stock_exists.quantity + buy_stock.volume
                     stock_exists.curr_price = buy_stock.price
+                    db.session.commit()
                 else:
                     add_stock = stock(stock_name=s_name, 
                                     quantity=buy_stock.volume,
                                     curr_price=buy_stock.price,
                                     user_id=current_user.id)
                     db.session.add(add_stock)
-                db.session.commit()
+                    db.session.commit()
                 send_purchase_email(user_data, buy_stock, bill, user_wallet.balance)
                 return redirect(url_for('dashboard'))
             else:
