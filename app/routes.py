@@ -15,11 +15,18 @@ def admin():
     return render_template("admin.index")
 
 
-@app.route('/transactions', methods = ['GET' , 'POST'])
+@app.route('/sell' ,methods = ['GET' , 'POST'])
 @login_required
-def transactions():
-    buy = BuyForm()
+def sell():
     sell = SellForm()
+    return render_template("sell.html", sell=sell)
+
+
+
+@app.route('/buy', methods = ['GET' , 'POST'])
+@login_required
+def buy():
+    buy = BuyForm()
     if buy.validate_on_submit():
         user_data = user_login.query.filter_by(id=current_user.id).first()
         if user_data and user_data.check_password(buy.password.data): # if the user is valid & entered correct pwd
@@ -44,7 +51,7 @@ def transactions():
                 return str(user_wallet.balance)
             else:
                 return str(bill)
-    return render_template("buy.html", buy=buy, sell=sell)
+    return render_template("buy.html", buy=buy)
 
 @app.route('/')
 def home_page():

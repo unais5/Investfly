@@ -19,7 +19,7 @@
           {% for cell in row %}
           <td class="tab_body">{{ cell }}</td>
           {% endfor %}
-          <td><a href="{{url_for('transactions')}}" id="myBtn" class="btn btn-fill btn-primary">SELL</a></td>
+          <td><a href="{{url_for('sell')}}" id="myBtn" class="btn btn-fill btn-primary">SELL</a></td>
       </tr>
       {% endfor %}
    </table>

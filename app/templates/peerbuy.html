@@ -5,12 +5,6 @@
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
         <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
         <link rel= "stylesheet" type= "text/css" href= "{{url_for('static',filename='css/login.css')}}">
-        <style>
-            .login-wrap{
-                min-height: 600px;
-                margin-top: 0px;
-            }
-        </style>
     </head>
     <body>
         <div class="login-wrap">
@@ -20,7 +14,7 @@
                 <input id="tab-2" type="radio"  name="tab" class="for-pwd"><label for="tab-2" class="tab"></label>
                 <div class="login-form">
                     <form action="" method="post" novalidate>
-                        {{ sell.hidden_tag() }}
+                        {{ buy.hidden_tag() }}
                     <div class="sign-in-htm">
                         <div class="group">
                             <label for="user" class="label">Share Name</label>
@@ -29,10 +23,6 @@
                         <div class="group">
                             <label for="vol" class="label">Share Volume</label>
                             <input id="vol" type="number" class="input" placeholder="Volume" name="volume">
-                        </div>
-                        <div class="group">
-                            <label for="vol" class="label">Share Price</label>
-                            <input id="vol" type="number" class="input" placeholder="Price" name="Price">
                         </div>
                         <div class="group">
                             <label for="pass" class="label">Password</label>
