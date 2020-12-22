@@ -44,7 +44,7 @@
 
 
 <div class="search-box">
- <form action="" method="post" >
+ <form name="Form" action="" method="post" >
   {{ searches.hidden_tag() }}
   <div class="shares">
     <div class="example">
@@ -57,11 +57,11 @@
     </div>
     <div class="data">
       <label class=label2 for="fname">Share Price</label>
-      <input class="items" type="text" name="Share Name" placeholder="{{ results[1]}}" disabled>
+      <input class="items" type="text" name="Share Price" placeholder="{{ results[1]}}" disabled>
     </div>
     <div class="data">
       <label class=label3 for="fname">Share Volume</label>
-      <input class="items" type="text" name="Share Name" placeholder="{{ results[2]}}" disabled>
+      <input class="items" type="text" name="Share Volume" placeholder="{{ results[2]}}" disabled>
     </div>
   </form>
   </div>
@@ -70,7 +70,7 @@
 
 
 <div>
-<a href="{{url_for('buy', s_name=results[0])}}"id="myBtn" class="btn btn-fill btn-primary">BUY</a>
+<a href="{{url_for('buy', s_name=results[0])}}" id="myBtn" class="btn btn-fill btn-primary">BUY</a>
 </div>
 
 

@@ -15,13 +15,13 @@ from sqlalchemy import *
 def admin():
     return render_template("admin.index")
 
-@app.route('/buyListing/<s_name>' ,methods = ['GET' , 'POST'])
-@login_required
-def buyListing(s_name):
-    # ['TSLA', 'alis', 444.0, 2]
-    return s_name
-    buy = BuyForm()
-    return render_template("peerbuy.html", buy=buy)
+# @app.route('/buyListing/<s_name>' ,methods = ['GET' , 'POST'])
+# @login_required
+# def buyListing(s_name):
+#     # ['TSLA', 'alis', 444.0, 2]
+#     return s_name
+#     buy = BuyForm()
+#     return render_template("peerbuy.html", buy=buy)
 
 @app.route('/stocks', methods = ['GET' , 'POST'])
 @login_required
@@ -84,11 +84,13 @@ def sell(s_name):
 @app.route('/buy/<s_name>', methods = ['GET' , 'POST'])
 @login_required
 def buy(s_name):
+    if s_name == "name":
+        return redirect(url_for("dashboard"))
     buy = BuyForm()
     if buy.validate_on_submit():
         user_data = user_login.query.filter_by(id=current_user.id).first()
         if user_data and user_data.check_password(buy.password.data): # if the user is valid & entered correct pwd
-            buy_stock = search_ticker(buy.name.data)
+            buy_stock = search_ticker(s_name)
             buy_stock.volume = buy.volume.data
             bill = buy_stock.price * buy_stock.volume
             user_wallet = wallet.query.filter_by(user_id=current_user.id).first()
@@ -109,7 +111,7 @@ def buy(s_name):
                 return redirect(url_for('dashboard'))
             else:
                 flash("Insufficient Balance in your wallet")
-                return redirect(url_for('buy'))
+                return redirect(url_for('buy',s_name=s_name))
     return render_template("buy.html", buy=buy, s_name=s_name)
 
 @app.route('/')
@@ -147,7 +149,7 @@ def profile():
 @login_required
 def dashboard():
     search_s = SearchForm()
-    search_results = ['', '']
+    search_results = ["name" , "price" , "volume"]
     user = user_info.query.filter_by(id=current_user.id).first_or_404()
     u_wallet = wallet.query.filter_by(user_id=current_user.id).first_or_404()
     

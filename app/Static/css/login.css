@@ -212,3 +212,7 @@ a{color:inherit;text-decoration:none}
 .btn{
 	margin-left: 80.3%;
 }
+
+.group[disabled] {
+	cursor: not-allowed;
+}
