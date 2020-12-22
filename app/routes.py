@@ -44,7 +44,7 @@ def transactions():
                 return str(user_wallet.balance)
             else:
                 return str(bill)
-    return render_template("transactions.html", buy=buy, sell=sell)
+    return render_template("buy.html", buy=buy, sell=sell)
 
 @app.route('/')
 def home_page():
