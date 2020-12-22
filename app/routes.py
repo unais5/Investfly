@@ -48,7 +48,7 @@ def buy():
                     db.session.add(add_stock)
                 db.session.commit()
                 send_purchase_email(user_data, buy_stock, bill, user_wallet.balance)
-                return str(user_wallet.balance)
+                return redirect(url_for('dashboard'))
             else:
                 return str(bill)
     return render_template("buy.html", buy=buy)
@@ -95,6 +95,7 @@ def dashboard():
     u_wallet.balance = "{:.2F}".format(u_wallet.balance)
     # assets = db.func(sum(stock.curr_price).filter_by(user_id=current_user.id))
     assets = db.session.query(func.sum(stock.curr_price)).filter(stock.user_id==current_user.id).scalar()
+    assets = "{:.2F}".format(assets)
     shares = db.session.query(func.sum(stock.quantity)).filter(stock.user_id==current_user.id).scalar()
     # return assets
     

@@ -10,8 +10,15 @@
                 margin-top: 3%;
             }
         </style>
+        <script type="text/javascript">// <![CDATA[
+            function loading(){
+                $("#loading").show();
+                $("#content").hide();       
+            }
+        // ]]></script>
     </head>
     <body>
+    <div id="content">
         <div class="login-wrap">
             <a href="{{url_for('dashboard')}}" class="btn btn-outline-dark text-light">Dashboard</a>
             <div class="login-html">
@@ -34,7 +41,7 @@
                             <input id="pass" type="password" class="input" data-type="password" placeholder="password" name="password">
                         </div>
                         <div class="group">
-                            <input type="submit" class="button" value="BUY">
+                            <input type="submit" class="button" value="BUY" onclick="loading();">
                         </div>
                         <div class="hr"></div>
                     </div>
@@ -42,5 +49,23 @@
                 </div>
             </div>
         </div>
+    </div>
+
+        <div id="loading">
+            <div id="circle">
+                <div class="loader">
+                 <div class="loader">
+                  <div class="loader">
+                    <div class="loader">
+                
+                    </div>
+                  </div>
+                </div>
+               </div>
+              </div>        
+            </div>
+
     </body>
 </html>
+
+
