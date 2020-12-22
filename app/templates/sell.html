@@ -20,16 +20,14 @@
                 <input id="tab-2" type="radio"  name="tab" class="for-pwd"><label for="tab-2" class="tab"></label>
                 <div class="login-form">
                     <form action="" method="post" novalidate>
-                        {{ sell.hidden_tag() }}
                     <div class="sign-in-htm">
                         <div class="group">
                             <label for="user" class="label">Share Name</label>
-                            <input id="user" type="text" class="input" placeholder="Name" name="name" value="{{ sell.name }}" disabled>
+                            <input id="user" type="text" class="input" placeholder="Name" name="name" value="{{ s_name }}" disabled>
                         </div>
                         <div class="group">
                             <label for="vol" class="label">Share Volume</label>
-                            <!-- <input id="vol" type="text" class="input" placeholder="Volume" name="volume" value="volume"> -->
-                            {{sell.volume(class_='input', placeholder='volume')}}
+                            <input id="vol" type="number" class="input" placeholder="Volume" name="volume" value="volume">
                         </div>
                         <div class="group">
                             <label for="vol" class="label">Share Price</label>
