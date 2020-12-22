@@ -15,6 +15,13 @@ from sqlalchemy import *
 def admin():
     return render_template("admin.index")
 
+@app.route('/buyListing/<s_name>' ,methods = ['GET' , 'POST'])
+@login_required
+def buyListing(s_name):
+    # ['TSLA', 'alis', 444.0, 2]
+    return s_name
+    buy = BuyForm()
+    return render_template("peerbuy.html", buy=buy)
 
 @app.route('/stocks', methods = ['GET' , 'POST'])
 @login_required
@@ -28,7 +35,7 @@ def stocks():
         sell_stocks[i][1] = user_login.query.filter_by(id=sell_s[i].seller_id).first().username
     return render_template('stock.html' , data=sell_stocks , headings=headings)
 
-@app.route('/sell<s_name>' ,methods = ['GET' , 'POST'])
+@app.route('/sell/<s_name>' ,methods = ['GET' , 'POST'])
 @login_required
 def sell(s_name):
     to_sell = s_name
@@ -74,9 +81,9 @@ def sell(s_name):
 
 
 
-@app.route('/buy', methods = ['GET' , 'POST'])
+@app.route('/buy/<s_name>', methods = ['GET' , 'POST'])
 @login_required
-def buy():
+def buy(s_name):
     buy = BuyForm()
     if buy.validate_on_submit():
         user_data = user_login.query.filter_by(id=current_user.id).first()
@@ -87,12 +94,12 @@ def buy():
             user_wallet = wallet.query.filter_by(user_id=current_user.id).first()
             if bill < user_wallet.balance:
                 user_wallet.balance = user_wallet.balance - bill
-                stock_exists = stock.query.filter_by(stock_name=buy_stock.name, user_id=current_user.id).first()
+                stock_exists = stock.query.filter_by(stock_name=s_name, user_id=current_user.id).first()
                 if stock_exists:
                     stock_exists.quantity = stock_exists.quantity + buy_stock.volume
                     stock_exists.curr_price = buy_stock.price
                 else:
-                    add_stock = stock(stock_name=buy_stock.name, 
+                    add_stock = stock(stock_name=s_name, 
                                     quantity=buy_stock.volume,
                                     curr_price=buy_stock.price,
                                     user_id=current_user.id)
@@ -103,7 +110,7 @@ def buy():
             else:
                 flash("Insufficient Balance in your wallet")
                 return redirect(url_for('buy'))
-    return render_template("buy.html", buy=buy)
+    return render_template("buy.html", buy=buy, s_name=s_name)
 
 @app.route('/')
 def home_page():

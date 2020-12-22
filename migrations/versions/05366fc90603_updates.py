@@ -1,8 +1,8 @@
-"""update avail stocks
+"""updates
 
-Revision ID: 803ead53efe0
+Revision ID: 05366fc90603
 Revises: 
-Create Date: 2020-12-22 16:45:42.515269
+Create Date: 2020-12-22 22:06:20.089122
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '803ead53efe0'
+revision = '05366fc90603'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -62,13 +62,14 @@ def upgrade():
     sa.UniqueConstraint('user_id')
     )
     op.create_table('available_stocks',
+    sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('stock_name', sa.String(), nullable=False),
     sa.Column('seller_id', sa.Integer(), nullable=False),
     sa.Column('quantity', sa.Integer(), nullable=False),
     sa.Column('curr_price', sa.Float(), nullable=False),
     sa.ForeignKeyConstraint(['seller_id'], ['user_login.id'], onupdate='CASCADE', ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['stock_name'], ['stock.stock_name'], onupdate='CASCADE', ondelete='CASCADE'),
-    sa.PrimaryKeyConstraint('stock_name', 'seller_id')
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_table('transaction',
     sa.Column('id', sa.Integer(), nullable=False),

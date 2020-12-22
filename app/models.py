@@ -149,17 +149,14 @@ class transaction(db.Model):
     stock_id = db.Column(db.Integer, db.ForeignKey('stock.id',onupdate='CASCADE',ondelete='CASCADE'), unique=True, nullable=False)
     
     def __repr__(self):
-        return '<Transaction # {}>'.format(self.id)
-
-    def __repr__(self):
         return '<transaction %r>' % (self.user_id)
     
     
 
 class available_stocks(db.Model):
-    # id = db.Column(db.Integer, primary_key=True, nullable=False)
-    stock_name = db.Column(db.String, db.ForeignKey('stock.stock_name',onupdate='CASCADE', ondelete='CASCADE'), nullable=False, primary_key=True)
-    seller_id = db.Column(db.Integer, db.ForeignKey('user_login.id',onupdate='CASCADE', ondelete='CASCADE'), nullable=False, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    stock_name = db.Column(db.String, db.ForeignKey('stock.stock_name',onupdate='CASCADE', ondelete='CASCADE'), nullable=False)
+    seller_id = db.Column(db.Integer, db.ForeignKey('user_login.id',onupdate='CASCADE', ondelete='CASCADE'), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     curr_price = db.Column(db.Float, nullable=False)
 
