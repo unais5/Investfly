@@ -1,8 +1,8 @@
-"""remove date from stock
+"""update avail stocks
 
-Revision ID: 8eb3b8607f8e
+Revision ID: 803ead53efe0
 Revises: 
-Create Date: 2020-12-22 02:34:24.287801
+Create Date: 2020-12-22 16:45:42.515269
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '8eb3b8607f8e'
+revision = '803ead53efe0'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -62,13 +62,13 @@ def upgrade():
     sa.UniqueConstraint('user_id')
     )
     op.create_table('available_stocks',
-    sa.Column('stock_id', sa.Integer(), nullable=False),
+    sa.Column('stock_name', sa.String(), nullable=False),
     sa.Column('seller_id', sa.Integer(), nullable=False),
     sa.Column('quantity', sa.Integer(), nullable=False),
     sa.Column('curr_price', sa.Float(), nullable=False),
-    sa.ForeignKeyConstraint(['seller_id'], ['user_info.id'], onupdate='CASCADE', ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['stock_id'], ['stock.id'], onupdate='CASCADE', ondelete='CASCADE'),
-    sa.PrimaryKeyConstraint('stock_id', 'seller_id')
+    sa.ForeignKeyConstraint(['seller_id'], ['user_login.id'], onupdate='CASCADE', ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['stock_name'], ['stock.stock_name'], onupdate='CASCADE', ondelete='CASCADE'),
+    sa.PrimaryKeyConstraint('stock_name', 'seller_id')
     )
     op.create_table('transaction',
     sa.Column('id', sa.Integer(), nullable=False),

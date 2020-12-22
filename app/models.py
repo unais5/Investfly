@@ -135,6 +135,9 @@ class stock(db.Model):
     
     def get_list(self):
         return [self.id, self.stock_name, self.curr_price , self.quantity]
+    
+    def get_vol(self):
+        return self.quantity
 
 class transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
@@ -150,24 +153,30 @@ class transaction(db.Model):
 
     def __repr__(self):
         return '<transaction %r>' % (self.user_id)
+    
+    
 
-# class available_stock(db.Model):
-#     id = db.Column(db.Integer, primary_key=True, nullable=False)
-#     stock_id = db.Column(db.Integer, db.ForeignKey('stock.id'), unique=True, nullable=False)
-#     quantity = db.Column(db.Integer, nullable=False)
-#     curr_price = db.Column(db.Float, nullable=False)
+class available_stocks(db.Model):
+    # id = db.Column(db.Integer, primary_key=True, nullable=False)
+    stock_name = db.Column(db.String, db.ForeignKey('stock.stock_name',onupdate='CASCADE', ondelete='CASCADE'), nullable=False, primary_key=True)
+    seller_id = db.Column(db.Integer, db.ForeignKey('user_login.id',onupdate='CASCADE', ondelete='CASCADE'), nullable=False, primary_key=True)
+    quantity = db.Column(db.Integer, nullable=False)
+    curr_price = db.Column(db.Float, nullable=False)
 
-#     def __repr__(self):
-#         return '<Available Stock # {}>'.format(self.id)
+    def __repr__(self):
+        return '<Available Stock # {}>'.format(self.id)
+    
+    def get_list(self):
+        return [self.stock_name, self.seller_id, self.curr_price , self.quantity]
 
 #######################
 
 ####################### relationship  intermediate models
-available_stocks = db.Table('available_stocks',
-    db.Column('stock_id', db.Integer, db.ForeignKey('stock.id',onupdate='CASCADE',ondelete='CASCADE'), primary_key=True),
-    db.Column('seller_id', db.Integer, db.ForeignKey('user_info.id',onupdate='CASCADE',ondelete='CASCADE'), primary_key=True),
-    db.Column('quantity', db.Integer, nullable=False),
-    db.Column('curr_price', db.Float, nullable=False) )
+# available_stocks = db.Table('available_stocks',
+#     db.Column('stock_id', db.Integer, db.ForeignKey('stock.id',onupdate='CASCADE',ondelete='CASCADE'), primary_key=True),
+#     db.Column('seller_id', db.Integer, db.ForeignKey('user_info.id',onupdate='CASCADE',ondelete='CASCADE'), primary_key=True),
+#     db.Column('quantity', db.Integer, nullable=False),
+#     db.Column('curr_price', db.Float, nullable=False) )
 
 admin.add_view(ModelView(user_login, db.session))
 admin.add_view(ModelView(user_info, db.session))
@@ -180,3 +189,6 @@ class ticker_info():
         self.name = name
         self.price = price
         self.volume = volume
+
+    def get_vol(self):
+        return self.volume

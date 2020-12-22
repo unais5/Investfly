@@ -1,27 +1,72 @@
 from flask import render_template, flash, redirect, url_for, request , jsonify
-from app import app, db
+from app import app, db 
 from app.forms import LoginForm, RegistrationForm, ResetPasswordForm, ResetPasswordRequestForm, UserInfoForm, EditProfileForm , SearchForm , BuyForm, SellForm
 from flask_login import current_user, login_user, login_required, logout_user
-from app.models import user_login, user_info, wallet, stock , ticker_info
+from app.models import user_login, user_info, wallet, stock , ticker_info , available_stocks
 from werkzeug.urls import url_parse
 from app.email import send_password_reset_email, send_user_verification_email, send_purchase_email
 import yfinance as yf
 from app.finance import search_ticker
 from datetime import *
 from sqlalchemy.sql import func
+from sqlalchemy import *
 
 @app.route('/admin')
 def admin():
     return render_template("admin.index")
 
 
-@app.route('/sell' ,methods = ['GET' , 'POST'])
+@app.route('/stocks', methods = ['GET' , 'POST'])
 @login_required
-def sell():
-    sell = SellForm()
-    return render_template("sell.html", sell=sell)
+def stocks():
+    headings = ['ID', 'Name', 'Sale Price' ,'Volume']
+    sell_s = available_stocks.query.filter_by().all()
 
+    sell_stocks = []
+    for i in range(len(sell_s)):
+        sell_stocks.append(sell_s[i].get_list())
+    return render_template('stock.html' , data=sell_stocks , headings=headings)
 
+@app.route('/sell<s_name>' ,methods = ['GET' , 'POST'])
+@login_required
+def sell(s_name):
+    to_sell = SellForm()
+    to_sell.name = s_name
+    if to_sell.validate_on_submit():
+        user_data = user_login.query.filter_by(id=current_user.id).first()
+        sell_ticker = ticker_info(name=to_sell.name,
+                                    volume=to_sell.volume,
+                                    price=to_sell.sale_price)
+        if user_data and user_data.check_password(to_sell.password.data):
+            #if THIS user has THIS stock 
+            user_stock_exists = stock.query.filter_by(stock_name=s_name, user_id=current_user.id).first()
+            if user_stock_exists:
+                # does he have sufficient quantity of this stock?
+                if str(user_stock_exists.quantity ) < str(sell_ticker.volume):
+                    user_stock_exists.quantity = int(str(user_stock_exists.quantity) - str(sell_ticker.volume))
+                    # sell_stock_exists = available_stocks.query.filter_by(stock_name=s_name, user_id=current_user.id).first()
+                    # if sell_stock_exists:
+                    #     sell_stock_exists.quantity = sell_stock_exists.quantity + to_sell
+                    # stock_for_sale = available_stocks(stock_name=user_stock_exists.stock_name,
+                    #                                         seller_id=current_user.id,
+                    #                                         quantity=user_stock_exists.get_vol(),
+                    #                                         curr_price=to_sell.sale_price.data)
+                    # db.session.add(stock_for_sale)
+                    # db.session.commit()
+                    return str( user_stock_exists.quantity)
+                else:
+                    return str( "not sold" )
+        # has_stock = stock.query.filter_by(user_id=current_user.id).first()
+        return str(has_stock)
+    return render_template("sell.html", sell=to_sell)
+
+# @app.route('/user/<username>')
+# @login_required
+# def user(username):
+#     user = user_login.query.filter_by(username=username).first_or_404()
+#     userinfo = user_info.query.filter_by(user_id=user.id).first()
+#     if userinfo and user:
+#         return render_template('user.html', user=user, userinfo=userinfo)
 
 @app.route('/buy', methods = ['GET' , 'POST'])
 @login_required
@@ -93,15 +138,14 @@ def dashboard():
     u_wallet = wallet.query.filter_by(user_id=current_user.id).first_or_404()
     
     u_wallet.balance = "{:.2F}".format(u_wallet.balance)
-    # assets = db.func(sum(stock.curr_price).filter_by(user_id=current_user.id))
+
     assets = db.session.query(func.sum(stock.curr_price)).filter(stock.user_id==current_user.id).scalar()
     shares = db.session.query(func.sum(stock.quantity)).filter(stock.user_id==current_user.id).scalar()
-    # return assets
+    db.session.commit()
     
     headings = ['ID', 'Name', 'Previous Closing']
     user_stocks = stock.query.filter_by(user_id=current_user.id).all()
     data = []
-    # form = BuyForm()
     for i in range(len(user_stocks)):
         data.append(user_stocks[i].get_list())
     if search_s.validate_on_submit():
@@ -143,6 +187,7 @@ def login():
                 flash("Username or Password incorrect")
                 return redirect(url_for('login'))
             login_user(user, remember=False)
+            #### UNCOMMENT LATER THIS IS USEFUL CODE
             # user_stocks = stock.query.filter_by(user_id=current_user.id).all()
             # for i in range(len(user_stocks)):
             #     user_stocks[i].update_price()
@@ -175,14 +220,6 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('home_page'))
-
-@app.route('/user/<username>')
-@login_required
-def user(username):
-    user = user_login.query.filter_by(username=username).first_or_404()
-    userinfo = user_info.query.filter_by(user_id=user.id).first()
-    if userinfo and user:
-        return render_template('user.html', user=user, userinfo=userinfo)
 
 @app.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request(email):
