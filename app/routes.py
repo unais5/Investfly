@@ -50,7 +50,8 @@ def buy():
                 send_purchase_email(user_data, buy_stock, bill, user_wallet.balance)
                 return redirect(url_for('dashboard'))
             else:
-                return str(bill)
+                flash("Insufficient Balance in your wallet")
+                return redirect(url_for('buy'))
     return render_template("buy.html", buy=buy)
 
 @app.route('/')
