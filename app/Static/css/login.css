@@ -108,6 +108,9 @@ a{color:inherit;text-decoration:none}
 }
 .login-form .group .button{
 	margin-top: 20px;
+}
+
+.login-form .group .button , .btn{
 	background: #e14eca;
     background-image: -webkit-linear-gradient(to bottom left, #e14eca, #ba54f5, #e14eca);
     background-image: -o-linear-gradient(to bottom left, #e14eca, #ba54f5, #e14eca);
@@ -205,3 +208,7 @@ a{color:inherit;text-decoration:none}
 @keyframes rotate {
 100% {transform: rotate(360deg);}
 } 
+
+.btn{
+	margin-left: 80.3%;
+}
