@@ -25,6 +25,7 @@ def stocks():
     sell_stocks = []
     for i in range(len(sell_s)):
         sell_stocks.append(sell_s[i].get_list())
+        sell_stocks[i][1] = user_login.query.filter_by(id=sell_s[i].seller_id).first().username
     return render_template('stock.html' , data=sell_stocks , headings=headings)
 
 @app.route('/sell<s_name>' ,methods = ['GET' , 'POST'])
@@ -142,16 +143,17 @@ def dashboard():
     
     u_wallet.balance = "{:.2F}".format(u_wallet.balance)
 
-    assets = db.session.query(func.sum(stock.curr_price)).filter(stock.user_id==current_user.id).scalar()
-    assets = "{:.2F}".format(assets)
     shares = db.session.query(func.sum(stock.quantity)).filter(stock.user_id==current_user.id).scalar()
     db.session.commit()
     
-    headings = ['ID', 'Name', 'Previous Closing']
+    headings = ['ID', 'Name', 'Previous Closing','Qty']
     user_stocks = stock.query.filter_by(user_id=current_user.id).all()
     data = []
+    assets = 0
     for i in range(len(user_stocks)):
         data.append(user_stocks[i].get_list())
+        assets = assets + (user_stocks[i].curr_price * user_stocks[i].quantity)
+    assets = "{:.2F}".format(assets)
     if search_s.validate_on_submit():
         ticker_info = search_ticker(search_s.search.data)
         search_results = [ticker_info.name, ticker_info.price, ticker_info.volume]
