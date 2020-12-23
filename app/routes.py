@@ -107,13 +107,13 @@ def myListings():
         sell_stocks[i][1] = user_login.query.filter_by(id=sell_s[i].seller_id).first().username
     return render_template('myListings.html' , data=sell_stocks , headings=headings)
 
-@app.route('/sell/<s_name>' ,methods = ['GET' , 'POST'])
+@app.route('/sell/<s_name>/<s_price>' ,methods = ['GET' , 'POST'])
 @login_required
-def sell(s_name):
+def sell(s_name,s_price):
     to_sell = s_name
     user_data = user_login.query.filter_by(id=current_user.id).first()
     if request.method == 'POST':
-        s_price = request.form['sale_price']
+        s_price = float(s_price)
         vol =int( request.form['volume'] )
         pwd = request.form['password']
         
@@ -148,16 +148,20 @@ def sell(s_name):
                             return redirect(url_for('dashboard'))
                 else:
                     flash("You don't have sufficient stock")
-                    return redirect(url_for('sell'))
+                    return redirect(url_for('sell',s_name=s_name, s_price=s_price))
             else:
-                return "pwd incorrect"
-    return render_template("sell.html", s_name=s_name)
+                flash("You dont own shares of this stock")
+                return redirect(url_for('sell',s_name=s_name, s_price=s_price))
+        else:
+                flash("Incorrect Password")
+                return redirect(url_for('sell',s_name=s_name, s_price=s_price))
+    return render_template("sell.html", s_name=s_name, s_price=s_price)
 
 
 
-@app.route('/buy/<s_name>', methods = ['GET' , 'POST'])
+@app.route('/buy/<s_name>/<s_price>', methods = ['GET' , 'POST'])
 @login_required
-def buy(s_name):
+def buy(s_name,s_price):
     if s_name == "name":
         return redirect(url_for("dashboard"))
     buy = BuyForm()
@@ -186,8 +190,11 @@ def buy(s_name):
                 return redirect(url_for('dashboard'))
             else:
                 flash("Insufficient Balance in your wallet")
-                return redirect(url_for('buy',s_name=s_name))
-    return render_template("buy.html", buy=buy, s_name=s_name)
+                return redirect(url_for('buy',s_name=s_name, s_price=s_price))
+        else:
+                flash("Incorrect Password")
+                return redirect(url_for('buy',s_name=s_name, s_price=s_price))
+    return render_template("buy.html", buy=buy, s_name=s_name, s_price=s_price)
 
 @app.route('/')
 def home_page():
@@ -198,7 +205,7 @@ def home_page():
 @app.route('/portfolio', methods = ['GET' , 'POST'])
 @login_required
 def portfolio():
-    headings = ['ID', 'Name', 'Previous Closing' ,'Volume']
+    headings = ['Name', 'Previous Closing' ,'Volume']
     user_stocks = stock.query.filter_by(user_id=current_user.id).all()
     data = []
     for i in range(len(user_stocks)):
@@ -231,9 +238,10 @@ def dashboard():
     u_wallet.balance = "{:.2F}".format(u_wallet.balance)
 
     shares = db.session.query(func.sum(stock.quantity)).filter(stock.user_id==current_user.id).scalar()
+    shares = "{:}".format(shares)
     db.session.commit()
     
-    headings = ['ID', 'Name', 'Previous Closing','Qty']
+    headings = [ 'Name', 'Previous Closing','Qty']
     user_stocks = stock.query.filter_by(user_id=current_user.id).all()
     data = []
     assets = 0

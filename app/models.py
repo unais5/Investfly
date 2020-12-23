@@ -134,7 +134,7 @@ class stock(db.Model):
         return
     
     def get_list(self):
-        return [self.id, self.stock_name, self.curr_price , self.quantity]
+        return [ self.stock_name, self.curr_price , self.quantity]
     
     def get_vol(self):
         return self.quantity
