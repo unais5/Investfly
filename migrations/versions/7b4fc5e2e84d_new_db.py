@@ -1,8 +1,8 @@
-"""fk err
+"""New DB
 
-Revision ID: f5879e322a27
+Revision ID: 7b4fc5e2e84d
 Revises: 
-Create Date: 2020-12-23 01:14:30.162330
+Create Date: 2020-12-23 10:27:12.561296
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'f5879e322a27'
+revision = '7b4fc5e2e84d'
 down_revision = None
 branch_labels = None
 depends_on = None
