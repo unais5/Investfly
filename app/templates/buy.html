@@ -25,7 +25,7 @@
                 <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">BUY</label>
                 <input id="tab-2" type="radio"  name="tab" class="for-pwd"><label for="tab-2" class="tab"></label>
                 <div class="login-form">
-                    <form action="" method="post" novalidate>
+                    <form action="" method="post" >
                         {{ buy.hidden_tag() }}
                     <div class="sign-in-htm">
                         <div class="group">
@@ -43,12 +43,16 @@
                             <input id="user" type="text" class="input" placeholder="" name="name" value="{{s_name}}" disabled>
                         </div>
                         <div class="group">
+                            <label for="vol" class="label">Price/Unit</label>
+                            <input id="vol" type="number" class="input" placeholder="Price" name="price" value="{{s_price}}" disabled>
+                        </div>
+                        <div class="group">
                             <label for="vol" class="label">Share Volume</label>
-                            <input id="vol" type="number" class="input" placeholder="Volume" name="volume">
+                            <input id="vol" type="number" class="input" placeholder="Volume" name="volume" required>
                         </div>
                         <div class="group">
                             <label for="pass" class="label">Password</label>
-                            <input id="pass" type="password" class="input" data-type="password" placeholder="password" name="password">
+                            <input id="pass" type="password" class="input" data-type="password" placeholder="password" name="password" required>
                         </div>
                         <div class="group">
                             <input type="submit" class="button" value="BUY" onclick="loading();">
