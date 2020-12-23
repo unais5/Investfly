@@ -141,12 +141,12 @@ class stock(db.Model):
 
 class transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    transaction_date = db.Column(db.DateTime, nullable=False)
+    transaction_date = db.Column(db.Date, nullable=False)
     buyer_id = db.Column(db.Integer, nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     seller_id = db.Column(db.Integer, nullable=False)
     selling_price = db.Column(db.Float, nullable=False)
-    stock_id = db.Column(db.Integer, db.ForeignKey('stock.id',onupdate='CASCADE',ondelete='CASCADE'), unique=True, nullable=False)
+    stock_name = db.Column(db.String, db.ForeignKey('stock.stock_name',onupdate='CASCADE',ondelete='CASCADE'), nullable=False)
     
     def __repr__(self):
         return '<transaction %r>' % (self.user_id)
