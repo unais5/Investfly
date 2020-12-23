@@ -4,7 +4,7 @@ from app.forms import LoginForm, RegistrationForm, ResetPasswordForm, ResetPassw
 from flask_login import current_user, login_user, login_required, logout_user
 from app.models import user_login, user_info, wallet, stock , ticker_info , available_stocks , transaction
 from werkzeug.urls import url_parse
-from app.email import send_password_reset_email, send_user_verification_email, send_purchase_email ,send_listing_email
+from app.email import send_password_reset_email, send_user_verification_email, send_purchase_email ,send_listing_email, send_sale_email
 import yfinance as yf
 from app.finance import search_ticker
 from datetime import *
@@ -22,11 +22,15 @@ def buyListing(stk,nm,pr,qt):
         qty = request.form['volume']
         pwd = request.form['password']
         user_data = user_login.query.filter_by(id=current_user.id).first()
+        buy_stock = ticker_info(name=stk,
+                                volume=int(qty),
+                                price=float(pr))
         
         if user_data and user_data.check_password(pwd): # if the user is valid & entered correct pwd
             bill = float(pr) * float(qty)
 
-            seller_id = user_login.query.filter_by(username=nm).first().id
+            seller_obj = user_login.query.filter_by(username=nm).first()
+            seller_id = seller_obj.id
             if seller_id != current_user.id:
 
                 seller_wallet = wallet.query.filter_by(user_id=seller_id).first()
@@ -64,20 +68,22 @@ def buyListing(stk,nm,pr,qt):
                         st_id= add_to_portfolio.id
                         db.session.add(add_to_portfolio)
                         db.session.commit()
-                    # send_purchase_email(user_data, buy_stock, bill, user_wallet.balance)
-                    # send_listing_email()
+                    
                     curr_trns = transaction(transaction_date=date.today(),
                                             buyer_id=current_user.id,
                                             seller_id=seller_id,
                                             quantity=qty,
                                             selling_price=float(pr),
-                                            stock_id=st_id)
+                                            stock_name=stk)
                     db.session.add(curr_trns)
                     db.session.commit()
+
+                    send_purchase_email(user_data, buy_stock, bill, buyer_wallet.balance)
+                    send_sale_email(seller_obj, user_data, curr_trns.id, buy_stock)
                     return redirect(url_for('dashboard'))
                 else:
                     flash("Insufficient Balance or quantity out of bounds ")
-                    return redirect(url_for('buy',s_name=stk))
+                    return redirect(url_for('buy',s_name=stk, s_price=pr))
             else:
                 flash("Cannot purchase from self!")
                 return redirect(url_for('dashboard'))
@@ -238,7 +244,8 @@ def dashboard():
     u_wallet.balance = "{:.2F}".format(u_wallet.balance)
 
     shares = db.session.query(func.sum(stock.quantity)).filter(stock.user_id==current_user.id).scalar()
-    shares = "{:}".format(shares)
+    if not shares:
+        shares = 0
     db.session.commit()
     
     headings = [ 'Name', 'Previous Closing','Qty']
@@ -287,7 +294,6 @@ def login():
                 flash("Username or Password incorrect")
                 return redirect(url_for('login'))
             login_user(user, remember=False)
-            #### UNCOMMENT LATER THIS IS USEFUL CODE
             user_stocks = stock.query.filter_by(user_id=current_user.id).all()
             for i in range(len(user_stocks)):
                 user_stocks[i].update_price()
@@ -359,7 +365,7 @@ def reset_password(token):
 def user_information():
     form = UserInfoForm()
     if form.validate_on_submit():
-        user_wallet = wallet(balance=5000, user_id=current_user.id)
+        user_wallet = wallet(balance=15000, user_id=current_user.id)
         db.session.add(user_wallet)
         db.session.commit()
         curr_user_info = user_info(fname=form.fname.data, 

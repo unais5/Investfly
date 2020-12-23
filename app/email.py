@@ -25,24 +25,32 @@ def send_user_verification_email(user):
 
 
 def send_purchase_email(user, stock_data, bill, wallet):
-    token = user.get_verify_user_token()
-    send_email('[InvestFly]Confirm your purchase',
+    send_email('[InvestFly]Purchase Confirmed!',
                 sender= 'investflycorporation@gmail.com',
                recipients=[user.email],
-               text_body=render_template('email/conf_purchase.txt',user=user, token=token, stock=stock_data, bill=bill, wallet=wallet),
+               text_body=render_template('email/conf_purchase.txt',user=user, stock=stock_data, bill=bill, wallet=wallet),
             #    remove text body - NEVERMIND DONT REMOVE PHAT JAEGA
-               html_body=render_template('email/conf_purchase.html',user=user, token=token, stock=stock_data,bill=bill, wallet=wallet))
+               html_body=render_template('email/conf_purchase.html',user=user,  stock=stock_data,bill=bill, wallet=wallet))
                                         
 
 def send_listing_email(user, stock_data):
-    token = user.get_verify_user_token()
-    send_email('[InvestFly]Confirm your listing',
+    send_email('[InvestFly]Listing Confirmed!',
                 sender= 'investflycorporation@gmail.com',
                recipients=[user.email],
-               text_body=render_template('email/conf_listing.txt',user=user, token=token, stock=stock_data),
+               text_body=render_template('email/conf_listing.txt',user=user,stock=stock_data),
             #    remove text body - NEVERMIND DONT REMOVE PHAT JAEGA
-               html_body=render_template('email/conf_listing.html',user=user, token=token, stock=stock_data))
-                                         
+               html_body=render_template('email/conf_listing.html',user=user, stock=stock_data))
+
+def send_sale_email(user, buyer, t_id, stock):
+    send_email('[InvestFly]Sale Confirmed!',
+                sender= 'investflycorporation@gmail.com',
+               recipients=[user.email],
+               text_body=render_template('email/conf_sale.txt',user=user, buyer=buyer, transaction_id=t_id , stock=stock),
+            #    remove text body - NEVERMIND DONT REMOVE PHAT JAEGA
+               html_body=render_template('email/conf_sale.html',user=user ,buyer=buyer, transaction_id=t_id, stock=stock))
+
+
+
 def send_async_email(app, msg):
     with app.app_context():
         mail.send(msg)

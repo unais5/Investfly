@@ -1,12 +1,10 @@
 Dear {{ user.username }},
 
-You have purchased {{stock.volume}} units of {{ stock.name}} @ {{ stock.price}}.
+You have purchased {{stock.volume}} units of {{ stock.name}} at ${{ stock.price}} per unit.
 
 
-Your wallet has been charged for $ {{bill}}
-Updated balance = $ {{wallet}}
-
-If you have not requested a stock purchase simply ignore this message.
+Your wallet has been charged for ${{bill}}
+Updated balance = ${{wallet}}
 
 Sincerely,
 

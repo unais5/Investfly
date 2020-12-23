@@ -1,0 +1,8 @@
+Dear {{ user.username }},
+
+{{stock.volume}} units of {{ stock.name}} at $ {{ stock.price}} per unit that you listed have been successfully bought by {{ buyer.username }}.
+Transaction ID: {{ transaction_id }}
+
+Sincerely,
+
+The InvestFly Team

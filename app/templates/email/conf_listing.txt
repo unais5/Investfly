@@ -1,9 +1,6 @@
 Dear {{ user.username }},
 
-You have listed {{stock.volume}} units of {{ stock.name}} @ {{ stock.price}}.
-
-
-If you have not listed this stock simply ignore this message.
+You have listed {{stock.volume}} units of {{ stock.name}} at ${{ stock.price}} per unit.
 
 Sincerely,
 
