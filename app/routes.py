@@ -309,6 +309,9 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         user = user_login(username=form.username.data, email=form.email.data)
+        if user.username == 'admin':
+            flash("Please Take Anyother Username")
+            return redirect(url_for('register'))
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
