@@ -238,7 +238,8 @@ def dashboard():
     u_wallet.balance = "{:.2F}".format(u_wallet.balance)
 
     shares = db.session.query(func.sum(stock.quantity)).filter(stock.user_id==current_user.id).scalar()
-    shares = "{:}".format(shares)
+    if not shares:
+        shares = 0
     db.session.commit()
     
     headings = [ 'Name', 'Previous Closing','Qty']
@@ -356,7 +357,7 @@ def reset_password(token):
 def user_information():
     form = UserInfoForm()
     if form.validate_on_submit():
-        user_wallet = wallet(balance=5000, user_id=current_user.id)
+        user_wallet = wallet(balance=15000, user_id=current_user.id)
         db.session.add(user_wallet)
         db.session.commit()
         curr_user_info = user_info(fname=form.fname.data, 
