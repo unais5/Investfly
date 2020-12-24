@@ -35,5 +35,4 @@ if not app.debug:
             toaddrs=app.config['ADMINS'], subject='InvestFly Failure',
             credentials=auth, secure=secure)
         mail_handler.setLevel(logging.ERROR)
-        app.logger.addHandler(mail_handler)
-
+        app.logger.addHandler(mail_handler)  
