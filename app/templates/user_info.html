@@ -8,19 +8,29 @@
             <form action="" method="post" class="container" novalidate>
               {{ form.hidden_tag() }}
               <h1> Your Information</h1>
-          
-              <label for="Name"><b>Name</b></label>
-              <input id="Name" type="text" class="input" placeholder="Enter Name" name="fname">
+
+                <label for="Name"><b>Name</b></label>
+                <input id="Name" type="text" class="input" placeholder="Enter Name" name="fname"> 
           
               <label for="Phone"><b>Phone</b></label>
-              <input id="Phone" type="tel" class="input" placeholder="Enter Phone Number" name="phone" maxlength="11" pattern="[0-9]{4}-[0-9]{7}" required>
-          
+              {% for error in form.phone.errors %}
+                <span style="color: rgb(182, 39, 39);">{{ error }}</span>
+                {% endfor %}
+                <input id="Phone" type="tel" class="input" placeholder="Enter Phone Number" name="phone" maxlength="11" pattern="[0-9]{4}-[0-9]{7}" required>
+                
               <label for="ACC Number"><b>Account</b></label>
+              {% for error in form.acc_num.errors %}
+              <span style="color: rgb(182, 39, 39);">{{ error }}</span>
+              {% endfor %}
               <input id="acc_num" type="tel" class="input" placeholder="Enter Account Number" name="acc_num" maxlength="14" pattern="\d*" required>
+              
 
               <label for="CNIC"><b>CNIC</b></label>
+              {% for error in form.cnic.errors %}
+              <span style="color: rgb(182, 39, 39);">{{ error }}</span>
+              {% endfor %}    
               <input id="cnic" type="tel" class="input" placeholder="Enter CNIC Number" name="cnic" maxlength="13" pattern="\d*" required>
-
+              
               <label for="ADDR"><b>Address</b></label>
               <input id="addr1" type="text" class="input" placeholder="Enter Address" name="addr" required>
               <div class="btr">

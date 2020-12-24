@@ -10,6 +10,7 @@ from app.finance import search_ticker
 from datetime import *
 from sqlalchemy.sql import func
 from sqlalchemy import *
+import random
 
 @app.route('/admin')
 def admin():
@@ -238,8 +239,8 @@ def profile():
 def dashboard():
     search_s = SearchForm()
     search_results = ["name" , "price" , "volume"]
-    user = user_info.query.filter_by(id=current_user.id).first_or_404()
-    u_wallet = wallet.query.filter_by(user_id=current_user.id).first_or_404()
+    user = user_info.query.filter_by(id=current_user.id).first()
+    u_wallet = wallet.query.filter_by(user_id=current_user.id).first()
     
     u_wallet.balance = "{:.2F}".format(u_wallet.balance)
 
@@ -269,18 +270,28 @@ def dashboard():
 @app.route('/verify_user/<token>', methods = ['GET', 'POST'])
 def verify_user(token):
     tid = user_login.query.get(user_login.verify_user_token(token).id)
-    user = user_login.query.filter_by(id=tid.id).first_or_404()
-    if user:
+    if tid:
+        user = user_login.query.filter_by(id=tid.id).first_or_404()
         user.confirmed = True
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('user_information'))
-    return redirect(url_for('user', username=user.username))
+    else:
+        unverified = user_login.query.filter(user_login.id != user_info.user_id).scalar()
+        if unverified:
+            for i in range(len(unverified)):
+                db.session.delete(unverified[i])
+                db.session.commit()
+        return render_template("linkexpired.html")
+    
+        
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('dashboard'))
+    # if current_user.is_authenticated:
+    #     return redirect(url_for('dashboard'))
+
     form = LoginForm()
     formpwd = ResetPasswordRequestForm()
     if form.validate_on_submit():
@@ -293,7 +304,12 @@ def login():
             if user is None or not user.check_password(form.password.data):
                 flash("Username or Password incorrect")
                 return redirect(url_for('login'))
-            login_user(user, remember=False)
+            u_info = user_info.query.filter_by(user_id=user.id).first()
+            if u_info:
+                login_user(user, remember=False)
+            else:
+                login_user(user, remember=False)
+                return redirect(url_for('user_information'))
             user_stocks = stock.query.filter_by(user_id=current_user.id).all()
             for i in range(len(user_stocks)):
                 user_stocks[i].update_price()
@@ -313,10 +329,19 @@ def register():
         return redirect(url_for('home_page'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = user_login(username=form.username.data, email=form.email.data)
-        if user.username == 'admin':
-            flash("Please Take Anyother Username")
+        if form.username.data == 'admin':
+            flash("Username not available")
             return redirect(url_for('register'))
+
+        u_id = random.randint(4000,7000)
+        check_id = user_login.query.filter_by(id=u_id).first()
+        while check_id is not None:
+            u_id = random.randint(4000,7000)
+            check_id = user_login.query.filter_by(id=u_id).first()
+
+        user = user_login(id=u_id, 
+                        username=form.username.data, 
+                        email=form.email.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -365,9 +390,7 @@ def reset_password(token):
 def user_information():
     form = UserInfoForm()
     if form.validate_on_submit():
-        user_wallet = wallet(balance=15000, user_id=current_user.id)
-        db.session.add(user_wallet)
-        db.session.commit()
+        
         curr_user_info = user_info(fname=form.fname.data, 
                                     phone=form.phone.data, 
                                     acc_num=form.acc_num.data, 
@@ -376,5 +399,9 @@ def user_information():
                                     user_id=current_user.id)
         db.session.add(curr_user_info)
         db.session.commit()
-        return redirect(url_for('login'))
+        
+        user_wallet = wallet(balance=15000, user_id=current_user.id)
+        db.session.add(user_wallet)
+        db.session.commit()
+        return redirect(url_for('home_page'))
     return render_template("user_info.html", form=form)

@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextField, IntegerField, DecimalField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, DataRequired
-from app.models import user_login
+from app.models import user_login, user_info
 from flask import render_template
 
 class LoginForm(FlaskForm):
@@ -45,6 +45,22 @@ class UserInfoForm(FlaskForm):
     cnic = StringField('CNIC', validators=[DataRequired()])
     addr = TextField('Phone Number', validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+
+    def validate_phone(self, phone):
+        user = user_info.query.filter_by(phone=phone.data).first()
+        if user is not None:
+            raise ValidationError('Phone Number Already Registered')
+    
+    def validate_cnic(self, cnic):
+        user = user_info.query.filter_by(cnic=cnic.data).first()
+        if user is not None:
+            raise ValidationError('CNIC Already Registered')
+
+    def validate_acc_num(self, acc_num):
+        user = user_info.query.filter_by(acc_num=acc_num.data).first()
+        if user is not None:
+            raise ValidationError('Account Number Already Registered')
 
 class EditProfileForm(FlaskForm):
     phone = StringField('Phone Number')

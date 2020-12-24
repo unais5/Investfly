@@ -25,16 +25,13 @@ def load_user(id):
 
 ################## main schema tables 
 class user_login(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)
     username = db.Column(db.String(64), index=True, unique=True, nullable=False)
     email = db.Column(db.String(120), index=True, unique=True, nullable=False)
     password_hash = db.Column(db.String(128))
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
-
-    def __repr__(self):
-        return '<User %r>' % (self.id)   
     
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -78,7 +75,7 @@ class user_login(UserMixin, db.Model):
 
 class user_info(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user_login.id',onupdate='CASCADE',ondelete='CASCADE'),unique=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user_login.id',onupdate='CASCADE',ondelete='NO ACTION'),unique=True)
     fname= db.Column(db.String(20))
     # lname= db.Column(db.String(20))
     # phone= db.Column(db.Integer, unique=True, nullable=False)
@@ -93,9 +90,6 @@ class user_info(db.Model):
 
     def __repr__(self):
         return '<User {}>'.format(self.fname)
-    
-    def __repr__(self):
-        return '<user_info %r>' % (self.user_id)   
 
     @staticmethod
     def valid_phone_num(phone):
@@ -108,9 +102,6 @@ class wallet(db.Model):
 
     def __repr__(self):
         return '<Wallet # {}>'.format(self.id)
-
-    def __repr__(self):
-        return '<wallet %r>' % (self.user_id)
         
 
 class stock(db.Model):
@@ -119,13 +110,10 @@ class stock(db.Model):
     quantity = db.Column(db.Integer, nullable=False)
     curr_price = db.Column(db.Float, nullable=False)
     # transaction_date = db.Column(db.String, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user_login.id',onupdate='CASCADE',ondelete='CASCADE'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user_login.id',onupdate='CASCADE',ondelete='NO ACTION'), nullable=False)
 
     def __repr__(self):
         return '<Stock # {}>'.format(self.id)
-
-    def __repr__(self):
-        return '<stock %r>' % (self.user_id)
     
     def update_price(self):
         ticker = yf.Ticker(self.stock_name)
@@ -146,7 +134,7 @@ class transaction(db.Model):
     quantity = db.Column(db.Integer, nullable=False)
     seller_id = db.Column(db.Integer, nullable=False)
     selling_price = db.Column(db.Float, nullable=False)
-    stock_name = db.Column(db.String, db.ForeignKey('stock.stock_name',onupdate='CASCADE',ondelete='CASCADE'), nullable=False)
+    stock_name = db.Column(db.String, db.ForeignKey('stock.stock_name',onupdate='CASCADE',ondelete='NO ACTION'), nullable=False)
     
     def __repr__(self):
         return '<transaction %r>' % (self.user_id)
@@ -155,10 +143,10 @@ class transaction(db.Model):
 
 class available_stocks(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    stock_name = db.Column(db.String, db.ForeignKey('stock.stock_name'), nullable=False)
-    seller_id = db.Column(db.Integer, db.ForeignKey('user_login.id',onupdate='CASCADE', ondelete='CASCADE'), nullable=False)
+    stock_name = db.Column(db.String, db.ForeignKey('stock.stock_name',onupdate='CASCADE'), nullable=False)
+    seller_id = db.Column(db.Integer, db.ForeignKey('user_login.id',onupdate='CASCADE', ondelete='NO ACTION'), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
-    curr_price = db.Column(db.Float, nullable=False)
+    curr_price = db.Column(db.Float, db.ForeignKey('stock.curr_price',onupdate='CASCADE', ondelete='NO ACTION'),nullable=False)
 
     def __repr__(self):
         return '<Available Stock # {}>'.format(self.id)

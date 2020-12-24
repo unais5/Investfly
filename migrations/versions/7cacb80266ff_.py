@@ -1,8 +1,8 @@
 """.
 
-Revision ID: fa6dd616aad4
+Revision ID: 7cacb80266ff
 Revises: 
-Create Date: 2020-12-23 12:53:08.213475
+Create Date: 2020-12-24 17:27:55.564468
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'fa6dd616aad4'
+revision = '7cacb80266ff'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -23,7 +23,8 @@ def upgrade():
     sa.Column('username', sa.String(length=64), nullable=False),
     sa.Column('email', sa.String(length=120), nullable=False),
     sa.Column('password_hash', sa.String(length=128), nullable=True),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('id')
     )
     with op.batch_alter_table('user_login', schema=None) as batch_op:
         batch_op.create_index(batch_op.f('ix_user_login_email'), ['email'], unique=True)
@@ -35,12 +36,12 @@ def upgrade():
     sa.Column('quantity', sa.Integer(), nullable=False),
     sa.Column('curr_price', sa.Float(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['user_id'], ['user_login.id'], onupdate='CASCADE', ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['user_id'], ['user_login.id'], onupdate='CASCADE', ondelete='NO ACTION'),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('user_info',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('fname', sa.String(length=20), nullable=True),
     sa.Column('phone', sa.String(), nullable=False),
     sa.Column('acc_num', sa.Integer(), nullable=False),
@@ -67,8 +68,9 @@ def upgrade():
     sa.Column('seller_id', sa.Integer(), nullable=False),
     sa.Column('quantity', sa.Integer(), nullable=False),
     sa.Column('curr_price', sa.Float(), nullable=False),
-    sa.ForeignKeyConstraint(['seller_id'], ['user_login.id'], onupdate='CASCADE', ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['stock_name'], ['stock.stock_name'], ),
+    sa.ForeignKeyConstraint(['curr_price'], ['stock.curr_price'], onupdate='CASCADE', ondelete='NO ACTION'),
+    sa.ForeignKeyConstraint(['seller_id'], ['user_login.id'], onupdate='CASCADE', ondelete='NO ACTION'),
+    sa.ForeignKeyConstraint(['stock_name'], ['stock.stock_name'], onupdate='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('transaction',
@@ -79,7 +81,7 @@ def upgrade():
     sa.Column('seller_id', sa.Integer(), nullable=False),
     sa.Column('selling_price', sa.Float(), nullable=False),
     sa.Column('stock_name', sa.String(), nullable=False),
-    sa.ForeignKeyConstraint(['stock_name'], ['stock.stock_name'], onupdate='CASCADE', ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['stock_name'], ['stock.stock_name'], onupdate='CASCADE', ondelete='NO ACTION'),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
