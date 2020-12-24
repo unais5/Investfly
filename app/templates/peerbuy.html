@@ -5,12 +5,18 @@
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
         <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
         <link rel= "stylesheet" type= "text/css" href= "{{url_for('static',filename='css/login.css')}}">
+        <style>
+            .login-wrap{
+                margin-top: 0%;
+                min-height: 600px;
+            }
+        </style>
     </head>
     <body>
         <div class="login-wrap">
             <a href="{{url_for('dashboard')}}" class="btn btn-outline-dark text-light">Dashboard</a>
             <div class="login-html">
-                <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">SELL</label>
+                <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">BUY</label>
                 <input id="tab-2" type="radio"  name="tab" class="for-pwd"><label for="tab-2" class="tab"></label>
                 <div class="login-form">
                     <form action="" method="post" novalidate>
