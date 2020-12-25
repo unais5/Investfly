@@ -139,7 +139,7 @@ def user_information():
     form = UserInfoForm()
     if form.validate_on_submit():
         
-        curr_user_info = user_info(fname=form.fname.data, 
+        curr_user_info = user_info(name=form.fname.data, 
                                     phone=form.phone.data, 
                                     acc_num=form.acc_num.data, 
                                     cnic=form.cnic.data, 
@@ -164,7 +164,6 @@ def dashboard():
     u_wallet = wallet.query.filter_by(user_id=current_user.id).first()
     
     u_wallet.balance = "{:.2F}".format(u_wallet.balance)
-
     shares = db.session.query(func.sum(stock.quantity)).filter(stock.user_id==current_user.id).scalar()
     if not shares:
         shares = 0
