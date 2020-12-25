@@ -181,6 +181,7 @@ def buy(s_name,s_price):
             user_wallet = wallet.query.filter_by(user_id=current_user.id).first()
             if bill <= user_wallet.balance:
                 user_wallet.balance = user_wallet.balance - bill
+                db.session.commit()
                 stock_exists = stock.query.filter_by(stock_name=s_name, user_id=current_user.id).first()
                 if stock_exists:
                     stock_exists.quantity = stock_exists.quantity + buy_stock.volume
@@ -193,6 +194,14 @@ def buy(s_name,s_price):
                                     user_id=current_user.id)
                     db.session.add(add_stock)
                     db.session.commit()
+                curr_trns = transaction(transaction_date=date.today(),
+                                            buyer_id=current_user.id,
+                                            seller_id=1111,
+                                            quantity=buy_stock.volume,
+                                            selling_price=buy_stock.price,
+                                            stock_name=s_name)
+                db.session.add(curr_trns)
+                db.session.commit()
                 send_purchase_email(user_data, buy_stock, bill, user_wallet.balance)
                 return redirect(url_for('dashboard'))
             else:
@@ -289,9 +298,8 @@ def verify_user(token):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    # if current_user.is_authenticated:
-    #     return redirect(url_for('dashboard'))
-
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard'))
     form = LoginForm()
     formpwd = ResetPasswordRequestForm()
     if form.validate_on_submit():
