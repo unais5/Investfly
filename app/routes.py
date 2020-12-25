@@ -2,8 +2,7 @@ from flask import render_template, flash, redirect, url_for, request , jsonify
 from app import app, db 
 from app.forms import LoginForm, RegistrationForm, ResetPasswordForm, ResetPasswordRequestForm, UserInfoForm, EditProfileForm , SearchForm , BuyForm, SellForm
 from flask_login import current_user, login_user, login_required, logout_user
-from app.models import user_login, user_info, wallet, stock , ticker_info 
-#, available_stocks , transaction
+from app.models import user_login, user_info, wallet, stock , ticker_info , available_stocks , transaction
 from werkzeug.urls import url_parse
 from app.email import send_password_reset_email, send_user_verification_email, send_purchase_email ,send_listing_email, send_sale_email
 import yfinance as yf
@@ -91,17 +90,24 @@ def buyListing(stk,nm,pr,qt):
                 return redirect(url_for('dashboard'))
     return render_template("peerbuy.html", stock=stk, stk_price=pr)
 
+@app.route('/history' , methods = ['GET' , 'POST'])
+def history():
+    headings = ['Name' , 'Seller ID ' , 'Buyer ID' , 'Volume' , 'Price' , 'Date']
+    sold = transaction.query.filter_by(seller_id=current_user.id).all()
+    print(sold.seller_id)
+
+
 @app.route('/stocks', methods = ['GET' , 'POST'])
 @login_required
 def stocks():
     headings = ['ID', 'Name', 'Sale Price' ,'Volume']
     sell_s = available_stocks.query.filter((available_stocks.seller_id>current_user.id) | (available_stocks.seller_id<current_user.id)).all()
-
     sell_stocks = []
     for i in range(len(sell_s)):
         sell_stocks.append(sell_s[i].get_list())
         sell_stocks[i][1] = user_login.query.filter_by(id=sell_s[i].seller_id).first().username
     return render_template('stock.html' , data=sell_stocks , headings=headings)
+
 
 @app.route('/myListings', methods = ['GET' , 'POST'])
 @login_required

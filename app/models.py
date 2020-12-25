@@ -23,69 +23,14 @@ def load_user(id):
     return user_login.query.get(int(id))
 
 
-
-
-owns = db.Table( 'owns',
-        db.Column('stock_name', db.String, db.ForeignKey('stock.stock_name'),primary_key=True),
-        db.Column('user_id', db.Integer, db.ForeignKey('user_login.id'),primary_key=True),
-        db.Column('owned_qty', db.Integer,nullable=False)
-)
-
-
-listings = db.Table( 'listings',
-        db.Column('stock_name', db.String, db.ForeignKey('stock.stock_name'),primary_key=True),
-        db.Column('user_id', db.Integer, db.ForeignKey('user_login.id'),primary_key=True),
-        db.Column('listed_qty', db.Integer)
-)
-
-
-transactions = db.Table( 'transactions',
-        db.Column('stock_name', db.String, db.ForeignKey('stock.stock_name'),primary_key=True),
-        db.Column('seller_id', db.Integer, db.ForeignKey('user_login.id'),primary_key=True),
-        db.Column('buyer_id', db.Integer , db.ForeignKey('user_login.id'),primary_key=True),
-        db.Column('quantity', db.Integer, nullable=False),
-        db.Column('sale_price', db.Float, nullable=False),
-        db.Column('date', db.Date, nullable=False)
-)
-
 ################## main schema tables 
-class stock(db.Model):
-    stock_name = db.Column(db.String, primary_key=True, nullable=False)
-    curr_price = db.Column(db.Float, nullable=False)
-    vol = db.Column(db.Integer, nullable=False)
-
-    def repr(self):
-        return '<stock details %r>' % (self.user_id)
-    
-    def update_price(self):
-        ticker = yf.Ticker(self.stock_name)
-        ticker_info = ticker.info
-        self.curr_price = ticker_info['previousClose']
-        return
-
-
 class user_login(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)
     username = db.Column(db.String(64), index=True, unique=True, nullable=False)
     email = db.Column(db.String(120), index=True, unique=True, nullable=False)
     password_hash = db.Column(db.String(128))
 
-    # M:N relationships
-    stocks = db.relationship('stock', secondary=owns, lazy='subquery',
-                backref=db.backref('users', lazy=True))
-    u_listings = db.relationship('stock', secondary=listings, lazy='subquery',
-                backref=db.backref('listers', lazy=True))
-    sales = db.relationship("stock",
-                        secondary=transactions,
-                        primaryjoin=id==transactions.c.seller_id,
-                        secondaryjoin=id==transactions.c.buyer_id,
-                        backref=db.backref('purchases',lazy=True))
-    
-    # 1:1 relationships
-    information = db.relationship('user_info', backref='user_login', lazy=True)
-    u_wallet = db.relationship('wallet', backref='user_login', lazy=True)
-
-    def repr(self):
+    def __repr__(self):
         return '<User {}>'.format(self.username)
     
     def set_password(self, password):
@@ -130,19 +75,20 @@ class user_login(UserMixin, db.Model):
 
 class user_info(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    name= db.Column(db.String(20))
+    user_id = db.Column(db.Integer, db.ForeignKey('user_login.id',onupdate='CASCADE',ondelete='NO ACTION'),unique=True)
+    fname= db.Column(db.String(20))
+    # lname= db.Column(db.String(20))
+    # phone= db.Column(db.Integer, unique=True, nullable=False)
     phone= db.Column(db.String, unique=True, nullable=False)
     acc_num= db.Column(db.Integer, unique=True, nullable=False)
     cnic= db.Column(db.Integer, unique=True, nullable=False)
     addr= db.Column(db.String(50))
-
-    # 1:1 relationship
-    user_id = db.Column(db.Integer, db.ForeignKey('user_login.id', ondelete='NO ACTION'),nullable=False)
+    # wallet_id = db.Column(db.Integer, db.ForeignKey('wallet.id',onupdate='CASCADE',ondelete='CASCADE'),unique=True, nullable=False)
 
     def get_list(self):
         return [self.id, self.fname, self.phone, self.cnic]
 
-    def repr(self):
+    def __repr__(self):
         return '<User {}>'.format(self.fname)
 
     @staticmethod
@@ -151,81 +97,83 @@ class user_info(db.Model):
 
 class wallet(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user_login.id',onupdate='CASCADE',ondelete='CASCADE'),unique=True, nullable=False)
     balance = db.Column(db.Float)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('user_login.id', ondelete='CASCADE'), nullable=False)
-
-    def repr(self):
+    def __repr__(self):
         return '<Wallet # {}>'.format(self.id)
         
 
-# class stock(db.Model):
-#     id = db.Column(db.Integer, primary_key=True, nullable=False)
-#     stock_name = db.Column(db.String, nullable=False)
-#     quantity = db.Column(db.Integer, nullable=False)
-#     curr_price = db.Column(db.Float, nullable=False)
-#     # transaction_date = db.Column(db.String, nullable=False)
-#     user_id = db.Column(db.Integer, db.ForeignKey('user_login.id',onupdate='CASCADE',ondelete='NO ACTION'), nullable=False)
+class stock(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    stock_name = db.Column(db.String, nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+    curr_price = db.Column(db.Float, nullable=False)
+    # transaction_date = db.Column(db.String, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user_login.id',onupdate='CASCADE',ondelete='CASCADE'), nullable=False)
 
-#     def repr(self):
-#         return '<Stock # {}>'.format(self.id)
+    def __repr__(self):
+        return '<Stock # {}>'.format(self.id)
     
-#     def update_price(self):
-#         ticker = yf.Ticker(self.stock_name)
-#         ticker_info = ticker.info
-#         self.curr_price = ticker_info['previousClose']
-#         return
+    def update_price(self):
+        ticker = yf.Ticker(self.stock_name)
+        ticker_info = ticker.info
+        self.curr_price = ticker_info['previousClose']
+        return
     
-#     def get_list(self):
-#         return [ self.stock_name, self.curr_price , self.quantity]
+    def get_list(self):
+        return [ self.stock_name, self.curr_price , self.quantity]
     
-#     def get_vol(self):
-#         return self.quantity
+    def get_vol(self):
+        return self.quantity
 
-# class transaction(db.Model):
-    # id = db.Column(db.Integer, primary_key=True, nullable=False)
-    # transaction_date = db.Column(db.Date, nullable=False)
-    # buyer_id = db.Column(db.Integer, nullable=False)
-    # quantity = db.Column(db.Integer, nullable=False)
-    # seller_id = db.Column(db.Integer, nullable=False)
-    # selling_price = db.Column(db.Float, nullable=False)
-    # stock_name = db.Column(db.String, db.ForeignKey('stock.stock_name',onupdate='CASCADE',ondelete='NO ACTION'), nullable=False)
+class transaction(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    transaction_date = db.Column(db.Date, nullable=False)
+    buyer_id = db.Column(db.Integer, nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+    seller_id = db.Column(db.Integer, nullable=False)
+    selling_price = db.Column(db.Float, nullable=False)
+    stock_name = db.Column(db.String, db.ForeignKey('stock.stock_name',onupdate='CASCADE',ondelete='NO ACTION'), nullable=False)
     
-    # def repr(self):
-    #     return '<transaction %r>' % (self.user_id)
+    def __repr__(self):
+        return '<transaction %r>' % (self.user_id)
     
     
 
-# class available_stocks(db.Model):
-#     id = db.Column(db.Integer, primary_key=True, nullable=False)
-#     stock_name = db.Column(db.String, db.ForeignKey('stock.stock_name',onupdate='CASCADE'), nullable=False)
-#     seller_id = db.Column(db.Integer, db.ForeignKey('user_login.id',onupdate='CASCADE', ondelete='NO ACTION'), nullable=False)
-#     quantity = db.Column(db.Integer, nullable=False)
-#     curr_price = db.Column(db.Float, db.ForeignKey('stock.curr_price',onupdate='CASCADE', ondelete='NO ACTION'),nullable=False)
+class available_stocks(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    stock_name = db.Column(db.String, db.ForeignKey('stock.stock_name',onupdate='CASCADE'), nullable=False)
+    seller_id = db.Column(db.Integer, db.ForeignKey('user_login.id',onupdate='CASCADE', ondelete='NO ACTION'), nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+    curr_price = db.Column(db.Float, db.ForeignKey('stock.curr_price',onupdate='CASCADE', ondelete='NO ACTION'),nullable=False)
 
-#     def repr(self):
-#         return '<Available Stock # {}>'.format(self.id)
+    def __repr__(self):
+        return '<Available Stock # {}>'.format(self.id)
     
-#     def get_list(self):
-#         return [self.stock_name, self.seller_id, self.curr_price , self.quantity]
+    def get_list(self):
+        return [self.stock_name, self.seller_id, self.curr_price , self.quantity]
 
 #######################
 
 ####################### relationship  intermediate models
+# available_stocks = db.Table('available_stocks',
+#     db.Column('stock_id', db.Integer, db.ForeignKey('stock.id',onupdate='CASCADE',ondelete='CASCADE'), primary_key=True),
+#     db.Column('seller_id', db.Integer, db.ForeignKey('user_info.id',onupdate='CASCADE',ondelete='CASCADE'), primary_key=True),
+#     db.Column('quantity', db.Integer, nullable=False),
+#     db.Column('curr_price', db.Float, nullable=False) )
 
-# admin.add_view(ModelView(user_login, db.session))
-# admin.add_view(ModelView(user_info, db.session))
-# admin.add_view(ModelView(wallet, db.session))
-# admin.add_view(ModelView(stock, db.session))
-# admin.add_view(ModelView(transaction, db.session))
+admin.add_view(ModelView(user_login, db.session))
+admin.add_view(ModelView(user_info, db.session))
+admin.add_view(ModelView(wallet, db.session))
+admin.add_view(ModelView(stock, db.session))
+admin.add_view(ModelView(transaction, db.session))
 
 class ticker_info():
-    def init(self, name, volume, price):
+    def __init__(self, name, volume, price):
         self.name = name
         self.price = price
         self.volume = volume
 
     def get_vol(self):
         return self.volume
-
-#############^^^^^^^^^^^^^^^^^^^^^^^###############
