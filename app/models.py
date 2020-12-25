@@ -75,10 +75,11 @@ class user_login(UserMixin, db.Model):
                 backref=db.backref('users', lazy=True))
     u_listings = db.relationship('stock', secondary=listings, lazy='subquery',
                 backref=db.backref('listers', lazy=True))
-    bought = db.relationship('stock', secondary=transactions, lazy='subquery',
-                backref=db.backref('buyers', lazy=True))
-    sold = db.relationship('stock', secondary=transactions, lazy='subquery',
-                backref=db.backref('sellers', lazy=True))
+    sales = db.relationship("stock",
+                        secondary=transactions,
+                        primaryjoin=id==transactions.c.seller_id,
+                        secondaryjoin=id==transactions.c.buyer_id,
+                        backref=db.backref('purchases',lazy=True))
     
     # 1:1 relationships
     information = db.relationship('user_info', backref='user_login', lazy=True)
