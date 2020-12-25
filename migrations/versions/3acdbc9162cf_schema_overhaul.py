@@ -1,14 +1,8 @@
-"""some comment
+"""schema overhaul
 
-<<<<<<< HEAD:migrations/versions/5b9543b12864_some_comment.py
-Revision ID: 5b9543b12864
+Revision ID: 3acdbc9162cf
 Revises: 
-Create Date: 2020-12-25 14:37:22.159245
-=======
-Revision ID: 6fb2112a0c2d
-Revises: 
-Create Date: 2020-12-25 08:45:20.084854
->>>>>>> 2d02c8ca67b71e950b92f7972e32b4db4fd10a87:migrations/versions/6fb2112a0c2d_.py
+Create Date: 2020-12-25 15:22:06.917736
 
 """
 from alembic import op
@@ -16,11 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-<<<<<<< HEAD:migrations/versions/5b9543b12864_some_comment.py
-revision = '5b9543b12864'
-=======
-revision = '6fb2112a0c2d'
->>>>>>> 2d02c8ca67b71e950b92f7972e32b4db4fd10a87:migrations/versions/6fb2112a0c2d_.py
+revision = '3acdbc9162cf'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -58,7 +48,6 @@ def upgrade():
     sa.Column('stock_name', sa.String(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('owned_qty', sa.Integer(), nullable=False),
-    sa.Column('listed_qty', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['stock_name'], ['stock.stock_name'], ),
     sa.ForeignKeyConstraint(['user_id'], ['user_login.id'], ),
     sa.PrimaryKeyConstraint('stock_name', 'user_id')
@@ -82,12 +71,8 @@ def upgrade():
     sa.Column('acc_num', sa.Integer(), nullable=False),
     sa.Column('cnic', sa.Integer(), nullable=False),
     sa.Column('addr', sa.String(length=50), nullable=True),
-<<<<<<< HEAD:migrations/versions/5b9543b12864_some_comment.py
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['user_login.id'], ondelete='NO ACTION'),
-=======
-    sa.ForeignKeyConstraint(['user_id'], ['user_login.id'], onupdate='CASCADE', ondelete='NO ACTION'),
->>>>>>> 2d02c8ca67b71e950b92f7972e32b4db4fd10a87:migrations/versions/6fb2112a0c2d_.py
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('acc_num'),
     sa.UniqueConstraint('cnic'),
