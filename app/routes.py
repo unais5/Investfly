@@ -319,9 +319,9 @@ def login():
             else:
                 login_user(user, remember=False)
                 return redirect(url_for('user_information'))
-            user_stocks = stock.query.filter_by(user_id=current_user.id).all()
-            for i in range(len(user_stocks)):
-                user_stocks[i].update_price()
+            all_stocks = stock.query.all()
+            for i in range(len(all_stocks)):
+                all_stocks[i].update_price()
                 db.session.commit()
             return redirect(request.args.get("next") or url_for('home_page'))
     if formpwd.validate_on_submit():
@@ -357,7 +357,7 @@ def register():
         if user:
             send_user_verification_email(user)
             return render_template("plswait.html")
-    return render_template('register.html', form = form)
+    return render_template('register.html', form=form)
 
 @app.route('/logout')
 def logout():
