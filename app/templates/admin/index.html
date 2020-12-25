@@ -1,0 +1,11 @@
+{% extends 'admin/master.html' %}
+{% block head_css %}
+{{ super() }}
+{%endblock%}
+
+{% block body %}
+{{ super() }}
+
+<a class="btn-primary btn" href="{{ url_for('logout') }}">Logout</a>
+
+{%endblock%}

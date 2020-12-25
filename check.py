@@ -26,25 +26,25 @@ def load_user(id):
 
 
 owns = db.Table( 'owns',
-        db.Column('stock_name', db.String, db.ForeignKey('stock.stock_name'),primary_key=True),
-        db.Column('user_id', db.Integer, db.ForeignKey('user_login.id'),primary_key=True),
+        db.Column('stock_name', db.String, db.ForeignKey('stock.stock_name')),
+        db.Column('user_id', db.Integer, db.ForeignKey('user_login.id')),
         db.Column('owned_qty', db.Integer,nullable=False),
         db.Column('listed_qty', db.Integer)
 )
 
 
 listings = db.Table( 'listings',
-        db.Column('stock_name', db.String, db.ForeignKey('stock.stock_name'),primary_key=True),
-        db.Column('user_id', db.Integer, db.ForeignKey('user_login.id'),primary_key=True),
+        db.Column('stock_name', db.String, db.ForeignKey('stock.stock_name')),
+        db.Column('user_id', db.Integer, db.ForeignKey('user_login.id')),
         db.Column('listed_qty', db.Integer)
 )
 
 
 
 transactions = db.Table( 'transactions',
-        db.Column('stock_name', db.String, db.ForeignKey('stock.stock_name'),primary_key=True),
-        db.Column('seller_id', db.Integer, db.ForeignKey('user_login.id'),primary_key=True),
-        db.Column('buyer_id', db.Integer , db.ForeignKey('user_login.id'),primary_key=True),
+        db.Column('stock_name', db.String, db.ForeignKey('stock.stock_name')),
+        db.Column('seller_id', db.Integer, db.ForeignKey('user_login.id')),
+        db.Column('buyer_id', db.Integer, db.ForeignKey('user_login.id')),
         db.Column('quantity', db.Integer, nullable=False),
         db.Column('sale_price', db.Float, nullable=False),
         db.Column('date', db.Date, nullable=False)
@@ -207,11 +207,11 @@ class wallet(db.Model):
 
 ####################### relationship  intermediate models
 
-# admin.add_view(ModelView(user_login, db.session))
-# admin.add_view(ModelView(user_info, db.session))
-# admin.add_view(ModelView(wallet, db.session))
-# admin.add_view(ModelView(stock, db.session))
-# admin.add_view(ModelView(transaction, db.session))
+admin.add_view(ModelView(user_login, db.session))
+admin.add_view(ModelView(user_info, db.session))
+admin.add_view(ModelView(wallet, db.session))
+admin.add_view(ModelView(stock, db.session))
+admin.add_view(ModelView(transaction, db.session))
 
 class ticker_info():
     def _init_(self, name, volume, price):
