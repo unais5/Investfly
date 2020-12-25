@@ -1,0 +1,60 @@
+{% extends "base2.html" %}
+
+{% block title %}Portfolio{% endblock %}
+
+{% block head %}
+    <link rel= "stylesheet" type= "text/css" href= "{{url_for('static',filename='css/portfolio.css')}}">
+    <style>
+        h1{
+            color:white;
+            padding-left: 5px;
+            padding-bottom: 10px;
+        }
+
+        .above{
+            padding-top: -30px;
+        } 
+
+        .below{
+            padding-top:70px ;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class=row1>
+    <h1 class="above">Bought</h1>
+    <table class="table">
+      <tr class="tab_head">
+          {% for header in Bought_headings %}
+          <th class="tab_b">{{ header }}</th>
+          {% endfor %}
+      </tr>
+      {% for row in Bought %}
+      <tr>
+          {% for cell in row %}
+          <td class="tab_body">{{ cell }}</td>
+          {% endfor %}
+      </tr>
+      {% endfor %}
+   </table>
+</div>
+
+<div class=row1>
+    <h1 class="below">Sold</h1>
+    <table class="table">
+      <tr class="tab_head">
+          {% for header in Sold_headings %}
+          <th class="tab_b">{{ header }}</th>
+          {% endfor %}
+      </tr>
+      {% for row in Sold %}
+      <tr>
+          {% for cell in row %}
+          <td class="tab_body">{{ cell }}</td>
+          {% endfor %}
+      </tr>
+      {% endfor %}
+   </table>
+</div>
+{% endblock %}

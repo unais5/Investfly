@@ -139,6 +139,11 @@ class transaction(db.Model):
     def __repr__(self):
         return '<transaction %r>' % (self.user_id)
     
+    def get_bought_list(self):
+        return [self.id ,self.seller_id, self.stock_name, self.selling_price , self.quantity , self.transaction_date]
+    
+    def get_sold_list(self):
+        return [self.id ,self.buyer_id, self.stock_name, self.selling_price , self.quantity , self.transaction_date]
     
 
 class available_stocks(db.Model):

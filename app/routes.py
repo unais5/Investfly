@@ -92,9 +92,18 @@ def buyListing(stk,nm,pr,qt):
 
 @app.route('/history' , methods = ['GET' , 'POST'])
 def history():
-    headings = ['Name' , 'Seller ID ' , 'Buyer ID' , 'Volume' , 'Price' , 'Date']
+    Sold_headings = ['Transaction_id' ,'Seller ID ' ,'Name' , 'Price' , 'Volume' , 'Date']
     sold = transaction.query.filter_by(seller_id=current_user.id).all()
-    print(sold.seller_id)
+    sold_stocks = []
+    for i in range(len(sold)):
+        sold_stocks.append(sold[i].get_sold_list())
+    
+    Bought_headings = ['Transaction ID' ,'Bought ID ' ,'Name' , 'Price' , 'Volume' , 'Date']
+    bought = transaction.query.filter_by(buyer_id=current_user.id).all()
+    bought_stocks = []
+    for i in range(len(bought)):
+        bought_stocks.append(bought[i].get_bought_list())
+    return render_template("history.html" ,Bought=bought_stocks , Sold=sold_stocks  ,Bought_headings=Bought_headings , Sold_headings=Sold_headings)
 
 
 @app.route('/stocks', methods = ['GET' , 'POST'])
