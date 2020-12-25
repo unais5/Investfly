@@ -23,7 +23,9 @@ def editListing(stk,pr,qt):
         qty = request.form['volume']
         pwd = request.form['password']
         user_data = user_login.query.filter_by(id=current_user.id).first()
-
+        sell_ticker = ticker_info(name=stk,
+                                    volume=qty,
+                                    price=pr)
         if user_data and user_data.check_password(pwd):
             seller_listing = available_stocks.query.filter_by(seller_id=current_user.id, stock_name=stk).first()
             seller_portfolio = stock.query.filter_by(stock_name=stk, user_id=current_user.id).first()
@@ -35,6 +37,7 @@ def editListing(stk,pr,qt):
                     return redirect(url_for('dashboard'))
                 elif int(qty) <= seller_portfolio.quantity:
                     seller_listing.quantity = qty
+                    send_listing_email(user_data, sell_ticker)
                     db.session.commit()
                     return redirect(url_for('dashboard'))
                 elif int(qty) > seller_portfolio.quantity:
