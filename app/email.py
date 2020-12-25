@@ -11,7 +11,6 @@ def send_password_reset_email(user):
                 sender= 'investflycorporation@gmail.com',
                recipients=[user.email],
                text_body=render_template('email/reset_password.txt', user=user, token=token),
-            #    remove text body - NEVERMIND DONT REMOVE PHAT JAEGA
                html_body=render_template('email/reset_password.html',user=user, token=token))
 
 def send_user_verification_email(user):
@@ -20,7 +19,6 @@ def send_user_verification_email(user):
                 sender= 'investflycorporation@gmail.com',
                recipients=[user.email],
                text_body=render_template('email/welcome.txt',user=user, token=token),
-            #    remove text body - NEVERMIND DONT REMOVE PHAT JAEGA
                html_body=render_template('email/welcome.html',user=user, token=token))
 
 
@@ -29,7 +27,6 @@ def send_purchase_email(user, stock_data, bill, wallet):
                 sender= 'investflycorporation@gmail.com',
                recipients=[user.email],
                text_body=render_template('email/conf_purchase.txt',user=user, stock=stock_data, bill=bill, wallet=wallet),
-            #    remove text body - NEVERMIND DONT REMOVE PHAT JAEGA
                html_body=render_template('email/conf_purchase.html',user=user,  stock=stock_data,bill=bill, wallet=wallet))
                                         
 
@@ -38,7 +35,6 @@ def send_listing_email(user, stock_data):
                 sender= 'investflycorporation@gmail.com',
                recipients=[user.email],
                text_body=render_template('email/conf_listing.txt',user=user,stock=stock_data),
-            #    remove text body - NEVERMIND DONT REMOVE PHAT JAEGA
                html_body=render_template('email/conf_listing.html',user=user, stock=stock_data))
 
 def send_sale_email(user, buyer, t_id, stock):
@@ -46,7 +42,6 @@ def send_sale_email(user, buyer, t_id, stock):
                 sender= 'investflycorporation@gmail.com',
                recipients=[user.email],
                text_body=render_template('email/conf_sale.txt',user=user, buyer=buyer, transaction_id=t_id , stock=stock),
-            #    remove text body - NEVERMIND DONT REMOVE PHAT JAEGA
                html_body=render_template('email/conf_sale.html',user=user ,buyer=buyer, transaction_id=t_id, stock=stock))
 
 

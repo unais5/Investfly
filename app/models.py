@@ -76,14 +76,11 @@ class user_login(UserMixin, db.Model):
 class user_info(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user_login.id',onupdate='CASCADE',ondelete='NO ACTION'),unique=True)
-    fname= db.Column(db.String(20))
-    # lname= db.Column(db.String(20))
-    # phone= db.Column(db.Integer, unique=True, nullable=False)
+    name= db.Column(db.String(20))
     phone= db.Column(db.String, unique=True, nullable=False)
     acc_num= db.Column(db.Integer, unique=True, nullable=False)
     cnic= db.Column(db.Integer, unique=True, nullable=False)
     addr= db.Column(db.String(50))
-    # wallet_id = db.Column(db.Integer, db.ForeignKey('wallet.id',onupdate='CASCADE',ondelete='CASCADE'),unique=True, nullable=False)
 
     def get_list(self):
         return [self.id, self.fname, self.phone, self.cnic]
@@ -109,7 +106,6 @@ class stock(db.Model):
     stock_name = db.Column(db.String, nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     curr_price = db.Column(db.Float, nullable=False)
-    # transaction_date = db.Column(db.String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user_login.id',onupdate='CASCADE',ondelete='CASCADE'), nullable=False)
 
     def __repr__(self):
@@ -159,14 +155,6 @@ class available_stocks(db.Model):
     def get_list(self):
         return [self.stock_name, self.seller_id, self.curr_price , self.quantity]
 
-#######################
-
-####################### relationship  intermediate models
-# available_stocks = db.Table('available_stocks',
-#     db.Column('stock_id', db.Integer, db.ForeignKey('stock.id',onupdate='CASCADE',ondelete='CASCADE'), primary_key=True),
-#     db.Column('seller_id', db.Integer, db.ForeignKey('user_info.id',onupdate='CASCADE',ondelete='CASCADE'), primary_key=True),
-#     db.Column('quantity', db.Integer, nullable=False),
-#     db.Column('curr_price', db.Float, nullable=False) )
 
 admin.add_view(ModelView(user_login, db.session))
 admin.add_view(ModelView(user_info, db.session))
