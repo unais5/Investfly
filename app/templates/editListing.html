@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <link rel= "stylesheet" type= "text/css" href= "{{url_for('static',filename='css/login.css')}}">
+        <style>
+            .login-wrap{
+                min-height: 600px;
+                margin-top: 0px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="login-wrap">
+            <a href="{{url_for('dashboard')}}" class="btn btn-outline-dark text-light">Dashboard</a>
+            <div class="login-html">
+                <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">EDIT LISTING</label>
+                <input id="tab-2" type="radio"  name="tab" class="for-pwd"><label for="tab-2" class="tab"></label>
+                <div class="login-form">
+                    <form action="" method="post" >
+                    <div class="sign-in-htm">
+                        <div class="group">
+                            {% with messages = get_flashed_messages() %}
+					            {% if messages %}
+						            {% for message in messages %}
+						                <div class="alert alert-danger  alerty-dismissal fade show" role="alert">
+							            <button type="button" class="close" data-dismiss="alert">&times;</button>
+							                {{ message }}
+						                </div> 
+						            {% endfor %}
+					            {% endif %}
+				            {% endwith %}
+                            <label for="user" class="label">Share Name</label>
+                            <input id="user" type="text" class="input" placeholder="Name" name="name" disabled="" value="{{ s_name }}">
+                        </div>
+                        <div class="group">
+                            <label for="vol" class="label">Share Price</label>
+                            <input id="vol" type="number" class="input" placeholder="Price" name="sale_price" value="{{ s_price }}" disabled>
+                        </div>
+                        <div class="group">
+                            <label for="vol" class="label">Share Volume</label>
+                            <input id="vol" type="number" class="input" placeholder="Volume" name="volume" value="volume" required>
+                        </div>
+                        <div class="group">
+                            <label for="pass" class="label">Password</label>
+                            <input id="pass" type="password" class="input" data-type="password" placeholder="password" name="password" required>
+                        </div>
+                        <div class="group">
+                            <input type="submit" class="button" value="EDIT">
+                        </div>
+                        <div class="hr"></div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

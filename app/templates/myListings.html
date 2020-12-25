@@ -19,6 +19,7 @@
           {% for cell in row %}
           <td class="tab_body">{{ cell }}</td>
           {% endfor %}
+          <td><a href="{{url_for('editListing',stk=row[0],nm=row[1],pr=row[2],qt=row[3])}}" id="myBtn" class="btn btn-fill btn-primary">EDIT</a></td>
       </tr>
       {% endfor %}
    </table>

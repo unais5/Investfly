@@ -16,6 +16,38 @@ import random
 def admin():
     return render_template("admin.index")
 
+@app.route('/editListing/<stk>/<pr>/<qt>' ,methods = ['GET' , 'POST'])
+@login_required
+def editListing(stk,pr,qt):
+    if request.method == 'POST':
+        qty = request.form['volume']
+        pwd = request.form['password']
+        user_data = user_login.query.filter_by(id=current_user.id).first()
+
+        if user_data and user_data.check_password(pwd):
+            seller_listing = available_stocks.query.filter_by(seller_id=current_user.id, stock_name=stk).first()
+            seller_portfolio = stock.query.filter_by(stock_name=stk, user_id=current_user.id).first()
+
+            if seller_listing:    
+                if int(qty) == 0:
+                    db.session.delete(seller_listing)
+                    db.session.commit()
+                    return redirect(url_for('dashboard'))
+                elif int(qty) <= seller_portfolio.quantity:
+                    seller_listing.quantity = qty
+                    db.session.commit()
+                    return redirect(url_for('dashboard'))
+                elif int(qty) > seller_portfolio.quantity:
+                    flash('Insufficient units. Please enter a valid quantity')
+                    return redirect(url_for('editListing',stk=stk,pr=pr,qt=qt))
+            else:
+                #cannot edit a listing you dont have
+                return redirect(url_for('dashboard'))
+        else:
+            flash("Incorrect password! ")
+            return redirect(url_for('editListing',stk=stk,pr=pr,qt=qt))
+    return render_template("editListing.html", s_name=stk, s_price=pr)        
+
 @app.route('/buyListing/<stk>/<nm>/<pr>/<qt>' ,methods = ['GET' , 'POST'])
 @login_required
 def buyListing(stk,nm,pr,qt):
@@ -27,67 +59,71 @@ def buyListing(stk,nm,pr,qt):
                                 volume=int(qty),
                                 price=float(pr))
         
-        if user_data and user_data.check_password(pwd): # if the user is valid & entered correct pwd
-            bill = float(pr) * float(qty)
+        if user_data:
+            if user_data.check_password(pwd): # if the user is valid & entered correct pwd
+                bill = float(pr) * float(qty)
 
-            seller_obj = user_login.query.filter_by(username=nm).first()
-            seller_id = seller_obj.id
-            if seller_id != current_user.id:
+                seller_obj = user_login.query.filter_by(username=nm).first()
+                seller_id = seller_obj.id
+                if seller_id != current_user.id:
 
-                seller_wallet = wallet.query.filter_by(user_id=seller_id).first()
-                buyer_wallet = wallet.query.filter_by(user_id=current_user.id).first()
-                
-                seller_portfolio = stock.query.filter_by(stock_name=stk, user_id=seller_id).first()
-                seller_listing = available_stocks.query.filter_by(seller_id=seller_id, stock_name=stk).first()
-
-                if bill <= buyer_wallet.balance and qty <= qt and seller_listing and seller_portfolio:
-                    buyer_wallet.balance = buyer_wallet.balance - bill
-                    seller_wallet.balance = seller_wallet.balance + bill
-
-                    seller_portfolio.quantity = seller_portfolio.quantity - int(qty)
-                    seller_listing.quantity = seller_listing.quantity - int(qty)
-                    db.session.commit()
-
-                    if seller_portfolio.quantity <= 0:
-                        db.session.delete(seller_portfolio)
-                        db.session.commit()
-                    if seller_listing.quantity <= 0:
-                        db.session.delete(seller_listing)
-                        db.session.commit()
+                    seller_wallet = wallet.query.filter_by(user_id=seller_id).first()
+                    buyer_wallet = wallet.query.filter_by(user_id=current_user.id).first()
                     
-                    buyer_portfolio = stock.query.filter_by(stock_name=stk, user_id=current_user.id).first()
-                    if buyer_portfolio:
-                        buyer_portfolio.quantity = buyer_portfolio.quantity + int(qty)
-                        buyer_portfolio.curr_price = pr
-                        st_id = buyer_portfolio.id
+                    seller_portfolio = stock.query.filter_by(stock_name=stk, user_id=seller_id).first()
+                    seller_listing = available_stocks.query.filter_by(seller_id=seller_id, stock_name=stk).first()
+
+                    if bill <= buyer_wallet.balance and qty <= qt and seller_listing and seller_portfolio:
+                        buyer_wallet.balance = buyer_wallet.balance - bill
+                        seller_wallet.balance = seller_wallet.balance + bill
+
+                        seller_portfolio.quantity = seller_portfolio.quantity - int(qty)
+                        seller_listing.quantity = seller_listing.quantity - int(qty)
                         db.session.commit()
+
+                        if seller_portfolio.quantity <= 0:
+                            db.session.delete(seller_portfolio)
+                            db.session.commit()
+                        if seller_listing.quantity <= 0:
+                            db.session.delete(seller_listing)
+                            db.session.commit()
+                        
+                        buyer_portfolio = stock.query.filter_by(stock_name=stk, user_id=current_user.id).first()
+                        if buyer_portfolio:
+                            buyer_portfolio.quantity = buyer_portfolio.quantity + int(qty)
+                            buyer_portfolio.curr_price = pr
+                            st_id = buyer_portfolio.id
+                            db.session.commit()
+                        else:
+                            add_to_portfolio = stock(stock_name=stk,
+                                                        quantity=int(qty),
+                                                        curr_price=float(pr),
+                                                        user_id=current_user.id)
+                            st_id= add_to_portfolio.id
+                            db.session.add(add_to_portfolio)
+                            db.session.commit()
+                        
+                        curr_trns = transaction(transaction_date=date.today(),
+                                                buyer_id=current_user.id,
+                                                seller_id=seller_id,
+                                                quantity=qty,
+                                                selling_price=float(pr),
+                                                stock_name=stk)
+                        db.session.add(curr_trns)
+                        db.session.commit()
+
+                        send_purchase_email(user_data, buy_stock, bill, buyer_wallet.balance)
+                        send_sale_email(seller_obj, user_data, curr_trns.id, buy_stock)
+                        return redirect(url_for('dashboard'))
                     else:
-                        add_to_portfolio = stock(stock_name=stk,
-                                                    quantity=int(qty),
-                                                    curr_price=float(pr),
-                                                    user_id=current_user.id)
-                        st_id= add_to_portfolio.id
-                        db.session.add(add_to_portfolio)
-                        db.session.commit()
-                    
-                    curr_trns = transaction(transaction_date=date.today(),
-                                            buyer_id=current_user.id,
-                                            seller_id=seller_id,
-                                            quantity=qty,
-                                            selling_price=float(pr),
-                                            stock_name=stk)
-                    db.session.add(curr_trns)
-                    db.session.commit()
-
-                    send_purchase_email(user_data, buy_stock, bill, buyer_wallet.balance)
-                    send_sale_email(seller_obj, user_data, curr_trns.id, buy_stock)
-                    return redirect(url_for('dashboard'))
+                        flash("Insufficient Balance or quantity out of bounds ")
+                        return redirect(url_for('buy',s_name=stk, s_price=pr))
                 else:
-                    flash("Insufficient Balance or quantity out of bounds ")
-                    return redirect(url_for('buy',s_name=stk, s_price=pr))
+                    flash("Cannot purchase from self!")
+                    return redirect(url_for('dashboard'))
             else:
-                flash("Cannot purchase from self!")
-                return redirect(url_for('dashboard'))
+                flash("Incorrect password!")
+                return redirect(url_for('buy',s_name=stk, s_price=pr))
     return render_template("peerbuy.html", stock=stk, stk_price=pr)
 
 @app.route('/history' , methods = ['GET' , 'POST'])
@@ -349,7 +385,8 @@ def register():
             return redirect(url_for('register'))
 
         u_id = random.randint(4000,7000)
-        check_id = user_login.query.filter_by(id=u_id).first()
+        check_id = user_info.query.filter_by(user_id=u_id).first()
+        # check_id = user_login.query.filter_by(id=u_id).first()
         while check_id is not None:
             u_id = random.randint(4000,7000)
             check_id = user_login.query.filter_by(id=u_id).first()
