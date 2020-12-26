@@ -2,7 +2,7 @@
 
 ### Website : https://investfly.herokuapp.com/
 
-### This is a _Stock Market App_ created by the students for the university project. Following technologies were used behind building this app
+### This is a _Stock Market WEB App_ created by the students for the university project. Following technologies were used behind building this web app
 
 In this project we used Yahoo Finance API to get real time stock data and also updated the real time price in our data base. We also integrated Gmail API to send emails to the users from admin's Gmail account.  
 #
